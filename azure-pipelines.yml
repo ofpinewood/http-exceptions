@@ -53,7 +53,7 @@ steps:
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
     versioningScheme: byBuildNumber
 
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   displayName: NuGet Push
   inputs:
     command: push
