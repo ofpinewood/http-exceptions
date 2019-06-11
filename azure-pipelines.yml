@@ -73,5 +73,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
+  condition: always()
   inputs:
     PathtoPublish: $(build.artifactstagingdirectory)
