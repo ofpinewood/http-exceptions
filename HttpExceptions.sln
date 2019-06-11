@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Root", "00 Root", "{5715
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		azure-pipelines.yml = azure-pipelines.yml
+		CHANGELOG.md = CHANGELOG.md
 		gitversion.yml = gitversion.yml
 		LICENSE = LICENSE
 		README.md = README.md
@@ -31,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "netcoreapp22", "netcoreapp2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.Sample", "samples\Opw.HttpExceptions.AspNetCore.Sample\Opw.HttpExceptions.AspNetCore.Sample.csproj", "{65EBCCFF-217E-45A2-A276-6553264ED598}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.HttpExceptions.AspNetCore.Sample.Tests", "tests\Opw.HttpExceptions.AspNetCore.Sample.Tests\Opw.HttpExceptions.AspNetCore.Sample.Tests.csproj", "{1681FE09-0F3E-4251-A90F-E3336412B4B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.Sample.Tests", "tests\Opw.HttpExceptions.AspNetCore.Sample.Tests\Opw.HttpExceptions.AspNetCore.Sample.Tests.csproj", "{1681FE09-0F3E-4251-A90F-E3336412B4B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
