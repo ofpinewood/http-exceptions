@@ -1,0 +1,72 @@
+# # ASP.NET Core
+# # Build and test ASP.NET Core web applications targeting .NET Core.
+# # Add steps that run tests, create a NuGet package, deploy, and more:
+# # https://docs.microsoft.com/vsts/pipelines/languages/dotnet-core
+
+# pool:
+  # vmImage: 'vs2017-win2016'
+# trigger:
+ # - master-disabled
+
+# variables:
+  # buildConfiguration: 'Release'
+  # restoreBuildProjects: '**/*.csproj'
+  # testProjects: '**/tests/*.Tests/*.csproj'
+  # publishProject: '**/src/Opw.Website.Host/*.csproj'
+
+# steps:
+# - task: gittools.gitversion.gitversion-task.GitVersion@3
+  # displayName: GitVersion
+  # inputs:
+    # updateAssemblyInfo: true
+
+# - task: DotNetCoreCLI@2
+  # displayName: Restore
+  # inputs:
+    # command: restore
+    # projects: '$(restoreBuildProjects)'
+# #     vstsFeed: '898fa5fa-eb14-4bc1-ab71-bee75533f389'
+
+# - task: DotNetCoreCLI@2
+  # displayName: Build
+  # inputs:
+    # projects: '$(restoreBuildProjects)'
+    # arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
+
+# - task: DotNetCoreCLI@2
+  # displayName: Test
+  # inputs:
+    # command: test
+    # projects: '$(testProjects)'
+    # arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
+
+# - task: DotNetCoreCLI@2
+  # displayName: Publish
+  # inputs:
+    # command: publish
+    # publishWebProjects: false
+    # projects: '$(publishProject)'
+    # arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) /p:Version=$(Build.BuildNumber) --no-build'
+    # zipAfterPublish: True
+
+# - task: PublishBuildArtifacts@1
+  # displayName: 'Publish Artifact'
+  # inputs:
+    # PathtoPublish: '$(build.artifactstagingdirectory)'
+
+# # Tag sources on success for the master branch
+# - powershell: |
+    # git --version
+    # Write-Host "git tag $env:tag"
+    # git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" tag $env:tag
+    # Write-Host "git push origin $env:tag"
+    # git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push origin $env:tag
+  # displayName: 'Git Tag (master)'
+  # workingDirectory: $(Build.SourcesDirectory)
+  # env:
+    # tag: '$(Build.BuildNumber)'
+    # SYSTEM_ACCESSTOKEN: $(system.accesstoken)
+  # ignoreLASTEXITCODE: false
+  # errorActionPreference: Stop
+  # failOnStderr: false
+  # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))

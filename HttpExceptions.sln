@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Root", "00 Root", "{5715D09C-EDAA-4B0B-A343-7ED17F6C5D74}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
+		gitversion.yml = gitversion.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "90 Common", "90 Common", "{405C144D-41FE-4BDE-B9B2-F8364036C4AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "netstandard20", "netstandard20", "{2D80CA4F-2896-4808-B07B-EC797DA2C487}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.HttpExceptions", "src\Opw.HttpExceptions\Opw.HttpExceptions.csproj", "{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.HttpExceptions.Tests", "tests\Opw.HttpExceptions.Tests\Opw.HttpExceptions.Tests.csproj", "{210A56CA-1091-43E7-9883-1836CCC232BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210A56CA-1091-43E7-9883-1836CCC232BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210A56CA-1091-43E7-9883-1836CCC232BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210A56CA-1091-43E7-9883-1836CCC232BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210A56CA-1091-43E7-9883-1836CCC232BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2D80CA4F-2896-4808-B07B-EC797DA2C487} = {405C144D-41FE-4BDE-B9B2-F8364036C4AB}
+		{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B} = {2D80CA4F-2896-4808-B07B-EC797DA2C487}
+		{210A56CA-1091-43E7-9883-1836CCC232BD} = {2D80CA4F-2896-4808-B07B-EC797DA2C487}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6B9D3DF-8885-481F-B3DB-FF4B260F8862}
+	EndGlobalSection
+EndGlobal
