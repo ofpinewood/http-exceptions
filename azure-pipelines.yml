@@ -40,14 +40,14 @@ steps:
     arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
 
 - task: NuGetCommand@2
-  displayName: NuGet Pack: Opw.HttpExceptions
+  displayName: NuGet Pack Opw.HttpExceptions
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
     versioningScheme: byBuildNumber
 
 - task: NuGetCommand@2
-  displayName: NuGet Pack: Opw.HttpExceptions.AspNetCore
+  displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
