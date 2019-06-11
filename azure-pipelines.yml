@@ -66,7 +66,7 @@ steps:
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
    gitHubConnection: GitHub
-   repositoryName: 'ofpinewood/http-exceptions'
+   repositoryName: $(Build.Repository.Name)
    action: create
    target: $(Build.SourceVersion)
    tagSource: manual

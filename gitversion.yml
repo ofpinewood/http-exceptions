@@ -1,4 +1,4 @@
-next-version: 0.1.6
+next-version: 0.1.7
 continuous-delivery-fallback-tag: ''
 branches:
   master:
