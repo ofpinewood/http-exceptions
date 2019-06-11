@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Opw.AspNetCore.HttpExceptions</RootNamespace>
+    <RootNamespace>Opw.HttpExceptions.AspNetCore.Sample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 
 namespace Opw.HttpExceptions
@@ -11,6 +12,11 @@ namespace Opw.HttpExceptions
 
         public ForbiddenException(string message)
             : base(HttpStatusCode.Forbidden, message)
+        {
+        }
+
+        public ForbiddenException(string message, Exception innerException)
+            : base(HttpStatusCode.Forbidden, message, innerException)
         {
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 
 namespace Opw.HttpExceptions
@@ -11,6 +12,11 @@ namespace Opw.HttpExceptions
 
         public ConflictException(string message)
             : base(HttpStatusCode.Conflict, message)
+        {
+        }
+
+        public ConflictException(string message, Exception innerException)
+            : base(HttpStatusCode.Conflict, message, innerException)
         {
         }
     }
