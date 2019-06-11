@@ -6,13 +6,12 @@
 pool:
   vmImage: 'vs2017-win2016'
 trigger:
-  - master
+  - master-disabled
 
 variables:
   buildConfiguration: 'Release'
   restoreBuildProjects: '**/*.csproj'
   testProjects: '**/tests/*.Tests/*.csproj'
-  # publishProject: '**/src/Opw.Website.Host/*.csproj'
 
 steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@3
