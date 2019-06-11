@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>Peter van den Hout</Authors>
+        <Authors>Of Pine Wood, Peter van den Hout</Authors>
         <Description>HTTP-specific exception classes that enable ASP.NET to generate exception information.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.HttpExceptions</PackageId>
