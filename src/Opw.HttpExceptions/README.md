@@ -21,6 +21,3 @@ HTTP-specific exception classes that enable ASP.NET to generate exception inform
 - 500 DbErrorException
 - 500 SerializationErrorException
 - 503 ServiceUnavailableException
-
-# ASP.NET Core Problem Details for Http Exceptions
-ASP.NET Core Problem Details extensions for using Http Exceptions).
