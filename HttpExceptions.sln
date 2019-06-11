@@ -13,13 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Root", "00 Root", "{5715
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "90 Common", "90 Common", "{405C144D-41FE-4BDE-B9B2-F8364036C4AB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 HttpExceptions", "10 HttpExceptions", "{405C144D-41FE-4BDE-B9B2-F8364036C4AB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "netstandard20", "netstandard20", "{2D80CA4F-2896-4808-B07B-EC797DA2C487}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.HttpExceptions", "src\Opw.HttpExceptions\Opw.HttpExceptions.csproj", "{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.HttpExceptions.Tests", "tests\Opw.HttpExceptions.Tests\Opw.HttpExceptions.Tests.csproj", "{210A56CA-1091-43E7-9883-1836CCC232BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.AspNetCore.HttpExceptions", "src\Opw.AspNetCore.HttpExceptions\Opw.AspNetCore.HttpExceptions.csproj", "{531ADC07-8A3E-4CC9-A0D2-83DE1D5329E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.AspNetCore.HttpExceptions.Tests", "tests\Opw.AspNetCore.HttpExceptions.Tests\Opw.AspNetCore.HttpExceptions.Tests.csproj", "{6F06C859-75D4-4E29-A42F-B669912C3D4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +39,14 @@ Global
 		{210A56CA-1091-43E7-9883-1836CCC232BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{210A56CA-1091-43E7-9883-1836CCC232BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{210A56CA-1091-43E7-9883-1836CCC232BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{531ADC07-8A3E-4CC9-A0D2-83DE1D5329E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531ADC07-8A3E-4CC9-A0D2-83DE1D5329E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531ADC07-8A3E-4CC9-A0D2-83DE1D5329E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531ADC07-8A3E-4CC9-A0D2-83DE1D5329E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F06C859-75D4-4E29-A42F-B669912C3D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F06C859-75D4-4E29-A42F-B669912C3D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F06C859-75D4-4E29-A42F-B669912C3D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F06C859-75D4-4E29-A42F-B669912C3D4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +55,8 @@ Global
 		{2D80CA4F-2896-4808-B07B-EC797DA2C487} = {405C144D-41FE-4BDE-B9B2-F8364036C4AB}
 		{2B23DCCD-D082-4ED4-B1D0-BF0E00040A0B} = {2D80CA4F-2896-4808-B07B-EC797DA2C487}
 		{210A56CA-1091-43E7-9883-1836CCC232BD} = {2D80CA4F-2896-4808-B07B-EC797DA2C487}
+		{531ADC07-8A3E-4CC9-A0D2-83DE1D5329E8} = {2D80CA4F-2896-4808-B07B-EC797DA2C487}
+		{6F06C859-75D4-4E29-A42F-B669912C3D4B} = {2D80CA4F-2896-4808-B07B-EC797DA2C487}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6B9D3DF-8885-481F-B3DB-FF4B260F8862}
