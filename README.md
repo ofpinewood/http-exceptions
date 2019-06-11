@@ -2,14 +2,14 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
 
 # Http Exceptions
-[![NuGet Badge](https://buildstats.info/nuget/Opw.HttpExceptions)](https://www.nuget.org/packages/Opw.HttpExceptions/)
+[![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.svg)](https://www.nuget.org/packages/Opw.HttpExceptions/)
 
 HTTP-specific exception classes that enable ASP.NET to generate exception information. These classes can be used by themself or as base classes for your own HttpExceptions.
 
 [Opw.HttpExceptions](/src/Opw.HttpExceptions/README.md)
 
 # ASP.NET Core Problem Details for Http Exceptions
-[![NuGet Badge](https://buildstats.info/nuget/Opw.HttpExceptions.AspNetCore)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
+[![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
 
 ASP.NET Core Problem Details extensions for using Http Exceptions).
 
