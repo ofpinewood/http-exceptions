@@ -69,8 +69,8 @@ steps:
    repositoryName: $(Build.Repository.Name)
    action: create
    target: $(Build.SourceVersion)
-   tagSource: 'Git tag'
-   tag: $(Build.BuildNumber)
+   tagSource: manual
+   tag: 'v$(Build.BuildNumber)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
