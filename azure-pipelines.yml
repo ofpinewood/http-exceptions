@@ -66,11 +66,11 @@ steps:
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
    gitHubConnection: GitHub
-   repositoryName: $(Build.Repository.Name)
+   repositoryName: 'ofpinewood/http-exceptions'
    action: create
    target: $(Build.SourceVersion)
    tagSource: manual
-   tag: 'v$(Build.BuildNumber)'
+   tag: $(Build.BuildNumber)
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
