@@ -6,7 +6,7 @@
 pool:
   vmImage: 'vs2017-win2016'
 trigger:
-  - master-disabled
+  - master
 
 variables:
   buildConfiguration: 'Release'
@@ -24,26 +24,33 @@ steps:
   displayName: Restore
   inputs:
     command: restore
-    projects: '$(restoreBuildProjects)'
+    projects: $(restoreBuildProjects)
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: '$(restoreBuildProjects)'
+    projects: $(restoreBuildProjects)
     arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
-    projects: '$(testProjects)'
+    projects: $(testProjects)
     arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
 
 - task: NuGetCommand@2
-  displayName: NuGet Pack
+  displayName: NuGet Pack: Opw.HttpExceptions
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
+    versioningScheme: byBuildNumber
+
+- task: NuGetCommand@2
+  displayName: NuGet Pack: Opw.HttpExceptions.AspNetCore
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
     versioningScheme: byBuildNumber
 
 - task: NuGetCommand@2
@@ -51,36 +58,20 @@ steps:
   inputs:
     command: push
     nuGetFeedType: external
-    publishFeedCredentials: 'NuGet'
+    publishFeedCredentials: NuGet
     versioningScheme: byBuildNumber
+
+– task: GithubRelease@0
+  displayName: Create GitHub Release
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+   githubConnection: GitHub
+   repositoryName: $(Build.Repository.Name)
+   action: create
+   tagSource: auto
+   #tag: $(Build.BuildNumber)
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-
-# - task: DotNetCoreCLI@2
-  # displayName: Publish
-  # inputs:
-    # command: publish
-    # publishWebProjects: false
-    # projects: '$(publishProject)'
-    # arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) /p:Version=$(Build.BuildNumber) --no-build'
-    # zipAfterPublish: True
-
-# # Tag sources on success for the master branch
-# - powershell: |
-    # git --version
-    # Write-Host "git tag $env:tag"
-    # git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" tag $env:tag
-    # Write-Host "git push origin $env:tag"
-    # git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push origin $env:tag
-  # displayName: 'Git Tag (master)'
-  # workingDirectory: $(Build.SourcesDirectory)
-  # env:
-    # tag: '$(Build.BuildNumber)'
-    # SYSTEM_ACCESSTOKEN: $(system.accesstoken)
-  # ignoreLASTEXITCODE: false
-  # errorActionPreference: Stop
-  # failOnStderr: false
-  # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    PathtoPublish: $(build.artifactstagingdirectory)

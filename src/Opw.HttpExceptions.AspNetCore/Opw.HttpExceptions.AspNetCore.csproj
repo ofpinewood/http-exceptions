@@ -1,16 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
+        <Authors>Peter van den Hout</Authors>
+        <Description>ASP.NET Core Problem Details extensions for using Http Exceptions.</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageId>Opw.HttpExceptions.AspNetCore</PackageId>
+        <PackageTags>aspnetcore http exceptions</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageLicenseUrl>https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/ofpinewood/http-exceptions</PackageProjectUrl>
+        <PackageIconUrl>https://github.com/ofpinewood/opw/blob/master/opw-logo-256x256-green.gif</PackageIconUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ofpinewood/http-exceptions</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Opw.HttpExceptions\Opw.HttpExceptions.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Opw.HttpExceptions\Opw.HttpExceptions.csproj" />
+    </ItemGroup>
 
 </Project>
