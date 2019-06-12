@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
         <Authors>Of Pine Wood, Peter van den Hout</Authors>
-        <Description>ASP.NET Core Problem Details extensions for using Http Exceptions.</Description>
+        <Description>ASP.NET Core Problem Details extensions for using HttpExceptions.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.HttpExceptions.AspNetCore</PackageId>
         <PackageTags>aspnetcore http exceptions</PackageTags>

@@ -12,7 +12,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public ActionResult<string> Get(HttpExceptionType type)
         {
             var message = $"{type}Error has occurred.";
-            var innerException = new ApplicationException("Inner exception for {type}Error.");
+            var innerException = new ApplicationException($"Inner exception for {type}Error.");
             switch (type)
             {
                 case HttpExceptionType.BadRequest:
