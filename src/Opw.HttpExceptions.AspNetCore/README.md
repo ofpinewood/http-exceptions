@@ -17,5 +17,5 @@ See [Opw.HttpExceptions.AspNetCore.Sample](/samples/Opw.HttpExceptions.AspNetCor
 
 # License
 Copyright 2019, [Of Pine Wood](http://ofpinewood.com).
-Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).
 Created by [Peter van den Hout](http://ofpinewood.com).
+Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).
