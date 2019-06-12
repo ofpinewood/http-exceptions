@@ -36,6 +36,6 @@ PM> Install-Package Opw.HttpExceptions
 - 503 ServiceUnavailableException
 
 ## License
-Copyright 2019, [Of Pine Wood](http://ofpinewood.com).
+Copyright &copy; 2019, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
 Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).
