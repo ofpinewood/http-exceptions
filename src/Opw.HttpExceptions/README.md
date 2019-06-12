@@ -5,19 +5,19 @@
 
 HTTP-specific exception classes that enable ASP.NET to generate exception information. These classes can be used by themself or as base classes for your own HttpExceptions.
 
-## Where can I get it?
+### Where can I get it?
 First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). Then, install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExceptions/) from the package manager console:
 
 ```
 PM> Install-Package Opw.HttpExceptions
 ```
 
-## Http Exceptions
+### Http Exceptions
 
-### 3xx
+#### 3xx
 - ...
 
-### 4xx
+#### 4xx
 - 400 BadRequestException
 - 400 InvalidModelException
 - 400 InvalidFileException
@@ -29,13 +29,13 @@ PM> Install-Package Opw.HttpExceptions
 - 409 ProtectedException
 - 415 UnsupportedMediaTypeException
 
-### 5xx
+#### 5xx
 - 500 InternalServerErrorException
 - 500 DbErrorException
 - 500 SerializationErrorException
 - 503 ServiceUnavailableException
 
-# License
+## License
 Copyright 2019, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
 Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).
