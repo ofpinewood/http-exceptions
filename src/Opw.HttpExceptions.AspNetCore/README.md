@@ -12,6 +12,27 @@ First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). 
 PM> Install-Package Opw.HttpExceptions.AspNetCore
 ```
 
+### Getting started
+Add HttpExceptions services to the services collection.
+``` csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddHttpExceptions();
+}
+```
+
+`UseHttpExceptions` is the first middleware component added to the pipeline. Therefore, the `UseHttpExceptions` Middleware catches any exceptions that occur in later calls.
+When using HttpExceptions you don't need to use `UseExceptionHandler` or `UseDeveloperExceptionPage`.
+``` csharp
+public void Configure(IApplicationBuilder app)
+{
+    app.UseHttpExceptions(); // this is the first middleware component added to the pipeline
+
+    ...
+}
+
+```
+
 ### Samples
 See [Opw.HttpExceptions.AspNetCore.Sample](/samples/Opw.HttpExceptions.AspNetCore.Sample/README.md).
 

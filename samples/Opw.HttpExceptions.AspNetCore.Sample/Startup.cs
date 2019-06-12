@@ -33,17 +33,16 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
+            // UseHttpExceptions is the first middleware component added to the pipeline. Therefore,
+            // the UseHttpExceptions Middleware catches any exceptions that occur in later calls.
+            // When using HttpExceptions you don't need to use UseExceptionHandler or UseDeveloperExceptionPage.
+            app.UseHttpExceptions();
+
+            if (!env.IsDevelopment())
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseHttpExceptions();
 
             app.UseHttpsRedirection();
             app.UseMvc();
