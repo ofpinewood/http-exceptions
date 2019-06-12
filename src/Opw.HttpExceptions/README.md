@@ -15,7 +15,7 @@ HTTP-specific exception classes that enable ASP.NET to generate exception inform
 - 401 UnauthorizedException
 - 403 ForbiddenException
 - 404 NotFoundException
-- 404 NotFoundException<T>
+- 404 NotFoundException\<T\>
 - 409 ConflictException
 - 409 ProtectedException
 - 415 UnsupportedMediaTypeException
