@@ -35,8 +35,10 @@ namespace Opw.HttpExceptions.AspNetCore
                 services.Configure(configureOptions);
 
             services.Configure((HttpExceptionsOptions options) => {
-                // this is the default behavior; only include exception details in a development environment.
+                // This is the same as the default behavior; only include exception details in a development environment.
                 options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+                // This is a simplified version of the default behavior; only include exception details for 4xx and 5xx responses.
+                options.IsExceptionResponse = context => (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600);
 
                 // This will map NotImplementedException to the 501 Not Implemented status code.
                 //options.Map<NotImplementedException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status501NotImplemented));

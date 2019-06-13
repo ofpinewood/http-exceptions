@@ -18,7 +18,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<HttpContext, bool> IncludeExceptionDetails { get; set; }
 
         /// <summary>
-        /// Is the response an exception and should we handle it in the HttpExceptions middleware
+        /// Is the response an exception and should it be handled by the HttpExceptions middleware
         /// </summary>
         public Func<HttpContext, bool> IsExceptionResponse { get; set; }
 

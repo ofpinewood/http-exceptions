@@ -33,10 +33,7 @@ namespace Opw.HttpExceptions.AspNetCore
 
         private static bool IsExceptionResponse(HttpContext context)
         {
-            if (context.Response.StatusCode < 400)
-                return false;
-
-            if (context.Response.StatusCode >= 600)
+            if (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600)
                 return false;
 
             if (context.Response.ContentLength.HasValue)
