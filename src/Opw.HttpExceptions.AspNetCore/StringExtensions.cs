@@ -7,6 +7,11 @@ namespace Opw.HttpExceptions.AspNetCore
     //TODO: create a tools package for these extensions?
     internal static class StringExtensions
     {
+        internal static string ToCamelCase(this string s)
+        {
+            return char.ToLowerInvariant(s[0]) + s.Substring(1);
+        }
+
         internal static string ToSlug(this string s)
         {
             string str = s.RemoveDiacritics();
@@ -25,9 +30,9 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         /// <summary>
-        /// Remove diacritics (accents) from a string
+        /// Remove diacritics (accents) from a string.
         /// </summary>
-        /// <see cref="https://stackoverflow.com/questions/249087/how-do-i-remove-diacritics-accents-from-a-string-in-net"/>
+        /// <remarks>See: "http://stackoverflow.com/questions/249087/how-do-i-remove-diacritics-accents-from-a-string-in-net"</remarks>
         internal static string RemoveDiacritics(this string s)
         {
             var normalizedString = s.Normalize(NormalizationForm.FormD);

@@ -4,9 +4,18 @@ using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
+    /// <summary>
+    /// Provides extension methods for creating ProblemDetails from exceptions.
+    /// </summary>
     public static class ExceptionExtensions
     {
-        public static ProblemDetails ToProblemDetails(this Exception ex, Uri requestPath)
+        /// <summary>
+        /// Creates and returns a ProblemDetails representation of the current exception.
+        /// </summary>
+        /// <param name="ex">The current exception.</param>
+        /// <param name="includeExceptionDetails">Include ExceptionDetails or not.</param>
+        /// <returns>A ProblemDetails representation of the current exception.</returns>
+        public static ProblemDetails ToProblemDetails(this Exception ex, bool includeExceptionDetails = false)
         {
             var problemDetails = new ProblemDetails
             {
@@ -14,10 +23,45 @@ namespace Opw.HttpExceptions.AspNetCore
                 Type = GetType(ex),
                 Title = GetTitle(ex),
                 Detail = GetDetail(ex),
-                Instance = requestPath.AbsoluteUri
+                Instance = GetHelpLink(ex)
             };
 
+            if (includeExceptionDetails)
+                problemDetails.Extensions.Add(nameof(ExceptionDetails).ToCamelCase(), new ExceptionDetails(ex));
+
             return problemDetails;
+        }
+
+        /// <summary>
+        /// Creates and returns a ProblemDetails representation of the current exception.
+        /// </summary>
+        /// <param name="ex">The current exception.</param>
+        /// <param name="requestPath">A URI reference that identifies the specific occurrence of the problem.</param>
+        /// <param name="includeExceptionDetails">Include ExceptionDetails or not.</param>
+        /// <returns>A ProblemDetails representation of the current exception.</returns>
+        public static ProblemDetails ToProblemDetails(this Exception ex, string requestPath, bool includeExceptionDetails = false)
+        {
+            var problemDetails = ex.ToProblemDetails(includeExceptionDetails);
+            problemDetails.Instance = requestPath;
+
+            return problemDetails;
+        }
+
+        internal static string GetHelpLink(Exception exception)
+        {
+            var link = exception.HelpLink;
+
+            if (string.IsNullOrEmpty(link))
+            {
+                return null;
+            }
+
+            if (Uri.TryCreate(link, UriKind.Absolute, out var result))
+            {
+                return result.ToString();
+            }
+
+            return null;
         }
 
         internal static int GetStatusCode(Exception ex)

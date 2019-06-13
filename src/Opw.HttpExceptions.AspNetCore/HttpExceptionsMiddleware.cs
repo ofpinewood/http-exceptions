@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -17,9 +19,12 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         private readonly RequestDelegate _next;
         private readonly IOptions<HttpExceptionsOptions> _options;
-        //private readonly IActionResultExecutor<ObjectResult> _executor;
+        private readonly IActionResultExecutor<ObjectResult> _executor;
         //private readonly IHostingEnvironment _environment;
         private readonly ILogger<HttpExceptionsMiddleware> _logger;
+
+        private static readonly ActionDescriptor _emptyActionDescriptor = new ActionDescriptor();
+        private static readonly RouteData _emptyRouteData = new RouteData();
 
         /// <summary>
         /// Initializes the HttpExceptionsMiddleware
@@ -32,14 +37,14 @@ namespace Opw.HttpExceptions.AspNetCore
         public HttpExceptionsMiddleware(
             RequestDelegate next,
             IOptions<HttpExceptionsOptions> options,
-            //IActionResultExecutor<ObjectResult> executor,
+            IActionResultExecutor<ObjectResult> executor,
             //IHostingEnvironment environment,
             ILogger<HttpExceptionsMiddleware> logger)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _options = options ?? throw new ArgumentNullException(nameof(options));
+            _executor = executor ?? throw new ArgumentNullException(nameof(executor));
 
-            //_executor = executor;
             //_environment = environment;
             _logger = logger;
         }
@@ -100,19 +105,27 @@ namespace Opw.HttpExceptions.AspNetCore
             context.Response.Headers.Append(HeaderNames.Pragma, "no-cache");
             context.Response.Headers.Append(HeaderNames.Expires, "0");
 
-            context.Response.StatusCode = statusCode;
-        }
-
-        private ProblemDetails CreateProblemDetails(Exception ex)
-        {
-            var problemDetails = new ProblemDetails
+            ProblemDetails problemDetails = null;
+            if (ex != null)
             {
-                Status = GetStatusCode(exception),
-                Type = GetType(exception),
-                Title = GetTitle(exception),
-                Detail = GetDetail(exception),
-                Instance = HttpContext.Request.Path
+                var includeExceptionDetails = true;// _options.Value.IncludeExceptionDetails(context);
+                problemDetails = ex.ToProblemDetails(context.Request.Path, includeExceptionDetails);
+            }
+
+            context.Response.StatusCode = problemDetails.Status.Value;
+
+            var routeData = context.GetRouteData() ?? _emptyRouteData;
+            var actionContext = new ActionContext(context, routeData, _emptyActionDescriptor);
+
+            var result = new ObjectResult(problemDetails)
+            {
+                StatusCode = problemDetails.Status ?? context.Response.StatusCode,
+                DeclaredType = problemDetails.GetType(),
             };
+            result.ContentTypes.Add("application/problem+json");
+            result.ContentTypes.Add("application/problem+xml");
+
+            _executor.ExecuteAsync(actionContext, result);
         }
     }
 }
