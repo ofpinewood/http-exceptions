@@ -3,7 +3,7 @@ using System;
 namespace Opw.HttpExceptions.AspNetCore
 {
     /// <summary>
-    /// Represents an error that occur during application execution in a serializable form.
+    /// Represents an error in a serializable form.
     /// </summary>
     public class ExceptionDetails
     {
