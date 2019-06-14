@@ -38,6 +38,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Docs", "05 Docs", "{28E5D808-7B5D-4A1D-9F18-1626154DF1F9}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Opw.HttpExceptions.AspNetCore.md = docs\Opw.HttpExceptions.AspNetCore.md
+		docs\Opw.HttpExceptions.AspNetCore.Sample.md = docs\Opw.HttpExceptions.AspNetCore.Sample.md
 		docs\Opw.HttpExceptions.md = docs\Opw.HttpExceptions.md
 		README.md = README.md
 	EndProjectSection

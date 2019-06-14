@@ -34,7 +34,7 @@ public void Configure(IApplicationBuilder app)
 ```
 
 ### Samples
-See [Opw.HttpExceptions.AspNetCore.Sample](/samples/Opw.HttpExceptions.AspNetCore.Sample/README.md).
+See [Opw.HttpExceptions.AspNetCore.Sample](/docs/Opw.HttpExceptions.AspNetCore.Sample.md).
 
 ## License
 Copyright &copy; 2019, [Of Pine Wood](http://ofpinewood.com).
