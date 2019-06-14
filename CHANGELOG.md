@@ -1,4 +1,4 @@
-This is the initial release for HttpExceptions.
+Basic functionality was implemented for this initial release of HttpExceptions.
 
 As part of this release we had [##](https://github.com/ofpinewood/http-exceptions/milestone/1?closed=1) issues closed.
 
