@@ -62,7 +62,7 @@ namespace Opw.HttpExceptions.AspNetCore
 
         internal static HttpStatusCode GetStatusCode(Exception ex)
         {
-            if (ex is HttpException httpException)
+            if (ex is HttpExceptionBase httpException)
                 return httpException.StatusCode;
 
             return HttpStatusCode.InternalServerError;

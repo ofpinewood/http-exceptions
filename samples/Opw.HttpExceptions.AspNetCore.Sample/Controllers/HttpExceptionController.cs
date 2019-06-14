@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Opw.HttpExceptions.AspNetCore.Sample.Models;
 using System;
+using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
 {
@@ -19,16 +20,15 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
                     throw new BadRequestException(message, innerException);
                 case HttpExceptionType.Forbidden:
                     throw new ForbiddenException(message, innerException);
-                case HttpExceptionType.InternalServerError:
-                    throw new InternalServerErrorException(message, innerException);
                 case HttpExceptionType.NotFound:
                     throw new NotFoundException(message, innerException);
                 case HttpExceptionType.NotFoundT:
                     throw new NotFoundException<Customer>(message, innerException);
                 case HttpExceptionType.Unauthorized:
                     throw new UnauthorizedException(message, innerException);
+                default:
+                    throw new HttpException((HttpStatusCode)((int)type), message, innerException);
             }
-            return "value";
         }
     }
 }
