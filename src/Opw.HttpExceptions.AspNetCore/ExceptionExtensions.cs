@@ -19,9 +19,9 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             var problemDetails = new ProblemDetails
             {
-                Status = GetStatusCode(ex),
+                Status = (int)GetStatusCode(ex),
                 Type = GetType(ex),
-                Title = GetTitle(ex),
+                Title = GetName(ex),
                 Detail = GetDetail(ex),
                 Instance = GetHelpLink(ex)
             };
@@ -52,32 +52,30 @@ namespace Opw.HttpExceptions.AspNetCore
             var link = exception.HelpLink;
 
             if (string.IsNullOrEmpty(link))
-            {
                 return null;
-            }
 
             if (Uri.TryCreate(link, UriKind.Absolute, out var result))
-            {
                 return result.ToString();
-            }
 
             return null;
         }
 
-        internal static int GetStatusCode(Exception ex)
+        internal static HttpStatusCode GetStatusCode(Exception ex)
         {
-            if (ex is HttpException)
-                return ((HttpException)ex).StatusCode;
+            if (ex is HttpException httpException)
+                return httpException.StatusCode;
 
-            return (int)HttpStatusCode.InternalServerError;
+            return HttpStatusCode.InternalServerError;
         }
 
-        internal static string GetTitle(Exception ex)
+        internal static string GetName(Exception ex)
         {
-            if (ex is HttpException)
-                return ((HttpException)ex).Title;
+            var name = ex.GetType().Name;
+            if (name.Contains("`")) name = name.Substring(0, name.IndexOf('`'));
+            if (name.EndsWith("Exception", StringComparison.InvariantCultureIgnoreCase))
+                name = name.Substring(0, name.Length - "Exception".Length);
 
-            return "Error";
+            return name;
         }
 
         internal static string GetDetail(Exception ex)
@@ -87,11 +85,7 @@ namespace Opw.HttpExceptions.AspNetCore
 
         internal static string GetType(Exception ex)
         {
-            var errorType = "error";
-            if (ex is HttpException)
-                errorType = ((HttpException)ex).Title.ToSlug();
-
-            return new Uri($"error:{errorType}").ToString();
+            return new Uri($"error:{GetName(ex)}").ToString();
         }
     }
 }
