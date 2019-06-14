@@ -3,28 +3,29 @@ using System.Net;
 
 namespace Opw.HttpExceptions
 {
-    public class NotFoundException<T> : HttpException
+    /// <summary>
+    /// Represents HTTP NotFound (404) errors that occur during application execution.
+    /// </summary>
+    public class NotFoundException<T> : NotFoundException where T : class
     {
-        public NotFoundException() : base(HttpStatusCode.NotFound, "Not found.")
-        {}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotFoundException"></see> class with status code NotFound.
+        /// </summary>
+        public NotFoundException() : base() { }
 
-        public NotFoundException(string id)
-            : base(HttpStatusCode.NotFound, $"{typeof(T).Name} \"{id}\" not found.")
-        {
-        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotFoundException"></see> class with status code NotFound and a specified error message.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        public NotFoundException(string message) : base(message) { }
 
-        public NotFoundException(string id, Exception innerException)
-            : base(HttpStatusCode.NotFound, $"{typeof(T).Name} \"{id}\" not found.", innerException)
-        {
-        }
-
-        protected override string GetTitle(string typeName = null)
-        {
-            typeName = typeof(T).Name;
-            if (typeof(T).IsInterface)
-                typeName = typeName.Substring(1);
-
-            return base.GetTitle(typeName);
-        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotFoundException"></see> class with status code NotFound, a specified error message
+        /// and a reference to the inner exception that is the cause of this exception.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference
+        /// if no inner exception is specified.</param>
+        public NotFoundException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
