@@ -16,9 +16,6 @@ ASP.NET Core Problem Details extensions for using HttpExceptions).
 
 [Opw.HttpExceptions.AspNetCore](/src/Opw.HttpExceptions.AspNetCore/README.md)
 
-## Contributing
-Please read the [GitHub flow](https://guides.github.com/introduction/flow/) documentation. **TL;DR** there's only one rule: anything in the master branch is always deployable.
-
 ## License
 Copyright &copy; 2019, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
