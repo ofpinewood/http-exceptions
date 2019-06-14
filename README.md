@@ -5,7 +5,7 @@
 
 HTTP-specific exception classes that enable ASP.NET to generate exception information. These classes can be used by themselves or as base classes for your own HttpExceptions.
 
-[Opw.HttpExceptions](/src/Opw.HttpExceptions/README.md)
+[Opw.HttpExceptions](/docs/Opw.HttpExceptions.md)
 
 # ASP.NET Core Problem Details for HttpExceptions
 [![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
@@ -14,7 +14,7 @@ HTTP-specific exception classes that enable ASP.NET to generate exception inform
 
 ASP.NET Core Problem Details extensions for using HttpExceptions.
 
-[Opw.HttpExceptions.AspNetCore](/src/Opw.HttpExceptions.AspNetCore/README.md)
+[Opw.HttpExceptions.AspNetCore](/docs/Opw.HttpExceptions.AspNetCore.md)
 
 ## Contributing
 We accept fixes and features! Here are some resources to help you get started on how to contribute code or new content.
