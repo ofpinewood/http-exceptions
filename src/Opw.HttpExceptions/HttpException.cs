@@ -6,7 +6,7 @@ namespace Opw.HttpExceptions
     /// <summary>
     /// Represents HTTP errors that occur during application execution.
     /// </summary>
-    public abstract class HttpException : Exception
+    public class HttpException : Exception
     {
         /// <summary>
         /// HTTP status code.
