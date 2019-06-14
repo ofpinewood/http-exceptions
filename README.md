@@ -22,7 +22,7 @@ We accept fixes and features! Here are some resources to help you get started on
 * [Contributing documentation](https://github.com/ofpinewood/http-exceptions/blob/master/CONTRIBUTING.md)
 * [Code of conduct](https://github.com/ofpinewood/http-exceptions/blob/master/CODE_OF_CONDUCT.md)
 
-## License
+---
 Copyright &copy; 2019, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
 Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).

@@ -5,14 +5,14 @@
 
 ASP.NET Core Problem Details extensions for using HttpExceptions.
 
-### Where can I get it?
+## Where can I get it?
 First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). Then, install [Opw.HttpExceptions.AspNetCore](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/) from the package manager console:
 
 ```
 PM> Install-Package Opw.HttpExceptions.AspNetCore
 ```
 
-### Getting started
+## Getting started
 Add HttpExceptions services to the services collection.
 ``` csharp
 public void ConfigureServices(IServiceCollection services)
@@ -33,10 +33,10 @@ public void Configure(IApplicationBuilder app)
 
 ```
 
-### Samples
+## Samples
 See [Opw.HttpExceptions.AspNetCore.Sample](/docs/Opw.HttpExceptions.AspNetCore.Sample.md).
 
-## License
+---
 Copyright &copy; 2019, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
 Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).
