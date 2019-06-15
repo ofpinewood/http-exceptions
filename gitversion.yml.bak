@@ -1,6 +1,0 @@
-next-version: 0.2
-continuous-delivery-fallback-tag: ''
-branches:
-  master:
-    mode: ContinuousDeployment
-    tag: ''

@@ -10,6 +10,7 @@ trigger:
   branches:
     include:
     - master
+    - refs/tags/*
   paths:
     include:
     - src/*
@@ -65,14 +66,14 @@ steps:
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
     versioningScheme: byBuildNumber
 
-- task: NuGetCommand@2
-  displayName: NuGet Push
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/disable-*'))
-  inputs:
-    command: push
-    nuGetFeedType: external
-    publishFeedCredentials: NuGet
-    versioningScheme: byBuildNumber
+#- task: NuGetCommand@2
+#  displayName: NuGet Push
+#  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/*'))
+#  inputs:
+#    command: push
+#    nuGetFeedType: external
+#    publishFeedCredentials: NuGet
+#    versioningScheme: byBuildNumber
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
