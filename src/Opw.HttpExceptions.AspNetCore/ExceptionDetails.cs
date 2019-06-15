@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -30,7 +31,13 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <summary>
         /// Gets the ExceptionDetails for the exception that caused the current exception.
         /// </summary>
-        public ExceptionDetails InnerException { get; }
+        public ExceptionDetails InnerException { get; set; }
+
+        /// <summary>
+        /// Constructor used when Json deserializing.
+        /// </summary>
+        [JsonConstructor]
+        private ExceptionDetails() { }
 
         /// <summary>
         /// Initializes the ExceptionDetails.
