@@ -24,3 +24,9 @@ If you're requesting a feature, please include a clear description of the featur
 ## Pull Requests
 If you've identified a feature/bug fix that aligns to the project goals, or even just an addition to the docs, please submit a Pull Request (PR). 
 If applicable, include tests and ensure all tests are passing locally before you commit.
+
+## Creating a new release
+
+1. Update the `CHANGELOG.md`.
+2. Create a new tagged commit for the version number, e.g. `1.2.3` ([SemVer 2.0.0](https://semver.org/)). **Do not prefix with the version!**
+3. Push the tagged commit to the `master` branch to trigger the release.
