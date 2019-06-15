@@ -2,18 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>Of Pine Wood, Peter van den Hout</Authors>
         <Description>HTTP-specific exception classes that enable ASP.NET to generate exception information.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.HttpExceptions</PackageId>
         <PackageTags>http exceptions</PackageTags>
-        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageLicenseUrl>https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/ofpinewood/http-exceptions</PackageProjectUrl>
-        <PackageIconUrl>https://github.com/ofpinewood/opw/blob/master/opw-logo-256x256-green.gif?raw=true</PackageIconUrl>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/ofpinewood/http-exceptions</RepositoryUrl>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
     </PropertyGroup>
 
 </Project>
