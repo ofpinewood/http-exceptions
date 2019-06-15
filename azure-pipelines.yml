@@ -9,12 +9,12 @@ trigger:
   branches:
     include:
     - master
-    - azure-pipelines.yml
   paths:
     include:
     - src/*
     - tests/*
     - samples/*
+    - azure-pipelines.yml
     exclude:
     - docs/*
 
