@@ -16,6 +16,7 @@ trigger:
     - tests/*
     - samples/*
     - azure-pipelines.yml
+    - CONTRIBUTING.md
 
 variables:
   buildConfiguration: 'Release'
