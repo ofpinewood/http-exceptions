@@ -48,10 +48,10 @@ steps:
     projects: $(testProjects)
     arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
 
-# Release: when triggered by a version tag (v*) we make a release
+# Release: when triggered by a version tag we make a release
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
+  condition: and(succeeded(), startsWith(variables['tagName'], 'refs/tags/*'))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
@@ -59,7 +59,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
+  condition: and(succeeded(), startsWith(variables['tagName'], 'refs/tags/*'))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
@@ -67,7 +67,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: NuGet Push
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
+  condition: and(succeeded(), startsWith(variables['tagName'], 'refs/tags/*'))
   inputs:
     command: push
     nuGetFeedType: external
@@ -76,14 +76,14 @@ steps:
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
+  condition: and(succeeded(), startsWith(variables['tagName'], 'refs/tags/*'))
   inputs:
    gitHubConnection: GitHub
    repositoryName: $(Build.Repository.Name)
    action: create
    target: $(Build.SourceVersion)
-   tagSource: manual
-   tag: 'v$(Build.BuildNumber)'
+   tagSource: auto
+   tag: '$(Build.BuildNumber)'
    releaseNotesSource: file
    releaseNotesFile: CHANGELOG.md
 
