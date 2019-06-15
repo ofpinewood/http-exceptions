@@ -17,7 +17,6 @@ trigger:
     - tests/*
     - samples/*
     - azure-pipelines.yml
-    - CONTRIBUTING.md
 
 variables:
   buildConfiguration: 'Release'
@@ -52,7 +51,7 @@ steps:
 # Release: when triggered by a version tag we make a release
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/*'))
+  condition: and(succeeded(), startsWith('refs/tags/*', variables['Build.SourceBranch']))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
@@ -60,7 +59,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/*'))
+  condition: and(succeeded(), startsWith('refs/tags/*', variables['Build.SourceBranch']))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
@@ -68,7 +67,7 @@ steps:
 
 #- task: NuGetCommand@2
 #  displayName: NuGet Push
-#  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/*'))
+#  condition: and(succeeded(), startsWith('refs/tags/*', variables['Build.SourceBranch']))
 #  inputs:
 #    command: push
 #    nuGetFeedType: external
@@ -77,7 +76,7 @@ steps:
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/*'))
+  condition: and(succeeded(), startsWith('refs/tags/*', variables['Build.SourceBranch']))
   inputs:
    gitHubConnection: GitHub
    repositoryName: $(Build.Repository.Name)

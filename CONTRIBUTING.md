@@ -27,8 +27,6 @@ If applicable, include tests and ensure all tests are passing locally before you
 
 ## Creating a new release
 
-1. Ceate a release branch for your release, e.g. `release/1.2.3`
-2. Update the `CHANGELOG.md`.
-3. Create a new tag for the version number, e.g. `1.2.3` ([SemVer 2.0.0](https://semver.org/)). **Do not prefix with the version!**
-4. Create and complete a PR for the release.
-5. A build will now be triggered for the release.
+1. Update the `CHANGELOG.md`.
+3. Create and push a new tag with the version number, e.g. `1.2.3` ([SemVer 2.0.0](https://semver.org/)). **Do not prefix with the version number!**
+3. A build will now be triggered for the release.
