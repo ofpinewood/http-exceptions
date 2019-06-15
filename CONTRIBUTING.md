@@ -25,6 +25,20 @@ If you're requesting a feature, please include a clear description of the featur
 If you've identified a feature/bug fix that aligns to the project goals, or even just an addition to the docs, please submit a Pull Request (PR). 
 If applicable, include tests and ensure all tests are passing locally before you commit.
 
+### Squash and Merge
+When completing a PR you squash and merge the commits to create a more streamlined Git history in the repository. Work-in-progress commits are helpful when working on a feature branch, but they aren’t necessarily important to retain in the Git history. If you squash these commits into one commit while merging to the default branch, you can retain the original changes with a clear Git history.
+
+The resulting squashed commit message should be a short description of what has been changed.
+``` txt
+All exceptions need to be handled by the middleware
+```
+
+And the resulting squashed commit message details should contain the related issues, including the reference to the issue.
+``` txt
+* All exceptions need to be handled by the middleware #3
+* In "development" the full exception details need to be returned #4
+```
+
 ## Creating a new release
 
 1. Update the `CHANGELOG.md`.
