@@ -10,7 +10,7 @@ namespace Opw.HttpExceptions.AspNetCore
     /// </summary>
     public class HttpExceptionsOptions
     {
-        private readonly List<ProblemDetailsMapper> _mappers;
+        //private readonly List<ProblemDetailsMapper> _mappers;
 
         /// <summary>
         /// Include exception details, default behavior is only to include exception details in a development environment.
@@ -18,74 +18,77 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<HttpContext, bool> IncludeExceptionDetails { get; set; }
 
         /// <summary>
-        /// Is the response an exception and should it be handled by the HttpExceptions middleware
+        /// Is the response an exception and should it be handled by the HttpExceptions middleware.
         /// </summary>
         public Func<HttpContext, bool> IsExceptionResponse { get; set; }
 
+        /// <summary>
+        /// Initializes the HttpExceptionsOptions.
+        /// </summary>
         public HttpExceptionsOptions()
         {
-            _mappers = new List<ProblemDetailsMapper>();
+            //_mappers = new List<ProblemDetailsMapper>();
         }
 
-        public void Map<TException>(Func<TException, ProblemDetails> mapping) where TException : Exception
-        {
-            Map<TException>((context, ex) => mapping(ex));
-        }
+        //public void Map<TException>(Func<TException, ProblemDetails> mapping) where TException : Exception
+        //{
+        //    Map<TException>((context, ex) => mapping(ex));
+        //}
 
-        public void Map<TException>(Func<HttpContext, TException, ProblemDetails> mapping) where TException : Exception
-        {
-            _mappers.Add(new ProblemDetailsMapper(typeof(TException), (context, ex) => mapping(context, (TException)ex)));
-        }
+        //public void Map<TException>(Func<HttpContext, TException, ProblemDetails> mapping) where TException : Exception
+        //{
+        //    _mappers.Add(new ProblemDetailsMapper(typeof(TException), (context, ex) => mapping(context, (TException)ex)));
+        //}
 
-        internal bool TryMapProblemDetails(HttpContext context, Exception exception, out ProblemDetails problem)
-        {
-            foreach (var mapper in _mappers)
-            {
-                if (mapper.TryMap(context, exception, out problem))
-                {
-                    return true;
-                }
-            }
+        //internal bool TryMapProblemDetails(HttpContext context, Exception exception, out ProblemDetails problem)
+        //{
+        //    foreach (var mapper in _mappers)
+        //    {
+        //        if (mapper.TryMap(context, exception, out problem))
+        //        {
+        //            return true;
+        //        }
+        //    }
 
-            problem = default;
-            return false;
-        }
+        //    problem = default;
+        //    return false;
+        //}
     }
 
-    internal sealed class ProblemDetailsMapper
-    {
-        private readonly Type _type;
-        private readonly Func<HttpContext, Exception, ProblemDetails> _mapping;
+    //internal sealed class ProblemDetailsMapper
+    //{
+    //    private readonly Type _type;
+    //    private readonly Func<HttpContext, Exception, ProblemDetails> _mapping;
 
-        public ProblemDetailsMapper(Type type, Func<HttpContext, Exception, ProblemDetails> mapping)
-        {
-            _type = type;
-            _mapping = mapping;
-        }
+    //    public ProblemDetailsMapper(Type type, Func<HttpContext, Exception, ProblemDetails> mapping)
+    //    {
+    //        _type = type;
+    //        _mapping = mapping;
+    //    }
 
-        public bool CanMap(Type type)
-        {
-            return _type.IsAssignableFrom(type);
-        }
+    //    public bool CanMap(Type type)
+    //    {
+    //        return _type.IsAssignableFrom(type);
+    //    }
 
-        public bool TryMap(HttpContext context, Exception exception, out ProblemDetails problemDetails)
-        {
-            if (CanMap(exception.GetType()))
-            {
-                try
-                {
-                    problemDetails = _mapping(context, exception);
-                    return true;
-                }
-                catch
-                {
-                    problemDetails = default;
-                    return false;
-                }
-            }
+    //    public bool TryMap(HttpContext context, Exception exception, out ProblemDetails problemDetails)
+    //    {
+    //        if (CanMap(exception.GetType()))
+    //        {
+    //            try
+    //            {
+    //                problemDetails = _mapping(context, exception);
+    //                return true;
+    //            }
+    //            catch
+    //            {
+    //                problemDetails = default;
+    //                return false;
+    //            }
+    //        }
 
-            problemDetails = default;
-            return false;
-        }
-    }
+    //        problemDetails = default;
+    //        return false;
+    //    }
+    //}
 }

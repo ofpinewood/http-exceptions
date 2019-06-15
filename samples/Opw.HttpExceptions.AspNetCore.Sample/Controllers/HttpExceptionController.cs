@@ -9,26 +9,19 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
     [ApiController]
     public class HttpExceptionController : ControllerBase
     {
-        [HttpGet("{type}")]
-        public ActionResult<string> Get(HttpExceptionType type)
+        [HttpGet("{statusCode}")]
+        public ActionResult<string> Throw(HttpStatusCode statusCode)
         {
-            var message = $"{type}Error has occurred.";
-            var innerException = new ApplicationException($"Inner exception for {type}Error.");
-            switch (type)
-            {
-                case HttpExceptionType.BadRequest:
-                    throw new BadRequestException(message, innerException);
-                case HttpExceptionType.Forbidden:
-                    throw new ForbiddenException(message, innerException);
-                case HttpExceptionType.NotFound:
-                    throw new NotFoundException(message, innerException);
-                case HttpExceptionType.NotFoundT:
-                    throw new NotFoundException<Customer>(message, innerException);
-                case HttpExceptionType.Unauthorized:
-                    throw new UnauthorizedException(message, innerException);
-                default:
-                    throw new HttpException((HttpStatusCode)((int)type), message, innerException);
-            }
+            var message = $"{statusCode}Error has occurred.";
+            var innerException = new ApplicationException($"Inner exception for {statusCode}Error.");
+            throw new HttpException(statusCode, message, innerException);
+        }
+
+        [HttpGet("applicationException")]
+        public ActionResult<string> ThrowApplicationException()
+        {
+            var innerException = new ApplicationException($"Inner exception for ApplicationException.");
+            throw new ApplicationException("ApplicationException has occurred.", innerException);
         }
     }
 }
