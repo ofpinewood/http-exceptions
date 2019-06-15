@@ -48,7 +48,7 @@ steps:
     projects: $(testProjects)
     arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
 
-# Release: when triggered by a version tag we make a release
+# Release: triggered by a version tag
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
@@ -65,14 +65,14 @@ steps:
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
     versioningScheme: byBuildNumber
 
-#- task: NuGetCommand@2
-#  displayName: NuGet Push
-#  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-#  inputs:
-#    command: push
-#    nuGetFeedType: external
-#    publishFeedCredentials: NuGet
-#    versioningScheme: byBuildNumber
+- task: NuGetCommand@2
+  displayName: NuGet Push
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: NuGet
+    versioningScheme: byBuildNumber
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
