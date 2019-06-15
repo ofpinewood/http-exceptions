@@ -8,8 +8,10 @@ pool:
 trigger:
   branches:
     include:
-    - master-disabled
-    - releases/*
+    - master
+  tags:
+    include:
+    - v*
   paths:
     include:
     - src/*
@@ -48,9 +50,10 @@ steps:
     projects: $(testProjects)
     arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
 
+# Release: when triggered by a version tag (v*) we make a release
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
@@ -58,7 +61,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
@@ -66,7 +69,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: NuGet Push
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
   inputs:
     command: push
     nuGetFeedType: external
@@ -75,7 +78,7 @@ steps:
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v*'))
   inputs:
    gitHubConnection: GitHub
    repositoryName: $(Build.Repository.Name)
@@ -86,6 +89,7 @@ steps:
    releaseNotesSource: file
    releaseNotesFile: CHANGELOG.md
 
+# Finalize
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   condition: always()
