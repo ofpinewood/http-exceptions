@@ -19,7 +19,7 @@ ASP.NET Core Problem Details extensions for using HttpExceptions.
 ## Contributing
 We accept fixes and features! Here are some resources to help you get started on how to contribute code or new content.
 
-* [Contributing documentation](https://github.com/ofpinewood/http-exceptions/blob/master/CONTRIBUTING.md)
+* [Contributing](https://github.com/ofpinewood/http-exceptions/blob/master/CONTRIBUTING.md)
 * [Code of conduct](https://github.com/ofpinewood/http-exceptions/blob/master/CODE_OF_CONDUCT.md)
 
 ---
