@@ -80,7 +80,7 @@ namespace Opw.HttpExceptions.AspNetCore
                 }
 
                 throw; // rethrow the exception if we can't handle it properly.
-            }            
+            }
         }
 
         private ProblemDetailsResult CreateProblemDetailsResult(HttpContext context, Exception ex = null)
