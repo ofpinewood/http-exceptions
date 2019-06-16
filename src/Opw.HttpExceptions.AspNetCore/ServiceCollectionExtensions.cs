@@ -49,7 +49,6 @@ namespace Opw.HttpExceptions.AspNetCore
                 //options.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
             });
 
-            //services.TryAddSingleton<ProblemDetailsMarkerService, ProblemDetailsMarkerService>();
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<HttpExceptionsOptions>, HttpExceptionsOptionsSetup>());
 
             return services;
