@@ -14,14 +14,6 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <returns>The Microsoft.AspNetCore.Builder.IApplicationBuilder,</returns>
         public static IApplicationBuilder UseHttpExceptions(this IApplicationBuilder app)
         {
-            //var markerService = app.ApplicationServices.GetService<ProblemDetailsMarkerService>();
-
-            //if (markerService is null)
-            //{
-            //    throw new InvalidOperationException(
-            //        $"Please call {nameof(IServiceCollection)}.{nameof(AddProblemDetails)} in ConfigureServices before adding the middleware.");
-            //}
-
             return app.UseMiddleware<HttpExceptionsMiddleware>();
         }
     }

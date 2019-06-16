@@ -9,6 +9,15 @@ namespace Opw.HttpExceptions.AspNetCore
     public class ProblemDetailsResult : ObjectResult
     {
         /// <summary>
+        /// ProblemDetails.
+        /// </summary>
+        public new ProblemDetails Value
+        {
+            get => (ProblemDetails)base.Value;
+            set => base.Value = value;
+        }
+
+        /// <summary>
         /// Initializes the ProblemDetailsResult.
         /// </summary>
         /// <param name="problemDetails">The ProblemDetails</param>
