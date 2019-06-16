@@ -85,15 +85,12 @@ namespace Opw.HttpExceptions.AspNetCore
         private ProblemDetailsResult CreateProblemDetailsResult(HttpContext context, Exception ex = null)
         {
             ProblemDetails problemDetails = null;
-            if (ex != null)
-            {
-                var includeExceptionDetails = _options.Value.IncludeExceptionDetails(context);
-                problemDetails = ex.ToProblemDetails(context.Request.Path, includeExceptionDetails);
-            }
+            if (ex != null && _options.Value.TryMap(ex, context, out problemDetails))
+                return new ProblemDetailsResult(problemDetails);
 
-            //TODO: create ProblemDetails when the exception is null
+            //TODO: create ProblemDetails when there is no exception
 
-            return new ProblemDetailsResult(problemDetails);
+            return new ProblemDetailsResult(problemDetails); // this will throw an exception because problemDetails is null
         }
 
         private Task ExecuteProblemDetailsResultAsync(HttpContext context, ProblemDetailsResult result)

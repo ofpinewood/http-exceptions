@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore
     /// <summary>
     /// Default mapper for mapping Exceptions to ProblemDetails.
     /// </summary>
-    public class ExceptionMapper<TException> where TException : Exception
+    public class ExceptionMapper<TException> : IExceptionMapper<TException> where TException : Exception
     {
         /// <summary>
         /// HttpExceptions options.
@@ -74,8 +74,8 @@ namespace Opw.HttpExceptions.AspNetCore
                 Instance = MapInstance(exception, context)
             };
 
-            //if (includeExceptionDetails)
-            //    problemDetails.Extensions.Add(nameof(ExceptionDetails).ToCamelCase(), new ExceptionDetails(ex));
+            if (Options.Value.IncludeExceptionDetails(context))
+                problemDetails.Extensions.Add(nameof(ExceptionDetails).ToCamelCase(), new ExceptionDetails(exception));
 
             return problemDetails;
         }
@@ -88,7 +88,7 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <returns>Returns either the request path, the exception help link or null.</returns>
         protected virtual string MapInstance(TException exception, HttpContext context)
         {
-            if (context.Request?.Path != null)
+            if (context.Request != null && context.Request.Path.HasValue)
                 return context.Request.Path;
 
             var link = exception.HelpLink;

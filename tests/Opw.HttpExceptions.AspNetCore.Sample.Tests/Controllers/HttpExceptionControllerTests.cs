@@ -64,7 +64,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, _problemDetailsMediaTypeFormatters);
             problemDetails.Title.Should().Be("Application");
-            problemDetails.Type.Should().Be("error:Application");
+            problemDetails.Type.Should().Be("error:application");
             problemDetails.Extensions.Should().HaveCount(0);
         }
     }

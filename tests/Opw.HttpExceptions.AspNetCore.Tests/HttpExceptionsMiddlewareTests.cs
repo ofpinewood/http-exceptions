@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Net;
@@ -21,18 +20,9 @@ namespace Opw.HttpExceptions.AspNetCore
         public HttpExceptionsMiddlewareTests()
         {
             _nextMock = new Mock<RequestDelegate>();
-
-            var options = new HttpExceptionsOptions();
-            options.IncludeExceptionDetails = (_) => true;
-            new HttpExceptionsOptionsSetup().Configure(options);
-
-            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
-            optionsMock.Setup(o => o.Value).Returns(options);
-
+            var optionsMock = TestsHelper.CreateHttpExceptionsOptionsMock(true);
             _actionResultExecutorMock = new Mock<IActionResultExecutor<ObjectResult>>();
-            
             var loggerMock = new Mock<ILogger<HttpExceptionsMiddleware>>();
-
             _middleware = new HttpExceptionsMiddleware(_nextMock.Object, optionsMock.Object, _actionResultExecutorMock.Object, loggerMock.Object);
         }
 

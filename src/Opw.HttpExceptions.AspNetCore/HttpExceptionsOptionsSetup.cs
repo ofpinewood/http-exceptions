@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -10,6 +13,16 @@ namespace Opw.HttpExceptions.AspNetCore
     /// </summary>
     public class HttpExceptionsOptionsSetup : IConfigureOptions<HttpExceptionsOptions>
     {
+        private readonly IServiceProvider _serviceProvider;
+
+        /// <summary>
+        /// Initializes the HttpExceptionsOptionsSetup.
+        /// </summary>
+        public HttpExceptionsOptionsSetup(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
         /// <summary>
         /// Invoked to configure a HttpExceptionsOptions instance.
         /// </summary>
@@ -21,6 +34,20 @@ namespace Opw.HttpExceptions.AspNetCore
 
             if (options.IsExceptionResponse == null)
                 options.IsExceptionResponse = IsExceptionResponse;
+
+            if (options.ExceptionMapperDescriptors == null)
+                options.ExceptionMapperDescriptors = new List<ExceptionMapperDescriptor>();
+            if (options.ExceptionMapperDescriptors.Count == 0)
+                options.ExceptionMapper<ExceptionMapper<Exception>>();
+
+            foreach (var exceptionMapperDescriptor in options.ExceptionMapperDescriptors)
+                options.ExceptionMappers.Add(CreatExceptionMapper(exceptionMapperDescriptor));
+        }
+
+        private IExceptionMapper<Exception> CreatExceptionMapper(ExceptionMapperDescriptor exceptionMapperDescriptor)
+        {
+            return (IExceptionMapper<Exception>)ActivatorUtilities
+                .CreateInstance(_serviceProvider, exceptionMapperDescriptor.Type, exceptionMapperDescriptor.Arguments);
         }
 
         private static bool IncludeExceptionDetails(HttpContext context)

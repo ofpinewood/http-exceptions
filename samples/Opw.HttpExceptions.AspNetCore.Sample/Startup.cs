@@ -20,7 +20,13 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddHttpExceptions();
+            services.AddHttpExceptions((options) =>
+            {
+                // This is the same as the default behavior; only include exception details in a development environment.
+                options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+                // This is a simplified version of the default behavior; only include exception details for 4xx and 5xx responses.
+                options.IsExceptionResponse = context => (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

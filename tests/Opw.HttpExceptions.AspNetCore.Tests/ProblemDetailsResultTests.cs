@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
@@ -11,7 +12,8 @@ namespace Opw.HttpExceptions.AspNetCore
         [Fact]
         public void Constructor_Should_ConstructProblemDetailsResult()
         {
-            var problemDetails = new ApplicationException().ToProblemDetails(true);
+            var mapper = TestsHelper.CreateExceptionMapper<Exception>(true);
+            var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
             var problemDetailsResult = new ProblemDetailsResult(problemDetails);
 
