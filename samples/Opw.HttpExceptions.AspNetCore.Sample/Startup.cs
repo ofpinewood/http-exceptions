@@ -20,7 +20,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddHttpExceptions((options) =>
+            services.AddHttpExceptions(options =>
             {
                 // This is the same as the default behavior; only include exception details in a development environment.
                 options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();

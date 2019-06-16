@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore
     /// <summary>
     /// Default mapper for mapping Exceptions to ProblemDetails.
     /// </summary>
-    public class ExceptionMapper<TException> : IExceptionMapper<TException> where TException : Exception
+    public class ExceptionMapper<TException> : IExceptionMapper where TException : Exception
     {
         /// <summary>
         /// HttpExceptions options.
@@ -39,7 +39,7 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <param name="exception">The exception to map.</param>
         /// <param name="context">The current HTTP context.</param>
         /// <param name="problemDetails">A ProblemDetails representation of the exception.</param>
-        public virtual bool TryMap(TException exception, HttpContext context, out ProblemDetails problemDetails)
+        public virtual bool TryMap(Exception exception, HttpContext context, out ProblemDetails problemDetails)
         {
             problemDetails = default;
 
@@ -63,15 +63,18 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <param name="exception">The exception to map.</param>
         /// <param name="context">The HTTP context.</param>
         /// <returns>A ProblemDetails representation of the exception.</returns>
-        public virtual ProblemDetails Map(TException exception, HttpContext context)
+        public virtual ProblemDetails Map(Exception exception, HttpContext context)
         {
+            if (!(exception is TException ex))
+                throw new ArgumentOutOfRangeException(nameof(exception), exception, $"Exception is not of type {typeof(TException).Name}.");
+
             var problemDetails = new ProblemDetails
             {
-                Status = MapStatus(exception, context),
-                Type = MapType(exception, context),
-                Title = MapTitle(exception, context),
-                Detail = MapDetail(exception, context),
-                Instance = MapInstance(exception, context)
+                Status = MapStatus(ex, context),
+                Type = MapType(ex, context),
+                Title = MapTitle(ex, context),
+                Detail = MapDetail(ex, context),
+                Instance = MapInstance(ex, context)
             };
 
             if (Options.Value.IncludeExceptionDetails(context))

@@ -35,18 +35,17 @@ namespace Opw.HttpExceptions.AspNetCore
             if (options.IsExceptionResponse == null)
                 options.IsExceptionResponse = IsExceptionResponse;
 
-            if (options.ExceptionMapperDescriptors == null)
-                options.ExceptionMapperDescriptors = new List<ExceptionMapperDescriptor>();
-            if (options.ExceptionMapperDescriptors.Count == 0)
-                options.ExceptionMapper<ExceptionMapper<Exception>>();
+            if (options.ExceptionMapperDescriptors.Count() == 0)
+                options.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
 
-            foreach (var exceptionMapperDescriptor in options.ExceptionMapperDescriptors)
+            options.ExceptionMappers.Clear();
+            foreach (var exceptionMapperDescriptor in options.ExceptionMapperDescriptors.Select(i => i.Value))
                 options.ExceptionMappers.Add(CreatExceptionMapper(exceptionMapperDescriptor));
         }
 
-        private IExceptionMapper<Exception> CreatExceptionMapper(ExceptionMapperDescriptor exceptionMapperDescriptor)
+        private IExceptionMapper CreatExceptionMapper(ExceptionMapperDescriptor exceptionMapperDescriptor)
         {
-            return (IExceptionMapper<Exception>)ActivatorUtilities
+            return (IExceptionMapper)ActivatorUtilities
                 .CreateInstance(_serviceProvider, exceptionMapperDescriptor.Type, exceptionMapperDescriptor.Arguments);
         }
 
@@ -57,7 +56,7 @@ namespace Opw.HttpExceptions.AspNetCore
 
         private static bool IsExceptionResponse(HttpContext context)
         {
-            if (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600)
+            if (context.Response.StatusCode < 400 || context.Response.StatusCode >= 600)
                 return false;
 
             if (context.Response.ContentLength.HasValue)

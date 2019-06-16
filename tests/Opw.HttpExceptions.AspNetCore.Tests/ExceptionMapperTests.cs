@@ -32,6 +32,16 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
+        public void Map_Should_ReturnThrowArgumentOutOfRangeException_ForInvalidExceptionType()
+        {
+            var mapper = new ExceptionMapper<ApplicationException>(TestsHelper.CreateHttpExceptionsOptionsMock(false).Object);
+
+            Action action = () => mapper.Map(new NotSupportedException(), new DefaultHttpContext());
+
+            action.Should().Throw<ArgumentOutOfRangeException>();
+        }
+
+        [Fact]
         public void Map_Should_ReturnProblemDetails_WithHelpLink()
         {
             var helpLink = "https://docs.microsoft.com/en-us/dotnet/api/system.exception.helplink?view=netcore-2.2";

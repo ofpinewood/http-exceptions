@@ -1,6 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 using System;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -29,10 +27,10 @@ namespace Opw.HttpExceptions.AspNetCore
         public static IServiceCollection AddHttpExceptions(this IServiceCollection services, Action<HttpExceptionsOptions> configureOptions)
         {
             services.AddOptions();
-            services.TryAddTransient<IConfigureOptions<HttpExceptionsOptions>, HttpExceptionsOptionsSetup>();
-            
             if (configureOptions != null)
                 services.Configure(configureOptions);
+
+            services.ConfigureOptions<HttpExceptionsOptionsSetup>();
 
             return services;
         }

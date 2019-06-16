@@ -16,7 +16,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public async Task AddHttpExceptions_Should_AddAllRequiredServices()
         {
             var services = new ServiceCollection();
-            services.AddHttpExceptions((options) => options.IncludeExceptionDetails = (_) => true);
+            services.AddHttpExceptions(options => options.IncludeExceptionDetails = (_) => true);
 
             var servicesProvider = services.BuildServiceProvider();
 

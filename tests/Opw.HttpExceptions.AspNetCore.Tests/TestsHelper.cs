@@ -10,7 +10,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
         {
             var services = new ServiceCollection();
-            services.AddHttpExceptions((options) => options.IncludeExceptionDetails = (_) => includeExceptionDetails);
+            services.AddHttpExceptions(options => options.IncludeExceptionDetails = (_) => includeExceptionDetails);
             
             var serviceProvider = services.BuildServiceProvider();
 
