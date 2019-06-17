@@ -7,12 +7,12 @@ HTTP-specific exception classes that enable ASP.NET to generate exception inform
 
 * [Opw.HttpExceptions documentation](/docs/Opw.HttpExceptions.md)
 
-# ASP.NET Core Problem Details for HttpExceptions
+# Return exceptions as ASP.NET Core Problem Details
 [![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
 
-ASP.NET Core Problem Details extensions for using HttpExceptions.
+Extensions for returning exceptions as ASP.NET Core Problem Details.
 
 * [Opw.HttpExceptions.AspNetCore documentation](/docs/Opw.HttpExceptions.AspNetCore.md)
 
