@@ -32,6 +32,16 @@ namespace Opw.HttpExceptions.AspNetCore
         public ICollection<IExceptionMapper> ExceptionMappers { get; set; } = new List<IExceptionMapper>();
 
         /// <summary>
+        /// Register of the HttpResponseMappers that will be used during mapping.
+        /// </summary>
+        public IDictionary<int, HttpResponseMapperDescriptor> HttpResponseMapperDescriptors { get; set; } = new Dictionary<int, HttpResponseMapperDescriptor>();
+
+        /// <summary>
+        /// Gets or sets the HttpResponseMapper collection that will be used during mapping.
+        /// </summary>
+        public ICollection<IHttpResponseMapper> HttpResponseMappers { get; set; } = new List<IHttpResponseMapper>();
+
+        /// <summary>
         /// Initializes the HttpExceptionsOptions.
         /// </summary>
         public HttpExceptionsOptions() { }
