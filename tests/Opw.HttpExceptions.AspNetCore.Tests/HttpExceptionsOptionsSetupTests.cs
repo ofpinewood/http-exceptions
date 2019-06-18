@@ -53,6 +53,65 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
+        public void Configure_Should_ConfigureHttpResponseMappers()
+        {
+            var services = new ServiceCollection();
+            services.AddHttpExceptions(o =>
+            {
+                o.HttpResponseMapper<TestHttpResponseMapper>(500);
+                o.HttpResponseMapper<HttpResponseMapper>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+            options.Value.HttpResponseMapperDescriptors.Should().HaveCount(2);
+            options.Value.HttpResponseMappers.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void Configure_Should_ConfigureHttpResponseMappersWithCorrectStatus()
+        {
+            var services = new ServiceCollection();
+            services.AddHttpExceptions(o =>
+            {
+                o.HttpResponseMapper<TestHttpResponseMapper>(418);
+                o.HttpResponseMapper<HttpResponseMapper>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+            var httpResponseMappers = options.Value.HttpResponseMappers.ToArray();
+            httpResponseMappers.Should().HaveCount(2);
+            httpResponseMappers[0].Should().BeOfType<TestHttpResponseMapper>().Which.Status.Should().Be(418);
+            httpResponseMappers[1].Should().BeOfType<HttpResponseMapper>().Which.Status.Should().Be(int.MinValue);
+        }
+
+        [Fact]
+        public void Configure_Should_ConfigureHttpResponseMappers_InCorrectOrder()
+        {
+            var services = new ServiceCollection();
+            services.AddHttpExceptions(o =>
+            {
+                o.HttpResponseMapper<TestHttpResponseMapper>(500);
+                o.HttpResponseMapper<HttpResponseMapper>(418);
+                o.HttpResponseMapper<TestHttpResponseMapper>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+            options.Value.HttpResponseMapperDescriptors.Should().HaveCount(3);
+
+            var httpResponseMappers = options.Value.HttpResponseMappers.ToArray();
+            httpResponseMappers.Should().HaveCount(3);
+            httpResponseMappers[0].Should().BeOfType<TestHttpResponseMapper>();
+            httpResponseMappers[1].Should().BeOfType<HttpResponseMapper>();
+            httpResponseMappers[2].Should().BeOfType<TestHttpResponseMapper>();
+        }
+
+        [Fact]
         public void Configure_Should_ConfigureIncludeExceptionDetailsFunc()
         {
             var services = new ServiceCollection();

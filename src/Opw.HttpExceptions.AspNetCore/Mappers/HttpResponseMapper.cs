@@ -17,7 +17,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <summary>
         /// The status code to map for.
         /// </summary>
-        public int Status { get; set; }
+        public int Status { get; set; } = int.MinValue;
 
         /// <summary>
         /// Initializes the HttpResponseMapper.
