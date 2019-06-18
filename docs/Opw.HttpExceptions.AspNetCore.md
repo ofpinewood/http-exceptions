@@ -13,7 +13,7 @@ PM> Install-Package Opw.HttpExceptions.AspNetCore
 ```
 
 ## Getting started
-Add HttpExceptions services to the services collection.
+Add the HttpExceptions services and the middleware in the `Startup.cs` of your application. First add the required services to the services collection.
 
 ``` csharp
 public void ConfigureServices(IServiceCollection services)
@@ -24,8 +24,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-`UseHttpExceptions` should be the first middleware component added to the pipeline. That way the `UseHttpExceptions` Middleware catches any exceptions that occur in later calls.
-When using HttpExceptions you don't need to use `UseExceptionHandler` or `UseDeveloperExceptionPage`.
+Then you can add the HttpExceptions middleware using the application builder.  `UseHttpExceptions` should be the first middleware component added to the pipeline. That way the `UseHttpExceptions` Middleware catches any exceptions that occur in later calls. When using HttpExceptions you don't need to use `UseExceptionHandler` or `UseDeveloperExceptionPage`.
 
 ``` csharp
 public void Configure(IApplicationBuilder app)
@@ -35,11 +34,11 @@ public void Configure(IApplicationBuilder app)
 }
 ```
 
-## Configuring Options
-You can extend or override the default behaviour through the configuration options, `HttpExceptionsOptions`.
+## Configuring options
+You can extend or override the default behavior through the configuration options, `HttpExceptionsOptions`.
 
 ### Include exception details
-Include exception details, default behavior is only to include exception details in a development environment.
+Whether or not to include the full exception details in the response. The default behavior is only to include exception details in a development environment.
 
 ``` csharp
 services.AddHttpExceptions(options =>
@@ -61,7 +60,7 @@ services.AddHttpExceptions(options =>
 ```
 
 ### Custom ExceptionMappers
-Gets or sets the ExceptionMapper collection that will be used during mapping. You can verride and/or add ExceptionMappers for specific exception types. The ExceptionMappers are called in order so make sure you add them in the right order.
+Set the ExceptionMapper collection that will be used during mapping. You can override and/or add ExceptionMappers for specific exception types. The ExceptionMappers are called in order so make sure you add them in the right order.
 
 By default there is one ExceptionMapper configured, that ExceptionMapper catches all exceptions. 
 
