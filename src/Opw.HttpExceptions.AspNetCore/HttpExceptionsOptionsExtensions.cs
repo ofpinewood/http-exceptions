@@ -1,5 +1,5 @@
+using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
-using System.Linq;
 
 namespace Opw.HttpExceptions.AspNetCore
 {

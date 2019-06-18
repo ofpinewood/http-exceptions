@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using FluentAssertions;
+using Opw.HttpExceptions.AspNetCore.Mappers;
 using Xunit;
 
 namespace Opw.HttpExceptions.AspNetCore

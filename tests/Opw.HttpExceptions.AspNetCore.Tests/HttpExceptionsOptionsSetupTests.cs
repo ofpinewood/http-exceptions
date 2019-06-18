@@ -5,8 +5,8 @@ using Microsoft.Extensions.Options;
 using System;
 using Xunit;
 using Moq;
-using Microsoft.AspNetCore.Hosting;
 using System.Linq;
+using Opw.HttpExceptions.AspNetCore.Mappers;
 
 namespace Opw.HttpExceptions.AspNetCore
 {

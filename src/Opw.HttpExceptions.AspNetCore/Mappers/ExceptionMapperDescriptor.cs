@@ -1,6 +1,6 @@
 using System;
 
-namespace Opw.HttpExceptions.AspNetCore
+namespace Opw.HttpExceptions.AspNetCore.Mappers
 {
     /// <summary>
     /// Represents a ExceptionMapperDescriptor.

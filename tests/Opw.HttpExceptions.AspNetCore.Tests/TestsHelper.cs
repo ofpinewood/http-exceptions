@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
+using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
 
 namespace Opw.HttpExceptions.AspNetCore

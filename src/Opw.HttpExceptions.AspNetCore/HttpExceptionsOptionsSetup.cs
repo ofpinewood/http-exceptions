@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Opw.HttpExceptions.AspNetCore
