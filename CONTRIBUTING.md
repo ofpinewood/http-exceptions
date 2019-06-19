@@ -28,15 +28,14 @@ If applicable, include tests and ensure all tests are passing locally before you
 ### Squash and Merge
 When completing a PR you squash and merge the commits to create a more streamlined Git history in the repository. Work-in-progress commits are helpful when working on a feature branch, but they aren’t necessarily important to retain in the Git history. If you squash these commits into one commit while merging to the default branch, you can retain the original changes with a clear Git history.
 
-The resulting squashed commit message should be a short description of what has been changed.
+The resulting squashed commit message should be a short description of what has been changed and the references to the PR and the resolved issues.
 ``` txt
-All exceptions need to be handled by the middleware
+Configurable exception mappers (#9) #2 #1
 ```
 
-And the resulting squashed commit message details should contain the related issues, including the reference to the issue.
+And the resulting squashed commit message details can some more information.
 ``` txt
-* All exceptions need to be handled by the middleware #3
-* In "development" the full exception details need to be returned #4
+Exception mapping is now configurable through `HttpExceptionsOptions.ExceptionMapper<TException, TExceptionMapper>()`
 ```
 
 ## Creating a new release

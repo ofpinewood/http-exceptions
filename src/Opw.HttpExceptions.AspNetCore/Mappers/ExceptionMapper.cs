@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Net;
 
-namespace Opw.HttpExceptions.AspNetCore
+namespace Opw.HttpExceptions.AspNetCore.Mappers
 {
     /// <summary>
     /// Default mapper for mapping Exceptions to ProblemDetails.

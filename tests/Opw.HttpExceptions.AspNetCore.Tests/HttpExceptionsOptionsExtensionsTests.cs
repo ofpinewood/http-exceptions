@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using FluentAssertions;
+using Opw.HttpExceptions.AspNetCore.Mappers;
 using Xunit;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -28,11 +29,6 @@ namespace Opw.HttpExceptions.AspNetCore
 
             options.ExceptionMapperDescriptors.Should().HaveCount(1);
             options.ExceptionMapperDescriptors.First().Value.Type.Should().Be<TestExceptionMapper>();
-        }
-
-        private class TestExceptionMapper : ExceptionMapper<Exception>
-        {
-            public TestExceptionMapper(Microsoft.Extensions.Options.IOptions<HttpExceptionsOptions> options) : base(options) { }
         }
     }
 }

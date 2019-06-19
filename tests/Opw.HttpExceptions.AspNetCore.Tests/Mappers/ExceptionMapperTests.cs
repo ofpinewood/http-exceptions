@@ -5,7 +5,7 @@ using System;
 using System.Net;
 using Xunit;
 
-namespace Opw.HttpExceptions.AspNetCore
+namespace Opw.HttpExceptions.AspNetCore.Mappers
 {
     public class ExceptionMapperTests
     {

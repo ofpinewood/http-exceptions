@@ -5,7 +5,8 @@ using Microsoft.Extensions.Options;
 using System;
 using Xunit;
 using Moq;
-using Microsoft.AspNetCore.Hosting;
+using System.Linq;
+using Opw.HttpExceptions.AspNetCore.Mappers;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -26,6 +27,29 @@ namespace Opw.HttpExceptions.AspNetCore
 
             options.Value.ExceptionMapperDescriptors.Should().HaveCount(2);
             options.Value.ExceptionMappers.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void Configure_Should_ConfigureExceptionMappers_InCorrectOrder()
+        {
+            var services = new ServiceCollection();
+            services.AddHttpExceptions(o =>
+            {
+                o.ExceptionMapper<HttpException, ExceptionMapper<HttpException>>();
+                o.ExceptionMapper<ArgumentException, ExceptionMapper<ArgumentException>>();
+                o.ExceptionMapper<Exception, TestExceptionMapper>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+            options.Value.ExceptionMapperDescriptors.Should().HaveCount(3);
+
+            var exceptionMappers = options.Value.ExceptionMappers.ToArray();
+            exceptionMappers.Should().HaveCount(3);
+            exceptionMappers[0].Should().BeOfType<ExceptionMapper<HttpException>>();
+            exceptionMappers[1].Should().BeOfType<ExceptionMapper<ArgumentException>>();
+            exceptionMappers[2].Should().BeOfType<TestExceptionMapper>();
         }
 
         [Fact]

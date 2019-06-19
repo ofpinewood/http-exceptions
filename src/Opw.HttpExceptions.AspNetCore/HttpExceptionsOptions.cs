@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
 using System.Collections.Generic;
 

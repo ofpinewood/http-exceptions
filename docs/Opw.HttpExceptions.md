@@ -6,7 +6,7 @@
 HTTP-specific exception classes that enable ASP.NET to generate exception information. These classes can be used by themselves or as base classes for your own HttpExceptions.
 
 ## Where can I get it?
-First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). Then, install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExceptions/) from the package manager console:
+You can install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExceptions/) from the NuGet package manager console:
 
 ```
 PM> Install-Package Opw.HttpExceptions
