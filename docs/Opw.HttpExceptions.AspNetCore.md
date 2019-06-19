@@ -6,7 +6,7 @@
 Extensions for returning exceptions as ASP.NET Core Problem Details. Problem Details are a machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807.
 
 ## Where can I get it?
-First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). Then, install [Opw.HttpExceptions.AspNetCore](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/) from the package manager console:
+You can install [Opw.HttpExceptions.AspNetCore](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/) from the NuGet package manager console:
 
 ``` cmd
 PM> Install-Package Opw.HttpExceptions.AspNetCore
