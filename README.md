@@ -12,7 +12,7 @@ HTTP-specific exception classes that enable ASP.NET to generate exception inform
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
 
-Extensions for returning exceptions as ASP.NET Core Problem Details.
+Extensions for returning exceptions as ASP.NET Core Problem Details. Problem Details are a machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807.
 
 * [Opw.HttpExceptions.AspNetCore documentation](/docs/Opw.HttpExceptions.AspNetCore.md)
 
