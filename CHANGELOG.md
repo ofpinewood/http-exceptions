@@ -1,6 +1,6 @@
-Basic functionality was implemented for this initial release of HttpExceptions.
+Basic functionality was implemented for this initial release.
 
-As part of this release we had [4](https://github.com/ofpinewood/http-exceptions/milestone/1?closed=1) issues closed.
+As part of this release we had [5](https://github.com/ofpinewood/http-exceptions/milestone/1?closed=1) issues closed.
 
 ## Bugs
 There where no bugs in the this release ;)
