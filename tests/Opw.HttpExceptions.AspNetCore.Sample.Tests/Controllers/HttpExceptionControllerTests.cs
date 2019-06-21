@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 using System.Net;
 using System.Linq;
-using System.Net.Http.Formatting;
 using System;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;

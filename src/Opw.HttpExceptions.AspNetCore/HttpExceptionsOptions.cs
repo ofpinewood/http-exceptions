@@ -12,6 +12,14 @@ namespace Opw.HttpExceptions.AspNetCore
     public class HttpExceptionsOptions
     {
         /// <summary>
+        /// Gets or sets a value that determines if controllers annotated with Microsoft.AspNetCore.Mvc.ApiControllerAttribute
+		/// respond using Microsoft.AspNetCore.Mvc.ValidationProblemDetails in Microsoft.AspNetCore.Mvc.ApiBehaviorOptions.InvalidModelStateResponseFactory
+        /// or that the configured Opw.HttpExceptions.AspNetCore.Mappers.ExceptionMappers are used to respond.
+        /// The default is true; so the Opw.HttpExceptions.AspNetCore.Mappers.ExceptionMappers are used.
+        /// </summary>
+        public bool UseInvalidModelStateResponseFactory { get; set; } = true;
+
+        /// <summary>
         /// Include exception details, default behavior is only to include exception details in a development environment.
         /// </summary>
         public Func<HttpContext, bool> IncludeExceptionDetails { get; set; }

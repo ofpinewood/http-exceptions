@@ -11,30 +11,28 @@ namespace Opw.HttpExceptions
         /// <summary>
         /// The results of a validation request.
         /// </summary>
-        public IDictionary<string, string> ValidationResults { get; } = new Dictionary<string, string>();
+        public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>(StringComparer.Ordinal);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidModelException"></see> class with status code BadRequest, a specified error message
-        /// and a reference to the inner exception that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="InvalidModelException"></see> class with status code BadRequest.
         /// </summary>
-        /// <param name="message">The error message for the validation.</param>
-        /// <param name="memberNames">The collection of member names that indicate which fields have validation.</param>
-        public InvalidModelException(string message, params string[] memberNames) : this(message, null, memberNames) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidModelException"></see> class with status code BadRequest, a specified error message
-        /// and a reference to the inner exception that is the cause of this exception.
-        /// </summary>
-        /// <param name="message">The error message for the validation.</param>
-        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference
-        /// if no inner exception is specified.</param>
-        /// <param name="memberNames">The collection of member names that indicate which fields have validation.</param>
-        public InvalidModelException(string message, Exception innerException, params string[] memberNames) : base(message, innerException)
+        /// <param name="errors">The error messages for the member.</param>
+        /// <param name="memberName">The member name that indicate which field have an error.</param>
+        public InvalidModelException(string memberName, params string[] errors)
         {
-            foreach (var memberName in memberNames)
-            {
-                ValidationResults.Add(memberName, message);
-            }
+            Errors.Add(memberName, errors);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidModelException"></see> class with status code BadRequest.
+        /// </summary>
+        /// <param name = "errors" > The validation errors.</param>
+        public InvalidModelException(IDictionary<string, string[]> errors)
+        {
+            if (errors == null)
+                throw new ArgumentNullException(nameof(errors));
+
+            Errors = new Dictionary<string, string[]>(errors, StringComparer.Ordinal);
         }
 
         #region private constructors to disable warning RCS1194 Implement exception constructors

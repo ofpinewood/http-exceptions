@@ -52,10 +52,6 @@ namespace Opw.HttpExceptions.AspNetCore
             if (context.Response.ContentLength.HasValue)
                 return false;
 
-            //TODO: not sure about this
-            if (context.Response.IsProblemDetailsResponse())
-                return true;
-
             if (string.IsNullOrEmpty(context.Response.ContentType))
                 return true;
 
