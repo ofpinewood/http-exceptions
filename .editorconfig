@@ -14,6 +14,10 @@ max_line_length = 180
 [*.xml]
 indent_size = 2
 
+# Json files
+[*.json]
+indent_size = 2
+
 [*.cs]
 #.NET code style settings
 # ref: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
