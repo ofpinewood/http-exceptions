@@ -11,7 +11,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
 
         public HttpResponseMapperTests()
         {
-            var optionsMock = TestsHelper.CreateHttpExceptionsOptionsMock(false);
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false);
             _mapper = new HttpResponseMapper(optionsMock.Object);
         }
 

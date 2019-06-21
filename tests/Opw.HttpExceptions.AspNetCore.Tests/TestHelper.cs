@@ -3,11 +3,32 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
+using System.Collections.Generic;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
-    public static class TestsHelper
+    public static class TestHelper
     {
+        public static IEnumerable<MediaTypeFormatter> ProblemDetailsMediaTypeFormatters { get; }
+
+        static TestHelper()
+        {
+            var jsonMediaTypeFormatter = new JsonMediaTypeFormatter();
+            jsonMediaTypeFormatter.SupportedMediaTypes.Clear();
+            jsonMediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/problem+json"));
+
+            var xmlMediaTypeFormatter = new XmlMediaTypeFormatter();
+            xmlMediaTypeFormatter.SupportedMediaTypes.Clear();
+            xmlMediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/problem+xml"));
+
+            var mediaTypeFormatters = new List<MediaTypeFormatter>();
+            mediaTypeFormatters.Add(jsonMediaTypeFormatter);
+            mediaTypeFormatters.Add(xmlMediaTypeFormatter);
+            ProblemDetailsMediaTypeFormatters = mediaTypeFormatters;
+        }
+
         public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
         {
             var services = new ServiceCollection();

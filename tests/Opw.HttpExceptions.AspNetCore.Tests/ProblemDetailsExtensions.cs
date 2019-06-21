@@ -16,5 +16,17 @@ namespace Opw.HttpExceptions.AspNetCore
 
             return problemDetails;
         }
+
+        public static ExceptionDetails ShouldHaveExceptionDetails(this ProblemDetails problemDetails)
+        {
+            problemDetails.TryGetExceptionDetails(out var exceptionDetails).Should().BeTrue();
+
+            exceptionDetails.Should().NotBeNull();
+            exceptionDetails.Name.Should().NotBeNull();
+            exceptionDetails.Source.Should().NotBeNull();
+            exceptionDetails.StackTrace.Should().NotBeNull();
+
+            return exceptionDetails;
+        }
     }
 }

@@ -16,13 +16,11 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
     {
         private readonly TestWebApplicationFactory _factory;
         private HttpClient _client;
-        private readonly IEnumerable<MediaTypeFormatter> _problemDetailsMediaTypeFormatters;
 
         public HttpExceptionControllerTests(TestWebApplicationFactory factory)
         {
             _factory = factory;
             _client = factory.CreateClient();
-            _problemDetailsMediaTypeFormatters = factory.ProblemDetailsMediaTypeFormatters;
         }
 
         [Fact]
@@ -32,7 +30,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             {
                 var response = await _client.GetAsync($"httpexception/{statusCode}");
 
-                var problemDetails = response.ShouldBeProblemDetails(statusCode, _problemDetailsMediaTypeFormatters);
+                var problemDetails = response.ShouldBeProblemDetails(statusCode, TestHelper.ProblemDetailsMediaTypeFormatters);
                 problemDetails.Extensions.Should().HaveCount(0);
             }
         }
@@ -47,7 +45,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             {
                 var response = await _client.GetAsync($"httpexception/{statusCode}");
 
-                var problemDetails = response.ShouldBeProblemDetails(statusCode, _problemDetailsMediaTypeFormatters);
+                var problemDetails = response.ShouldBeProblemDetails(statusCode, TestHelper.ProblemDetailsMediaTypeFormatters);
                 problemDetails.Extensions.Should().HaveCount(1);
 
                 var exceptionDetails = problemDetails.ShouldHaveExceptionDetails();
@@ -62,7 +60,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             var response = await _client.GetAsync($"httpexception/applicationException");
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, _problemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, TestHelper.ProblemDetailsMediaTypeFormatters);
             problemDetails.Title.Should().Be("Application");
             problemDetails.Type.Should().Be("error:application");
             problemDetails.Extensions.Should().HaveCount(0);

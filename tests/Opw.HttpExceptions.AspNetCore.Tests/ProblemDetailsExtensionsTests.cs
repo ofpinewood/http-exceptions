@@ -11,7 +11,7 @@ namespace Opw.HttpExceptions.AspNetCore
         [Fact]
         public void TryGetExceptionDetails_Should_ReturnExceptionDetails()
         {
-            var mapper = TestsHelper.CreateExceptionMapper<Exception>(true);
+            var mapper = TestHelper.CreateExceptionMapper<Exception>(true);
             var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
             var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
@@ -25,7 +25,7 @@ namespace Opw.HttpExceptions.AspNetCore
         [Fact]
         public void TryGetExceptionDetails_Should_ReturnFalse()
         {
-            var mapper = TestsHelper.CreateExceptionMapper<Exception>(false);
+            var mapper = TestHelper.CreateExceptionMapper<Exception>(false);
             var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
             var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);

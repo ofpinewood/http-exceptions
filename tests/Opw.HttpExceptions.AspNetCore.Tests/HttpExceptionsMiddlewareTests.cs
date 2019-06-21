@@ -1,11 +1,16 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.Logging;
-using Moq;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,51 +18,202 @@ namespace Opw.HttpExceptions.AspNetCore
 {
     public class HttpExceptionsMiddlewareTests
     {
-        private readonly HttpExceptionsMiddleware _middleware;
-        private readonly Mock<RequestDelegate> _nextMock;
-        private readonly Mock<IActionResultExecutor<ObjectResult>> _actionResultExecutorMock;
-
-        public HttpExceptionsMiddlewareTests()
+        [Fact]
+        public async Task Get_Should_ReturnProblemDetails()
         {
-            _nextMock = new Mock<RequestDelegate>();
-            var optionsMock = TestsHelper.CreateHttpExceptionsOptionsMock(true);
-            _actionResultExecutorMock = new Mock<IActionResultExecutor<ObjectResult>>();
-            var loggerMock = new Mock<ILogger<HttpExceptionsMiddleware>>();
-            _middleware = new HttpExceptionsMiddleware(_nextMock.Object, optionsMock.Object, _actionResultExecutorMock.Object, loggerMock.Object);
+            var builder = CreateWebHostBuilder(ResponseThrowsException());
+
+            using (var server = new TestServer(builder))
+            using (var client = server.CreateClient())
+            {
+                var response = await client.GetAsync(string.Empty);
+
+                var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, TestHelper.ProblemDetailsMediaTypeFormatters);
+                problemDetails.Extensions.Should().HaveCount(0);
+            }
         }
 
         [Fact]
-        public async Task Invoke_Should_ReturnProblemDetailsResult_ForApplicationException_WhenExceptionThrown()
+        public async Task Get_Should_ReturnProblemDetails_WhenThrowApplicationException()
         {
-            _nextMock.Setup(n => n.Invoke(It.IsAny<HttpContext>())).Throws(new ApplicationException());
-            ProblemDetailsResult result = null;
-            _actionResultExecutorMock.Setup(e => e.ExecuteAsync(It.IsAny<ActionContext>(), It.IsAny<ObjectResult>()))
-                .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
-                .Returns(Task.CompletedTask);
-            
-            await _middleware.Invoke(new DefaultHttpContext());
+            var builder = CreateWebHostBuilder(ResponseThrowsException(new ApplicationException("ApplicationException!")));
 
-            result.Should().NotBeNull();
-            result.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
-            result.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
+            using (var server = new TestServer(builder))
+            using (var client = server.CreateClient())
+            {
+                var response = await client.GetAsync(string.Empty);
+
+                var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, TestHelper.ProblemDetailsMediaTypeFormatters);
+                problemDetails.Extensions.Should().HaveCount(0);
+                problemDetails.Title.Should().Be("Application");
+                problemDetails.Type.Should().Be("error:application");
+                problemDetails.Detail.Should().Be("ApplicationException!");
+            }
         }
 
         [Fact]
-        public async Task Invoke_Should_ReturnProblemDetailsResult_ForNullReferenceException_WhenNoExceptionThrown()
+        public async Task Get_Should_ReturnProblemDetails_WithExceptionDetails()
         {
-            //TODO: this test needs to be changed when implementing issue #7 Handle error responses without an exception
-            _nextMock.Setup(n => n.Invoke(It.IsAny<HttpContext>()));
-            ProblemDetailsResult result = null;
-            _actionResultExecutorMock.Setup(e => e.ExecuteAsync(It.IsAny<ActionContext>(), It.IsAny<ObjectResult>()))
-                .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
-                .Returns(Task.CompletedTask);
+            var builder = CreateWebHostBuilder(ResponseThrowsException(new HttpException("HttpException!", new ApplicationException())), environment: EnvironmentName.Development);
 
-            await _middleware.Invoke(new DefaultHttpContext());
+            using (var server = new TestServer(builder))
+            using (var client = server.CreateClient())
+            {
+                var response = await client.GetAsync(string.Empty);
 
-            result.Should().NotBeNull();
-            result.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
-            result.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            result.Value.Title.Should().Be("NullReference");
+                var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, TestHelper.ProblemDetailsMediaTypeFormatters);
+                problemDetails.Extensions.Should().HaveCount(1);
+
+                var exceptionDetails = problemDetails.ShouldHaveExceptionDetails();
+                exceptionDetails.Name.Should().Be(nameof(HttpException));
+                exceptionDetails.InnerException.Should().NotBeNull();
+                exceptionDetails.InnerException.Name.Should().Be(nameof(ApplicationException));
+            }
         }
+
+        [Theory]
+        [InlineData(HttpStatusCode.BadRequest)]
+        [InlineData(HttpStatusCode.Unauthorized)]
+        [InlineData(HttpStatusCode.NotImplemented)]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        public async Task ErrorStatusCode_IsHandled(HttpStatusCode expected)
+        {
+            //using (var server = CreateServer(handler: ResponseWithStatusCode(expected)))
+            //using (var client = server.CreateClient())
+            //{
+            //    var response = await client.GetAsync(string.Empty);
+
+            //    Assert.Equal(expected, response.StatusCode);
+            //    await AssertIsProblemDetailsResponse(response);
+            //}
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.Created)]
+        [InlineData(HttpStatusCode.NoContent)]
+        [InlineData((HttpStatusCode)600)]
+        [InlineData((HttpStatusCode)800)]
+        public async Task SuccessStatusCode_IsNotHandled(HttpStatusCode expected)
+        {
+            //using (var server = CreateServer(handler: ResponseWithStatusCode(expected)))
+            //using (var client = server.CreateClient())
+            //{
+            //    var response = await client.GetAsync(string.Empty);
+
+            //    Assert.Equal(expected, response.StatusCode);
+            //    Assert.Equal(0, response.Content.Headers.ContentLength);
+            //}
+        }
+
+        /// <summary>
+        /// This test is to check if we can handle the default ClientError behavior correctly,
+        /// when ApiBehaviorOptions.SuppressMapClientErrors = true.
+        /// </summary>
+        [Fact]
+        public async Task Post_Should_ReturnProblemDetails_WhenResponseIsOfTypeIClientErrorActionResult()
+        {
+            var builder = CreateWebHostBuilder();
+
+            using (var server = new TestServer(builder))
+            using (var client = server.CreateClient())
+            {
+                var response = await client.PostAsync("api/test", new ObjectContent(typeof(TestModel), new TestModel(), new JsonMediaTypeFormatter()));
+
+                var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest, TestHelper.ProblemDetailsMediaTypeFormatters);
+                problemDetails.Extensions.Should().HaveCount(0);
+            }
+        }
+
+        #region Private Helper Methods
+
+        private RequestDelegate ResponseThrowsException(Exception ex = null)
+        {
+            return _ => throw ex ?? new HttpException("HttpException!");
+        }
+
+        ///// <summary>
+        ///// This the result that is returned by the ProblemDetailsClientErrorFactory when ApiBehaviorOptions.SuppressMapClientErrors = true.
+        ///// The ProblemDetailsClientErrorFactory returns a ObjectResult with problem details
+        ///// </summary>
+        ///// <remarks>
+        ///// See: https://github.com/aspnet/AspNetCore/blob/c565386a3ed135560bc2e9017aa54a950b4e35dd/src/Mvc/Mvc.Core/src/Infrastructure/ProblemDetailsClientErrorFactory.cs
+        ///// </remarks>
+        //private RequestDelegate ResponseClientErrorActionResult()
+        //{
+        //    return context =>
+        //    {
+        //        var executor = context.RequestServices.GetService<IActionResultExecutor<ObjectResult>>();
+        //        var actionContext = new ActionContext(context, new RouteData(), new ActionDescriptor());
+
+        //        var problemDetails = new ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "BadRequest", Type = "about:blank" };
+        //        var result = new ObjectResult(problemDetails)
+        //        {
+        //            StatusCode = problemDetails.Status,
+        //            ContentTypes = { "application/problem+json", "application/problem+xml" },
+        //        };
+
+        //        return executor.ExecuteAsync(actionContext, result);
+        //    };
+        //}
+
+        private IWebHostBuilder CreateWebHostBuilder(
+            RequestDelegate handler = null,
+            Action<IServiceCollection> configureServices = null,
+            Action<IMvcCoreBuilder> configureMvcCore = null,
+            string environment = null)
+        {
+            if (configureServices == null) configureServices = _ => { };
+            if (configureMvcCore == null) configureMvcCore = _ => { };
+
+            return new WebHostBuilder()
+                .UseEnvironment(environment ?? EnvironmentName.Production)
+                .ConfigureServices(services =>
+                {
+                    services
+                        .AddHttpExceptions()
+                        .AddCors();
+
+                    configureMvcCore(services
+                        .AddMvcCore()
+                        .AddApplicationPart(GetType().Assembly)
+                        .AddJsonFormatters());
+
+                    configureServices(services);
+                })
+                .Configure(app =>
+                {
+                    app
+                        .UseHttpExceptions()
+                        .UseCors(y => y.AllowAnyOrigin())
+                        .UseMvc();
+
+                    if (handler != null) app.Run(handler);
+                });
+        }
+
+        [Route("api/[controller]")]
+        [ApiController]
+        public class TestController : ControllerBase
+        {
+            [HttpPost]
+            public ActionResult<IActionResult> Post(TestModel model)
+            {
+                return Ok(model);
+            }
+        }
+
+        public class TestModel
+        {
+            [Required]
+            public string Id { get; set; }
+
+            public string Name { get; set; }
+
+            public int Prince { get; set; }
+        }
+
+        #endregion
     }
 }

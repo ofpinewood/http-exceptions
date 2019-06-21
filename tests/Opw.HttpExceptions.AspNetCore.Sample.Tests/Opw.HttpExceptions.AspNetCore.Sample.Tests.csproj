@@ -23,6 +23,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\samples\Opw.HttpExceptions.AspNetCore.Sample\Opw.HttpExceptions.AspNetCore.Sample.csproj" />
+        <ProjectReference Include="..\Opw.HttpExceptions.AspNetCore.Tests\Opw.HttpExceptions.AspNetCore.Tests.csproj" />
     </ItemGroup>
 
     <ItemGroup>
