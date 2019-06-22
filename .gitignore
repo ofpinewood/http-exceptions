@@ -23,6 +23,10 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+coverage.json
+coverage.*.json
+coverage.xml
+coverage.*.xml
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/

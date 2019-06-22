@@ -40,7 +40,7 @@ steps:
     projects: |
       **/tests/*.Tests/*.csproj
       **/tests/*.IntegrationTests/*.csproj
-    arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
+    arguments: '--configuration $(buildConfiguration) --no-build --filter Category!=IntegrationTest /p:CollectCoverage=true /p:Include="[Opw.*]*" /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
