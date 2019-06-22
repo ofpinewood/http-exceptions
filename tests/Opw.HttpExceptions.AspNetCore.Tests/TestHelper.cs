@@ -49,5 +49,12 @@ namespace Opw.HttpExceptions.AspNetCore
 
             return new ExceptionMapper<TException>(optionsMock.Object);
         }
+
+        public static HttpResponseMapper CreateHttpResponseMapper(bool includeExceptionDetails)
+        {
+            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
+
+            return new HttpResponseMapper(optionsMock.Object);
+        }
     }
 }

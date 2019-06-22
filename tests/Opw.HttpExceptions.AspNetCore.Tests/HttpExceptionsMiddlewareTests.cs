@@ -43,22 +43,25 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
-        public async Task Invoke_Should_ReturnProblemDetailsResult_ForNullReferenceException_WhenNoExceptionThrown()
+        public async Task Invoke_Should_ReturnProblemDetailsResult_WhenUnauthorizedRequest()
         {
-            //TODO: this test needs to be changed when implementing issue #7 Handle error responses without an exception
-            throw new NotImplementedException();
-            //_nextMock.Setup(n => n.Invoke(It.IsAny<HttpContext>()));
-            //ProblemDetailsResult result = null;
-            //_actionResultExecutorMock.Setup(e => e.ExecuteAsync(It.IsAny<ActionContext>(), It.IsAny<ObjectResult>()))
-            //    .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
-            //    .Returns(Task.CompletedTask);
+            _nextMock.Setup(n => n.Invoke(It.IsAny<HttpContext>()))
+                .Returns((HttpContext context) => {
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return Task.CompletedTask;
+                });
 
-            //await _middleware.Invoke(new DefaultHttpContext());
+            ProblemDetailsResult result = null;
+            _actionResultExecutorMock.Setup(e => e.ExecuteAsync(It.IsAny<ActionContext>(), It.IsAny<ObjectResult>()))
+                .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
+                .Returns(Task.CompletedTask);
 
-            //result.Should().NotBeNull();
-            //result.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
-            //result.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            //result.Value.Title.Should().Be("NullReference");
+            await _middleware.Invoke(new DefaultHttpContext());
+
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
+            result.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
+            result.Value.Title.Should().Be("Unauthorized");
         }
     }
 }

@@ -67,5 +67,17 @@ namespace Opw.HttpExceptions.AspNetCore
             problemDetails = default;
             return false;
         }
+
+        internal bool TryMap(HttpResponse response, out ProblemDetails problemDetails)
+        {
+            foreach (var mapper in HttpResponseMappers)
+            {
+                if (mapper.TryMap(response, out problemDetails))
+                    return true;
+            }
+
+            problemDetails = default;
+            return false;
+        }
     }
 }

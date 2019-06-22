@@ -42,7 +42,7 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             var response = await _client.GetAsync("test/authorized");
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest, TestHelper.ProblemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Unauthorized, TestHelper.ProblemDetailsMediaTypeFormatters);
             problemDetails.Extensions.Should().HaveCount(0);
         }
     }

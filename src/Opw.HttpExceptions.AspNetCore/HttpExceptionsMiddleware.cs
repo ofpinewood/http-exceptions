@@ -57,7 +57,10 @@ namespace Opw.HttpExceptions.AspNetCore
                     return;
                 }
 
-                await ExecuteProblemDetailsResultAsync(context, CreateProblemDetailsResult(context));
+                if (TryCreateProblemDetailsResult(context, null, out var result))
+                    await ExecuteProblemDetailsResultAsync(context, result);
+
+                _logger.LogError("The HttpExceptions middleware could not handle the exception.");
             }
             catch (Exception ex)
             {
@@ -69,28 +72,39 @@ namespace Opw.HttpExceptions.AspNetCore
 
                 try
                 {
-                    // write the HttpException as ProblemDetails to the response
-                    await ExecuteProblemDetailsResultAsync(context, CreateProblemDetailsResult(context, ex));
-                    return;
+                    if (TryCreateProblemDetailsResult(context, ex, out var result))
+                    {
+                        await ExecuteProblemDetailsResultAsync(context, result);
+                        return;
+                    }
                 }
                 catch (Exception ex2)
                 {
                     _logger.LogError(ex2, "An exception was thrown attempting to execute the HttpExceptions middleware.");
                 }
 
+                _logger.LogError(ex, "The HttpExceptions middleware could not handle the exception.");
                 throw; // rethrow the exception if we can't handle it properly.
             }
         }
 
-        private ProblemDetailsResult CreateProblemDetailsResult(HttpContext context, Exception ex = null)
+        private bool TryCreateProblemDetailsResult(HttpContext context, Exception ex, out ProblemDetailsResult result)
         {
-            ProblemDetails problemDetails = null;
+            ProblemDetails problemDetails;
             if (ex != null && _options.Value.TryMap(ex, context, out problemDetails))
-                return new ProblemDetailsResult(problemDetails);
+            {
+                result = new ProblemDetailsResult(problemDetails);
+                return true;
+            }
 
-            //TODO: create ProblemDetails when there is no exception
+            if (_options.Value.TryMap(context.Response, out problemDetails))
+            {
+                result = new ProblemDetailsResult(problemDetails);
+                return true;
+            }
 
-            return new ProblemDetailsResult(problemDetails); // this will throw an exception because problemDetails is null
+            result = default;
+            return false;
         }
 
         private Task ExecuteProblemDetailsResultAsync(HttpContext context, ProblemDetailsResult result)

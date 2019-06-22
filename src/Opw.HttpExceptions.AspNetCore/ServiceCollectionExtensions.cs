@@ -44,16 +44,17 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             services.AddMvcCore().ConfigureApiBehaviorOptions(options =>
             {
-                //TODO: more tests to validate the configuration
                 options.SuppressMapClientErrors = true;
                 options.SuppressModelStateInvalidFilter = false;
                 options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
                 options.InvalidModelStateResponseFactory = (actionContext) =>
                 {
-                    var ex = new InvalidModelException(actionContext.ModelState.ToDictionary());
-                    var httpExceptionsOptions = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<HttpExceptionsOptions>>();
-                    httpExceptionsOptions.Value.TryMap(ex, actionContext.HttpContext, out var problemDetails);
-                    return new ProblemDetailsResult(problemDetails);
+                    // Should we be throwing an exception here?
+                    throw new InvalidModelException(actionContext.ModelState.ToDictionary());
+                    // The other options is to map the exception here are return a ProblemDetailsResult
+                    //var httpExceptionsOptions = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+                    //httpExceptionsOptions.Value.TryMap(ex, actionContext.HttpContext, out var problemDetails);
+                    //return new ProblemDetailsResult(problemDetails);
                 };
             });
 
