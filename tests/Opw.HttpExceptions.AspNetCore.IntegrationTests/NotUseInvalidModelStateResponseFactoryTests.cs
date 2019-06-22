@@ -18,7 +18,17 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
-        public async Task Get_Should_ReturnProblemDetails_AspNetCoreDefaultValue()
+        public async Task PostProduct_Should_ReturnOk()
+        {
+            var product = new Product { Id = "1" };
+            var response = await _client.PostAsJsonAsync("test/product", product);
+
+            response.IsSuccessStatusCode.Should().BeTrue();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task PostProduct_Should_ReturnProblemDetails_UsingAspNetCoreDefaultImplementation()
         {
             var product = new Product();
             var response = await _client.PostAsJsonAsync("test/product", product);

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Opw.HttpExceptions.AspNetCore._Test
@@ -10,6 +11,13 @@ namespace Opw.HttpExceptions.AspNetCore._Test
         public ActionResult<Product> PostProduct(Product product)
         {
             return Ok(product);
+        }
+
+        [Authorize]
+        [HttpGet("authorized")]
+        public ActionResult<Product> Authorized()
+        {
+            return Ok("Authorized");
         }
     }
 }

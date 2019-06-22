@@ -41,11 +41,13 @@ namespace Opw.HttpExceptions.AspNetCore
 
         /// <summary>
         /// Register of the HttpResponseMappers that will be used during mapping.
+        /// HttpResponseMappers handle unauthorized and other non-exceptions responses.
         /// </summary>
         public IDictionary<int, HttpResponseMapperDescriptor> HttpResponseMapperDescriptors { get; set; } = new Dictionary<int, HttpResponseMapperDescriptor>();
 
         /// <summary>
         /// Gets or sets the HttpResponseMapper collection that will be used during mapping.
+        /// HttpResponseMappers handle unauthorized and other non-exceptions responses.
         /// </summary>
         public ICollection<IHttpResponseMapper> HttpResponseMappers { get; set; } = new List<IHttpResponseMapper>();
 

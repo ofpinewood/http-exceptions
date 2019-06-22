@@ -18,10 +18,29 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
-        public async Task Get_Should_ReturnProblemDetails()
+        public async Task PostProduct_Should_ReturnOk()
+        {
+            var product = new Product { Id = "1" };
+            var response = await _client.PostAsJsonAsync("test/product", product);
+
+            response.IsSuccessStatusCode.Should().BeTrue();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task PostProduct_Should_ReturnProblemDetails()
         {
             var product = new Product();
             var response = await _client.PostAsJsonAsync("test/product", product);
+
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest, TestHelper.ProblemDetailsMediaTypeFormatters);
+            problemDetails.Extensions.Should().HaveCount(0);
+        }
+
+        [Fact]
+        public async Task Authorized_Should_ReturnProblemDetails_UsingHttpResponseMappers()
+        {
+            var response = await _client.GetAsync("test/authorized");
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest, TestHelper.ProblemDetailsMediaTypeFormatters);
             problemDetails.Extensions.Should().HaveCount(0);

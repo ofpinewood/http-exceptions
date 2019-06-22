@@ -36,7 +36,7 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         /// <summary>
-        /// Add an HttpResponseMapper for the specified status code.
+        /// Add an HttpResponseMapper for the specified status code. HttpResponseMappers handle unauthorized and other non-exceptions responses.
         /// </summary>
         /// <typeparam name="THttpResponseMapper">A type that derives from IHttpResponseMapper.</typeparam>
         /// <param name="options">The HttpExceptionsOptions.</param>
