@@ -38,8 +38,8 @@ steps:
   inputs:
     command: test
     projects: |
-      '**/tests/*.Tests/*.csproj'
-      '**/tests/*.IntegrationTests/*.csproj'
+      **/tests/*.Tests/*.csproj
+      **/tests/*.IntegrationTests/*.csproj
     arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
 
 # Release: triggered by a version tag
