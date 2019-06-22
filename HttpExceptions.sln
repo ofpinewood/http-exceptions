@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "netcoreapp22", "netcoreapp2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.Sample", "samples\Opw.HttpExceptions.AspNetCore.Sample\Opw.HttpExceptions.AspNetCore.Sample.csproj", "{65EBCCFF-217E-45A2-A276-6553264ED598}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.Sample.Tests", "tests\Opw.HttpExceptions.AspNetCore.Sample.Tests\Opw.HttpExceptions.AspNetCore.Sample.Tests.csproj", "{1681FE09-0F3E-4251-A90F-E3336412B4B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.Sample.IntegrationTests", "tests\Opw.HttpExceptions.AspNetCore.Sample.Tests\Opw.HttpExceptions.AspNetCore.Sample.IntegrationTests.csproj", "{1681FE09-0F3E-4251-A90F-E3336412B4B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Docs", "05 Docs", "{28E5D808-7B5D-4A1D-9F18-1626154DF1F9}"
 	ProjectSection(SolutionItems) = preProject
@@ -43,7 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Docs", "05 Docs", "{28E5
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.HttpExceptions.AspNetCore.IntegrationTests", "tests\Opw.HttpExceptions.AspNetCore.IntegrationTests\Opw.HttpExceptions.AspNetCore.IntegrationTests.csproj", "{0E9E2272-D022-419E-BA33-B07111C46F75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.IntegrationTests", "tests\Opw.HttpExceptions.AspNetCore.IntegrationTests\Opw.HttpExceptions.AspNetCore.IntegrationTests.csproj", "{0E9E2272-D022-419E-BA33-B07111C46F75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

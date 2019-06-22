@@ -20,10 +20,6 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-  restoreBuildProjects: '**/*.csproj'
-  testProjects: |
-    '**/tests/*.Tests/*.csproj'
-    '**/tests/*.IntegrationTests/*.csproj'
 
 steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@3
@@ -32,22 +28,18 @@ steps:
     updateAssemblyInfo: true
 
 - task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: $(restoreBuildProjects)
-
-- task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: $(restoreBuildProjects)
+    projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
-    projects: $(testProjects)
+    projects: |
+      '**/tests/*.Tests/*.csproj'
+      '**/tests/*.IntegrationTests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
 
 # Release: triggered by a version tag
