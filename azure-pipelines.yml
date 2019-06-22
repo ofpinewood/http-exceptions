@@ -40,7 +40,7 @@ steps:
     projects: |
       **/tests/*.Tests/*.csproj
       **/tests/*.IntegrationTests/*.csproj
-    arguments: '--configuration $(buildConfiguration) --no-build --filter Category!=IntegrationTest /p:CollectCoverage=true /p:Include="[Opw.*]*" /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/ /p:MergeWith=$(Build.SourcesDirectory)/TestResults/Coverage/'
+    arguments: '--configuration $(buildConfiguration) --no-build --filter Category!=IntegrationTest /p:CollectCoverage=true /p:Include="[Opw.*]*" /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(build.artifactstagingdirectory)/coverage/ /p:MergeWith=$(build.artifactstagingdirectory)/coverage/'
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
@@ -85,7 +85,7 @@ steps:
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: cobertura # Options: cobertura, jaCoCo
-    summaryFileLocation: 
+    summaryFileLocation: $(build.artifactstagingdirectory)/coverage/
     #reportDirectory: # Optional
     #additionalCodeCoverageFiles: # Optional
     #failIfCoverageEmpty: false # Optional
