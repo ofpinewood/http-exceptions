@@ -94,6 +94,8 @@ steps:
   inputs:
     codeCoverageTool: cobertura
     summaryFileLocation: $(build.artifactstagingdirectory)/TestResults/cobertura.xml
+    # To make the task not regenerate the report an environment variable was added to the pipeline in Azure DevOps; "disable.coverage.autogenerate: 'true'"
+    # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
     reportDirectory: '$(build.artifactstagingdirectory)/TestResults'
 
 - task: PublishBuildArtifacts@1
