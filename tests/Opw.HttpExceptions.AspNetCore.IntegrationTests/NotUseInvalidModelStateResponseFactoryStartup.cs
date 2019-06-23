@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +11,7 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddHttpExceptions(options => {
-                options.UseInvalidModelStateResponseFactory = false;
+                options.SuppressInvalidModelStateResponseFactoryOverride = true;
             });
         }
 
