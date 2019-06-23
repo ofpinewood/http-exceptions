@@ -34,13 +34,13 @@ namespace Opw.HttpExceptions.AspNetCore
             services.ConfigureOptions<HttpExceptionsOptionsSetup>();
 
             var options = services.BuildServiceProvider().GetRequiredService<IOptions<HttpExceptionsOptions>>();
-            if (options.Value.UseInvalidModelStateResponseFactory)
-                UseInvalidModelStateResponseFactory(services);
+            if (!options.Value.SuppressInvalidModelStateResponseFactoryOverride)
+                OverrideInvalidModelStateResponseFactory(services);
 
             return services;
         }
 
-        private static IServiceCollection UseInvalidModelStateResponseFactory(IServiceCollection services)
+        private static IServiceCollection OverrideInvalidModelStateResponseFactory(IServiceCollection services)
         {
             services.AddMvcCore().ConfigureApiBehaviorOptions(options =>
             {
