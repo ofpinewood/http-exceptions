@@ -1,4 +1,4 @@
-Handle error responses without an exception.
+Handle error responses without an exception, e.g. 401 Unauthorized responses.
 
 By default override the `Microsoft.AspNetCore.Mvc.ApiBehaviorOptions.InvalidModelStateResponseFactory` and related settings
 and use the configured ExceptionMappers. This can be disabled by setting `HttpExceptionsOptions.UseInvalidModelStateResponseFactory`.
@@ -10,3 +10,6 @@ No bugs were fixed in this release.
 
 ## Improvements/Features
 * [#7](https://github.com/ofpinewood/http-exceptions/issues/7) Handle error responses without an exception 
+
+## Development
+* Add code coverage report, and improve code coverage
