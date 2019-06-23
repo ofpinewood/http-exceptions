@@ -75,6 +75,17 @@ services.AddHttpExceptions(options =>
 });
 ```
 
+## InvalidModelStateResponseFactory API behavior
+By default the `Microsoft.AspNetCore.Mvc.ApiBehaviorOptions.InvalidModelStateResponseFactory` and related settings are overridden and
+the configured ExceptionMappers are used. This can be disabled by setting `HttpExceptionsOptions.UseInvalidModelStateResponseFactory`.
+
+``` csharp
+services.AddHttpExceptions(options =>
+{
+    options.UseInvalidModelStateResponseFactory = false;
+});
+```
+
 ## Samples
 See [Opw.HttpExceptions.AspNetCore.Sample](/docs/Opw.HttpExceptions.AspNetCore.Sample.md).
 

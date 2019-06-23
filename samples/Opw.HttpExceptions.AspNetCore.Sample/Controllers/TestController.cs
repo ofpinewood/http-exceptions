@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Opw.HttpExceptions.AspNetCore.Sample.Models;
 using System;
@@ -7,7 +8,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HttpExceptionController : ControllerBase
+    public class TestController : ControllerBase
     {
         [HttpGet("{statusCode}")]
         public ActionResult<string> Throw(HttpStatusCode statusCode)
@@ -22,6 +23,19 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             var innerException = new ApplicationException($"Inner exception for ApplicationException.");
             throw new ApplicationException("ApplicationException has occurred.", innerException);
+        }
+
+        [HttpPost("product")]
+        public ActionResult<Product> PostProduct(Product product)
+        {
+            return Ok(product);
+        }
+
+        [Authorize]
+        [HttpGet("authorized")]
+        public ActionResult<string> Authorized()
+        {
+            return Ok("Authorized");
         }
     }
 }

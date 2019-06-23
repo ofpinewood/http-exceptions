@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Docs", "05 Docs", "{28E5
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.HttpExceptions.AspNetCore.IntegrationTests", "tests\Opw.HttpExceptions.AspNetCore.IntegrationTests\Opw.HttpExceptions.AspNetCore.IntegrationTests.csproj", "{0E9E2272-D022-419E-BA33-B07111C46F75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{1681FE09-0F3E-4251-A90F-E3336412B4B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1681FE09-0F3E-4251-A90F-E3336412B4B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1681FE09-0F3E-4251-A90F-E3336412B4B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E9E2272-D022-419E-BA33-B07111C46F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E9E2272-D022-419E-BA33-B07111C46F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E9E2272-D022-419E-BA33-B07111C46F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E9E2272-D022-419E-BA33-B07111C46F75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{58C8AA5F-CB4B-4335-84E1-49EF6182E35B} = {5B75E4EB-24F5-4392-9B3C-85616A87C3F1}
 		{65EBCCFF-217E-45A2-A276-6553264ED598} = {58C8AA5F-CB4B-4335-84E1-49EF6182E35B}
 		{1681FE09-0F3E-4251-A90F-E3336412B4B5} = {58C8AA5F-CB4B-4335-84E1-49EF6182E35B}
+		{0E9E2272-D022-419E-BA33-B07111C46F75} = {2D80CA4F-2896-4808-B07B-EC797DA2C487}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6B9D3DF-8885-481F-B3DB-FF4B260F8862}

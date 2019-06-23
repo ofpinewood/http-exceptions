@@ -20,7 +20,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public HttpExceptionsMiddlewareTests()
         {
             _nextMock = new Mock<RequestDelegate>();
-            var optionsMock = TestsHelper.CreateHttpExceptionsOptionsMock(true);
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(true);
             _actionResultExecutorMock = new Mock<IActionResultExecutor<ObjectResult>>();
             var loggerMock = new Mock<ILogger<HttpExceptionsMiddleware>>();
             _middleware = new HttpExceptionsMiddleware(_nextMock.Object, optionsMock.Object, _actionResultExecutorMock.Object, loggerMock.Object);
@@ -34,7 +34,7 @@ namespace Opw.HttpExceptions.AspNetCore
             _actionResultExecutorMock.Setup(e => e.ExecuteAsync(It.IsAny<ActionContext>(), It.IsAny<ObjectResult>()))
                 .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
                 .Returns(Task.CompletedTask);
-            
+
             await _middleware.Invoke(new DefaultHttpContext());
 
             result.Should().NotBeNull();
@@ -43,10 +43,14 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
-        public async Task Invoke_Should_ReturnProblemDetailsResult_ForNullReferenceException_WhenNoExceptionThrown()
+        public async Task Invoke_Should_ReturnProblemDetailsResult_WhenUnauthorizedRequest()
         {
-            //TODO: this test needs to be changed when implementing issue #7 Handle error responses without an exception
-            _nextMock.Setup(n => n.Invoke(It.IsAny<HttpContext>()));
+            _nextMock.Setup(n => n.Invoke(It.IsAny<HttpContext>()))
+                .Returns((HttpContext context) => {
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return Task.CompletedTask;
+                });
+
             ProblemDetailsResult result = null;
             _actionResultExecutorMock.Setup(e => e.ExecuteAsync(It.IsAny<ActionContext>(), It.IsAny<ObjectResult>()))
                 .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
@@ -55,9 +59,9 @@ namespace Opw.HttpExceptions.AspNetCore
             await _middleware.Invoke(new DefaultHttpContext());
 
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
-            result.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            result.Value.Title.Should().Be("NullReference");
+            result.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
+            result.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
+            result.Value.Title.Should().Be("Unauthorized");
         }
     }
 }

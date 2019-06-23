@@ -13,7 +13,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
 
         public ExceptionMapperTests()
         {
-            var optionsMock = TestsHelper.CreateHttpExceptionsOptionsMock(false);
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false);
             _mapper = new ExposeProtectedExceptionMapper(optionsMock.Object);
         }
 
@@ -34,7 +34,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         [Fact]
         public void Map_Should_ReturnThrowArgumentOutOfRangeException_ForInvalidExceptionType()
         {
-            var mapper = new ExceptionMapper<ApplicationException>(TestsHelper.CreateHttpExceptionsOptionsMock(false).Object);
+            var mapper = new ExceptionMapper<ApplicationException>(TestHelper.CreateHttpExceptionsOptionsMock(false).Object);
 
             Action action = () => mapper.Map(new NotSupportedException(), new DefaultHttpContext());
 
@@ -59,7 +59,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         [Fact]
         public void Map_Should_ReturnProblemDetails_WithExceptionDetails()
         {
-            var mapper = TestsHelper.CreateExceptionMapper<Exception>(true);
+            var mapper = TestHelper.CreateExceptionMapper<Exception>(true);
             var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
             problemDetails.ShouldNotBeNull(HttpStatusCode.InternalServerError);

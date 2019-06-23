@@ -19,7 +19,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// Maps the exception to ProblemDetails.
         /// </summary>
         /// <param name="exception">The exception to map.</param>
-        /// <param name="context">The current HTTP context.</param>
+        /// <param name="context">The HTTP context.</param>
         /// <param name="problemDetails">A ProblemDetails representation of the exception.</param>
         bool TryMap(Exception exception, HttpContext context, out ProblemDetails problemDetails);
 
@@ -30,6 +30,5 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <param name="context">The HTTP context.</param>
         /// <returns>A ProblemDetails representation of the exception.</returns>
         ProblemDetails Map(Exception exception, HttpContext context);
-
     }
 }

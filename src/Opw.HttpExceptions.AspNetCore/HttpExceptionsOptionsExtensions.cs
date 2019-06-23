@@ -34,5 +34,32 @@ namespace Opw.HttpExceptions.AspNetCore
                 Arguments = arguments
             });
         }
+
+        /// <summary>
+        /// Add an HttpResponseMapper for the specified status code. HttpResponseMappers handle unauthorized and other non-exceptions responses.
+        /// </summary>
+        /// <typeparam name="THttpResponseMapper">A type that derives from IHttpResponseMapper.</typeparam>
+        /// <param name="options">The HttpExceptionsOptions.</param>
+        /// <param name="status">The status code that is handled by the IHttpResponseMapper.</param>
+        /// <param name="arguments">Optionally inject parameters through HttpResponseMapper constructors.</param>
+        public static void HttpResponseMapper<THttpResponseMapper>(this HttpExceptionsOptions options, int status = int.MinValue, params object[] arguments)
+            where THttpResponseMapper : IHttpResponseMapper
+        {
+            if (options.HttpResponseMapperDescriptors.ContainsKey(status))
+            {
+                options.HttpResponseMapperDescriptors[status] = new HttpResponseMapperDescriptor
+                {
+                    Type = typeof(THttpResponseMapper),
+                    Arguments = arguments
+                };
+                return;
+            }
+
+            options.HttpResponseMapperDescriptors.Add(status, new HttpResponseMapperDescriptor
+            {
+                Type = typeof(THttpResponseMapper),
+                Arguments = arguments
+            });
+        }
     }
 }

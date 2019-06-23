@@ -30,5 +30,28 @@ namespace Opw.HttpExceptions.AspNetCore
             options.ExceptionMapperDescriptors.Should().HaveCount(1);
             options.ExceptionMapperDescriptors.First().Value.Type.Should().Be<TestExceptionMapper>();
         }
+
+        [Fact]
+        public void HttpResponseMapper_Should_Add2HttpResponseMappers()
+        {
+            var options = new HttpExceptionsOptions();
+
+            options.HttpResponseMapper<TestHttpResponseMapper>(500);
+            options.HttpResponseMapper<HttpResponseMapper>();
+
+            options.HttpResponseMapperDescriptors.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void HttpResponseMapper_Should_OverrideHttpResponseMapper()
+        {
+            var options = new HttpExceptionsOptions();
+
+            options.HttpResponseMapper<HttpResponseMapper>(500);
+            options.HttpResponseMapper<TestHttpResponseMapper>(500);
+
+            options.HttpResponseMapperDescriptors.Should().HaveCount(1);
+            options.HttpResponseMapperDescriptors.First().Value.Type.Should().Be<TestHttpResponseMapper>();
+        }
     }
 }

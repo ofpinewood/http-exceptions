@@ -35,18 +35,8 @@ namespace Opw.HttpExceptions.AspNetCore
             if (options.IsExceptionResponse == null)
                 options.IsExceptionResponse = IsExceptionResponse;
 
-            if (options.ExceptionMapperDescriptors.Count() == 0)
-                options.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
-
-            options.ExceptionMappers.Clear();
-            foreach (var exceptionMapperDescriptor in options.ExceptionMapperDescriptors.Select(i => i.Value))
-                options.ExceptionMappers.Add(CreatExceptionMapper(exceptionMapperDescriptor));
-        }
-
-        private IExceptionMapper CreatExceptionMapper(ExceptionMapperDescriptor exceptionMapperDescriptor)
-        {
-            return (IExceptionMapper)ActivatorUtilities
-                .CreateInstance(_serviceProvider, exceptionMapperDescriptor.Type, exceptionMapperDescriptor.Arguments);
+            ConfigureExceptionMappers(options);
+            ConfigureHttpResponseMappers(options);
         }
 
         private static bool IncludeExceptionDetails(HttpContext context)
@@ -66,6 +56,40 @@ namespace Opw.HttpExceptions.AspNetCore
                 return true;
 
             return false;
+        }
+
+        private void ConfigureExceptionMappers(HttpExceptionsOptions options)
+        {
+            if (options.ExceptionMapperDescriptors.Count() == 0)
+                options.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
+
+            options.ExceptionMappers.Clear();
+            foreach (var exceptionMapperDescriptor in options.ExceptionMapperDescriptors.Select(i => i.Value))
+                options.ExceptionMappers.Add(CreatExceptionMapper(exceptionMapperDescriptor));
+        }
+
+        private IExceptionMapper CreatExceptionMapper(ExceptionMapperDescriptor exceptionMapperDescriptor)
+        {
+            return (IExceptionMapper)ActivatorUtilities
+                .CreateInstance(_serviceProvider, exceptionMapperDescriptor.Type, exceptionMapperDescriptor.Arguments);
+        }
+
+        private void ConfigureHttpResponseMappers(HttpExceptionsOptions options)
+        {
+            if (options.HttpResponseMapperDescriptors.Count() == 0)
+                options.HttpResponseMapper<HttpResponseMapper>();
+
+            options.HttpResponseMappers.Clear();
+            foreach (var httpResponseMapperDescriptorItem in options.HttpResponseMapperDescriptors)
+                options.HttpResponseMappers.Add(CreatHttpResponseMapper(httpResponseMapperDescriptorItem.Value, httpResponseMapperDescriptorItem.Key));
+        }
+
+        private IHttpResponseMapper CreatHttpResponseMapper(HttpResponseMapperDescriptor httpResponseMapperDescriptor, int status)
+        {
+            var httpResponseMapper = (IHttpResponseMapper)ActivatorUtilities
+                .CreateInstance(_serviceProvider, httpResponseMapperDescriptor.Type, httpResponseMapperDescriptor.Arguments);
+            httpResponseMapper.Status = status;
+            return httpResponseMapper;
         }
     }
 }

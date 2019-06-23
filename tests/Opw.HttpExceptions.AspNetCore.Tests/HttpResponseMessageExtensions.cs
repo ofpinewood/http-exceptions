@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 
-namespace Opw.HttpExceptions.AspNetCore.Sample
+namespace Opw.HttpExceptions.AspNetCore
 {
     public static class HttpResponseMessageExtensions
     {

@@ -12,6 +12,14 @@ namespace Opw.HttpExceptions.AspNetCore
     public class HttpExceptionsOptions
     {
         /// <summary>
+        /// Gets or sets a value that determines if controllers annotated with Microsoft.AspNetCore.Mvc.ApiControllerAttribute
+		/// respond using Microsoft.AspNetCore.Mvc.ValidationProblemDetails in Microsoft.AspNetCore.Mvc.ApiBehaviorOptions.InvalidModelStateResponseFactory
+        /// or that the configured Opw.HttpExceptions.AspNetCore.Mappers.ExceptionMappers are used to respond.
+        /// The default is true; so the Opw.HttpExceptions.AspNetCore.Mappers.ExceptionMappers are used.
+        /// </summary>
+        public bool UseInvalidModelStateResponseFactory { get; set; } = true;
+
+        /// <summary>
         /// Include exception details, default behavior is only to include exception details in a development environment.
         /// </summary>
         public Func<HttpContext, bool> IncludeExceptionDetails { get; set; }
@@ -32,6 +40,18 @@ namespace Opw.HttpExceptions.AspNetCore
         public ICollection<IExceptionMapper> ExceptionMappers { get; set; } = new List<IExceptionMapper>();
 
         /// <summary>
+        /// Register of the HttpResponseMappers that will be used during mapping.
+        /// HttpResponseMappers handle unauthorized and other non-exceptions responses.
+        /// </summary>
+        public IDictionary<int, HttpResponseMapperDescriptor> HttpResponseMapperDescriptors { get; set; } = new Dictionary<int, HttpResponseMapperDescriptor>();
+
+        /// <summary>
+        /// Gets or sets the HttpResponseMapper collection that will be used during mapping.
+        /// HttpResponseMappers handle unauthorized and other non-exceptions responses.
+        /// </summary>
+        public ICollection<IHttpResponseMapper> HttpResponseMappers { get; set; } = new List<IHttpResponseMapper>();
+
+        /// <summary>
         /// Initializes the HttpExceptionsOptions.
         /// </summary>
         public HttpExceptionsOptions() { }
@@ -41,6 +61,18 @@ namespace Opw.HttpExceptions.AspNetCore
             foreach (var mapper in ExceptionMappers)
             {
                 if (mapper.TryMap(exception, context, out problemDetails))
+                    return true;
+            }
+
+            problemDetails = default;
+            return false;
+        }
+
+        internal bool TryMap(HttpResponse response, out ProblemDetails problemDetails)
+        {
+            foreach (var mapper in HttpResponseMappers)
+            {
+                if (mapper.TryMap(response, out problemDetails))
                     return true;
             }
 
