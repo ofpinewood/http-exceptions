@@ -19,7 +19,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public HttpExceptionControllerTests(TestWebApplicationFactory factory)
         {
             _factory = factory;
-            _client = factory.CreateClient();
+            _client = _factory.CreateClient();
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         [Fact]
         public async Task Throw_Should_ReturnProblemDetails_WithExceptionDetails()
         {
-            _factory.Server.Host.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = "development";
+            _factory.Server.Host.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = EnvironmentName.Development;
             _client = _factory.CreateClient();
 
             foreach (var statusCode in Enum.GetValues(typeof(HttpStatusCode)).Cast<HttpStatusCode>().Where(c => (int)c >= 400 && (int)c < 600))
@@ -52,6 +52,9 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
                 exceptionDetails.InnerException.Should().NotBeNull();
                 exceptionDetails.InnerException.Name.Should().Be(nameof(ApplicationException));
             }
+
+            // reset the EnvironmentName back to production
+            _factory.Server.Host.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = EnvironmentName.Production;
         }
 
         [Fact]

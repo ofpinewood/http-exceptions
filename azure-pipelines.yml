@@ -20,8 +20,6 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-  restoreBuildProjects: '**/*.csproj'
-  testProjects: '**/tests/*.Tests/*.csproj'
 
 steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@3
@@ -30,23 +28,19 @@ steps:
     updateAssemblyInfo: true
 
 - task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: $(restoreBuildProjects)
-
-- task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: $(restoreBuildProjects)
+    projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
-    projects: $(testProjects)
-    arguments: '--configuration $(buildConfiguration) --filter Category!=IntegrationTest --no-build'
+    projects: |
+      **/tests/*.Tests/*.csproj
+      **/tests/*.IntegrationTests/*.csproj
+    arguments: '--configuration $(buildConfiguration) --no-build --filter Category!=IntegrationTest /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*"'
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
@@ -88,8 +82,24 @@ steps:
    releaseNotesFile: CHANGELOG.md
 
 # Finalize
+- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+  displayName: Generate Code Coverage Report
+  inputs:
+    reports: $(Build.SourcesDirectory)/tests/**/coverage.cobertura.xml
+    targetdir: $(build.artifactstagingdirectory)/TestResults/
+    reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage Results'
+  inputs:
+    codeCoverageTool: cobertura
+    summaryFileLocation: $(build.artifactstagingdirectory)/TestResults/cobertura.xml
+    # To make the task not regenerate the report an environment variable was added to the pipeline in Azure DevOps; "disable.coverage.autogenerate: 'true'"
+    # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
+    reportDirectory: '$(build.artifactstagingdirectory)/TestResults'
+
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
+  displayName: 'Publish Artifacts'
   condition: always()
   inputs:
     PathtoPublish: $(build.artifactstagingdirectory)
