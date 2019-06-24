@@ -25,6 +25,7 @@ steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@3
   displayName: GitVersion
   inputs:
+    PreReleaseLabel: beta
     updateAssemblyInfo: true
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.0
