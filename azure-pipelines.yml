@@ -25,8 +25,9 @@ steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@3
   displayName: GitVersion
   inputs:
-    PreReleaseLabel: beta
     updateAssemblyInfo: true
+    next-version: 3.0
+    tag: beta1
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.0
 - task: DotNetCoreInstaller@0
@@ -56,7 +57,8 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
-    versioningScheme: byBuildNumber
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
@@ -64,7 +66,8 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
-    versioningScheme: byBuildNumber
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
 - task: NuGetCommand@2
   displayName: NuGet Push
@@ -73,7 +76,8 @@ steps:
     command: push
     nuGetFeedType: external
     publishFeedCredentials: NuGet
-    versioningScheme: byBuildNumber
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
