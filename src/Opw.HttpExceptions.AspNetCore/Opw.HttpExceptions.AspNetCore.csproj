@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+        <!--Ignore warning NETSDK1080; Microsoft.AspNetCore.App package reference is needed otherwise the code will not compile. -->
         <PackageReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
