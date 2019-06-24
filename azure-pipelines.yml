@@ -10,7 +10,6 @@ trigger:
   branches:
     include:
     - master
-    - release/*
     - refs/tags/*
   paths:
     include:
