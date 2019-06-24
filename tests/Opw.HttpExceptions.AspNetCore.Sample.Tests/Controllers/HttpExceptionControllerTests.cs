@@ -5,10 +5,7 @@ using System.Net;
 using System.Linq;
 using System;
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
 using Opw.HttpExceptions.AspNetCore.Sample.Models;
-using Microsoft.Extensions.Hosting;
 
 namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
 {
@@ -38,7 +35,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         [Fact]
         public async Task Throw_Should_ReturnProblemDetails_WithExceptionDetails()
         {
-            _factory.Server.Host.Services.GetRequiredService<IWebHostEnvironment>().EnvironmentName = Environments.Development;
+            TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Development");
             _client = _factory.CreateClient();
 
             foreach (var statusCode in Enum.GetValues(typeof(HttpStatusCode)).Cast<HttpStatusCode>().Where(c => (int)c >= 400 && (int)c < 600))
@@ -55,7 +52,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             }
 
             // reset the EnvironmentName back to production
-            _factory.Server.Host.Services.GetRequiredService<IWebHostEnvironment>().EnvironmentName = Environments.Production;
+            TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Production");
         }
 
         [Fact]

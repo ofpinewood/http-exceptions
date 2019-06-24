@@ -45,14 +45,13 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-
-
 #if NETCOREAPP2_2
-            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 #endif
 #if NETCOREAPP3_0
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 #endif
         {
             // UseHttpExceptions is the first middleware component added to the pipeline. Therefore,

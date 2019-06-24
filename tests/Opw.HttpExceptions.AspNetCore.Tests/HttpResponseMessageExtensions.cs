@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+#if NETCOREAPP2_2
 using System.Net.Http.Formatting;
+#endif
 
 namespace Opw.HttpExceptions.AspNetCore
 {

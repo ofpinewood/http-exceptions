@@ -4,8 +4,11 @@ using Moq;
 using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
 using System.Collections.Generic;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
+#if NETCOREAPP2_2
+using System.Net.Http.Formatting;
+#endif
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -27,6 +30,16 @@ namespace Opw.HttpExceptions.AspNetCore
             mediaTypeFormatters.Add(jsonMediaTypeFormatter);
             mediaTypeFormatters.Add(xmlMediaTypeFormatter);
             ProblemDetailsMediaTypeFormatters = mediaTypeFormatters;
+        }
+
+        public static void SetHostEnvironmentName(IWebHost webHost, string environmentName)
+        {
+#if NETCOREAPP2_2
+            webHost.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = environmentName;
+#endif
+#if NETCOREAPP3_0
+            webHost.Services.GetRequiredService<IWebHostEnvironment>().EnvironmentName = environmentName;
+#endif
         }
 
         public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
