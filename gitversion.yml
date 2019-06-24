@@ -1,4 +1,11 @@
 next-version: 2.0
 branches:
   release:
-    tag: 'preview'
+    regex: releases?[/-]
+    mode: ContinuousDelivery
+    tag: useBranchName
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: true
