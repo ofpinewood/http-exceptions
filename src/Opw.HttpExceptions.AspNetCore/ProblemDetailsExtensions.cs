@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+#if NETSTANDARD2_0
 using Newtonsoft.Json.Linq;
+#endif
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -29,8 +31,10 @@ namespace Opw.HttpExceptions.AspNetCore
 
             if (value is ExceptionDetails)
                 exceptionDetails = (ExceptionDetails)value;
+#if NETSTANDARD2_0
             if (value is JToken)
                 exceptionDetails = ((JToken)value).ToObject<ExceptionDetails>();
+#endif
 
             return exceptionDetails != null;
         }

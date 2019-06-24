@@ -1,6 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Opw.HttpExceptions.AspNetCore.Mappers
 {
