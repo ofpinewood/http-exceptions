@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
     public static class HttpResponseMessageExtensions
     {
-        public static ProblemDetails ShouldBeProblemDetails(this HttpResponseMessage response, HttpStatusCode statusCode, IEnumerable<MediaTypeFormatter> mediaTypeFormatters)
+        public static ProblemDetails ShouldBeProblemDetails(this HttpResponseMessage response, HttpStatusCode statusCode)
         {
             response.StatusCode.Should().Be(statusCode);
             response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+json");
 
-            var problemDetails = response.Content.ReadAsAsync<ProblemDetails>(mediaTypeFormatters).Result;
+            var problemDetails = response.Content.ReadAsAsync<ProblemDetails>().Result;
 
             problemDetails.Should().NotBeNull();
             problemDetails.Status.Should().Be((int)statusCode);

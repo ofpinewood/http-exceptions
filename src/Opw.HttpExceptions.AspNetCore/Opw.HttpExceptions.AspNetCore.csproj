@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
         <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
         <Description>ASP.NET Core Problem Details (RFC7807) extensions for using HttpExceptions.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -9,8 +9,13 @@
         <PackageTags>aspnetcore http exceptions RFC7807</PackageTags>
     </PropertyGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+        <!--Ignore warning NETSDK1080; Microsoft.AspNetCore.App package reference is needed otherwise the code will not compile. -->
+        <PackageReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
     <ItemGroup>
