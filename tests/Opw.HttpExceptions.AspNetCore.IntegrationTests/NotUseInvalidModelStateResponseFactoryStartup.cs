@@ -15,9 +15,7 @@ namespace Opw.HttpExceptions.AspNetCore
 #if NETCOREAPP3_0
             services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 #endif
-            services.AddHttpExceptions(options => {
-                options.SuppressInvalidModelStateResponseFactoryOverride = true;
-            });
+            services.AddHttpExceptions(options => options.SuppressInvalidModelStateResponseFactoryOverride = true);
         }
 
         public void Configure(IApplicationBuilder app)

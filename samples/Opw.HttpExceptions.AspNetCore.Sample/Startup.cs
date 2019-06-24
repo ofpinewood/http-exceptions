@@ -65,14 +65,16 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
             app.UseHttpsRedirection();
 
 #if NETCOREAPP2_2
+            app.UseAuthentication();
             app.UseMvc();
 #endif
 #if NETCOREAPP3_0
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
 #endif
         }

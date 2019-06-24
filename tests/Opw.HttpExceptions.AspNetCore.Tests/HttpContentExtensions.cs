@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -12,10 +13,10 @@ namespace Opw.HttpExceptions.AspNetCore
             return JsonConvert.DeserializeObject<T>(str);
         }
 
-        public static HttpContent ToHttpContent(this object obj)
+        public static StringContent ToJsonContent(this object obj)
         {
             var str = JsonConvert.SerializeObject(obj);
-            return new StringContent(str);
+            return new StringContent(str, Encoding.UTF8, "application/json");
         }
     }
 }

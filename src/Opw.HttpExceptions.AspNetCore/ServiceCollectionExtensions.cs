@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
@@ -42,25 +43,35 @@ namespace Opw.HttpExceptions.AspNetCore
 
         private static IServiceCollection OverrideInvalidModelStateResponseFactory(IServiceCollection services)
         {
+#if NETSTANDARD2_0
             services.AddMvcCore().ConfigureApiBehaviorOptions(options =>
             {
                 options.SuppressMapClientErrors = true;
                 options.SuppressModelStateInvalidFilter = false;
-#if NETSTANDARD2_0
                 options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
-#endif
-                options.InvalidModelStateResponseFactory = (actionContext) =>
-                {
-                    // Should we be throwing an exception here?
-                    throw new InvalidModelException(actionContext.ModelState.ToDictionary());
-                    // The other options is to map the exception here are return a ProblemDetailsResult
-                    //var httpExceptionsOptions = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<HttpExceptionsOptions>>();
-                    //httpExceptionsOptions.Value.TryMap(ex, actionContext.HttpContext, out var problemDetails);
-                    //return new ProblemDetailsResult(problemDetails);
-                };
+                options.InvalidModelStateResponseFactory = (actionContext) => HandleInvalidModelStateResponse(actionContext);
             });
+#endif
+
+#if NETCOREAPP3_0
+            services.AddControllers().ConfigureApiBehaviorOptions(options => {
+                options.SuppressMapClientErrors = true;
+                options.SuppressModelStateInvalidFilter = false;
+                options.InvalidModelStateResponseFactory = (actionContext) => HandleInvalidModelStateResponse(actionContext);
+            });
+#endif
 
             return services;
+        }
+
+        private static IActionResult HandleInvalidModelStateResponse(ActionContext actionContext)
+        {
+            // Should we be throwing an exception here?
+            throw new InvalidModelException(actionContext.ModelState.ToDictionary());
+            // The other options is to map the exception here are return a ProblemDetailsResult
+            //var httpExceptionsOptions = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+            //httpExceptionsOptions.Value.TryMap(ex, actionContext.HttpContext, out var problemDetails);
+            //return new ProblemDetailsResult(problemDetails);
         }
     }
 }

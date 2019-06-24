@@ -21,7 +21,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public async Task PostProduct_Should_ReturnOk()
         {
             var product = new Product { Id = "1" };
-            var response = await _client.PostAsync("test/product", product.ToHttpContent());
+            var response = await _client.PostAsync("test/product", product.ToJsonContent());
 
             response.IsSuccessStatusCode.Should().BeTrue();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -31,9 +31,10 @@ namespace Opw.HttpExceptions.AspNetCore
         public async Task PostProduct_Should_ReturnProblemDetails()
         {
             var product = new Product();
-            var response = await _client.PostAsync("test/product", product.ToHttpContent());
+            var response = await _client.PostAsync("test/product", product.ToJsonContent());
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest);
+            problemDetails.Title.Should().Be("InvalidModel");
             problemDetails.Extensions.Should().HaveCount(0);
         }
 
@@ -43,6 +44,7 @@ namespace Opw.HttpExceptions.AspNetCore
             var response = await _client.GetAsync("test/authorized");
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Unauthorized);
+            problemDetails.Title.Should().Be("Unauthorized");
             problemDetails.Extensions.Should().HaveCount(0);
         }
     }

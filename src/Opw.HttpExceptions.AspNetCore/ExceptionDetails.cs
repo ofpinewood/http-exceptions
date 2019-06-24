@@ -1,6 +1,3 @@
-#if NETSTANDARD2_0
-using Newtonsoft.Json;
-#endif
 using System;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -38,10 +35,7 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <summary>
         /// Constructor used when Json deserializing.
         /// </summary>
-#if NETSTANDARD2_0
-        [JsonConstructor]
-#endif
-        private ExceptionDetails() { }
+        public ExceptionDetails() { }
 
         /// <summary>
         /// Initializes the ExceptionDetails.

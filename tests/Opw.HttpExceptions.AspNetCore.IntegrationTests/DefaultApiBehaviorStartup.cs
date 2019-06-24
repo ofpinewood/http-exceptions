@@ -29,6 +29,7 @@ namespace Opw.HttpExceptions.AspNetCore
 #if NETCOREAPP3_0
             app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
 #endif
         }

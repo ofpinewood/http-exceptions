@@ -58,7 +58,10 @@ namespace Opw.HttpExceptions.AspNetCore
                 }
 
                 if (TryCreateProblemDetailsResult(context, null, out var result))
+                {
                     await ExecuteProblemDetailsResultAsync(context, result);
+                    return;
+                }
 
                 _logger.LogError("The HttpExceptions middleware could not handle the exception.");
             }

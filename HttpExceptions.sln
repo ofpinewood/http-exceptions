@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Sol
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
+		test-netcoreapp2_2.ps1 = test-netcoreapp2_2.ps1
+		test-netcoreapp3_0.ps1 = test-netcoreapp3_0.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 HttpExceptions", "50 HttpExceptions", "{405C144D-41FE-4BDE-B9B2-F8364036C4AB}"

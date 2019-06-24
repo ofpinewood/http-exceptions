@@ -70,7 +70,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public async Task PostProduct_Should_ReturnOk()
         {
             var product = new Product { Id = "1" };
-            var response = await _client.PostAsync("test/product", product.ToHttpContent());
+            var response = await _client.PostAsync("test/product", product.ToJsonContent());
 
             response.IsSuccessStatusCode.Should().BeTrue();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -80,7 +80,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public async Task PostProduct_Should_ReturnProblemDetails()
         {
             var product = new Product();
-            var response = await _client.PostAsync("test/product", product.ToHttpContent());
+            var response = await _client.PostAsync("test/product", product.ToJsonContent());
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest);
             problemDetails.Extensions.Should().HaveCount(0);
