@@ -27,7 +27,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             {
                 var response = await _client.GetAsync($"test/{statusCode}");
 
-                var problemDetails = response.ShouldBeProblemDetails(statusCode, TestHelper.ProblemDetailsMediaTypeFormatters);
+                var problemDetails = response.ShouldBeProblemDetails(statusCode);
                 problemDetails.Extensions.Should().HaveCount(0);
             }
         }
@@ -42,7 +42,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             {
                 var response = await _client.GetAsync($"test/{statusCode}");
 
-                var problemDetails = response.ShouldBeProblemDetails(statusCode, TestHelper.ProblemDetailsMediaTypeFormatters);
+                var problemDetails = response.ShouldBeProblemDetails(statusCode);
                 problemDetails.Extensions.Should().HaveCount(1);
 
                 var exceptionDetails = problemDetails.ShouldHaveExceptionDetails();
@@ -60,7 +60,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             var response = await _client.GetAsync("test/applicationException");
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, TestHelper.ProblemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError);
             problemDetails.Title.Should().Be("Application");
             problemDetails.Type.Should().Be("error:application");
             problemDetails.Extensions.Should().HaveCount(0);
@@ -70,7 +70,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public async Task PostProduct_Should_ReturnOk()
         {
             var product = new Product { Id = "1" };
-            var response = await _client.PostAsJsonAsync("test/product", product);
+            var response = await _client.PostAsync("test/product", product.ToHttpContent());
 
             response.IsSuccessStatusCode.Should().BeTrue();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -80,9 +80,9 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public async Task PostProduct_Should_ReturnProblemDetails()
         {
             var product = new Product();
-            var response = await _client.PostAsJsonAsync("test/product", product);
+            var response = await _client.PostAsync("test/product", product.ToHttpContent());
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest, TestHelper.ProblemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest);
             problemDetails.Extensions.Should().HaveCount(0);
         }
 
@@ -91,7 +91,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             var response = await _client.GetAsync("test/authorized");
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Unauthorized, TestHelper.ProblemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Unauthorized);
             problemDetails.Extensions.Should().HaveCount(0);
         }
     }

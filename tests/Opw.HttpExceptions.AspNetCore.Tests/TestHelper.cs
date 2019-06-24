@@ -6,32 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
-#if NETCOREAPP2_2
-using System.Net.Http.Formatting;
-#endif
 
 namespace Opw.HttpExceptions.AspNetCore
 {
     public static class TestHelper
     {
-        public static IEnumerable<MediaTypeFormatter> ProblemDetailsMediaTypeFormatters { get; }
-
-        static TestHelper()
-        {
-            var jsonMediaTypeFormatter = new JsonMediaTypeFormatter();
-            jsonMediaTypeFormatter.SupportedMediaTypes.Clear();
-            jsonMediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/problem+json"));
-
-            var xmlMediaTypeFormatter = new XmlMediaTypeFormatter();
-            xmlMediaTypeFormatter.SupportedMediaTypes.Clear();
-            xmlMediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/problem+xml"));
-
-            var mediaTypeFormatters = new List<MediaTypeFormatter>();
-            mediaTypeFormatters.Add(jsonMediaTypeFormatter);
-            mediaTypeFormatters.Add(xmlMediaTypeFormatter);
-            ProblemDetailsMediaTypeFormatters = mediaTypeFormatters;
-        }
-
         public static void SetHostEnvironmentName(IWebHost webHost, string environmentName)
         {
 #if NETCOREAPP2_2
