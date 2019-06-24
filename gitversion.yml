@@ -1,6 +1,7 @@
 next-version: 2.0
-continuous-delivery-fallback-tag: 'preview'
 branches:
   master:
     mode: ContinuousDeployment
+    tag: ''
+  pull-request:
     tag: 'preview'
