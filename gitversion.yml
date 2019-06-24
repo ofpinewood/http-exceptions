@@ -1,7 +1,4 @@
 next-version: 2.0
 branches:
-  master:
-    mode: ContinuousDeployment
-    tag: ''
-  pull-request:
+  release:
     tag: 'preview'
