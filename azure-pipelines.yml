@@ -27,6 +27,12 @@ steps:
   inputs:
     updateAssemblyInfo: true
 
+# https://dotnet.microsoft.com/download/dotnet-core/3.0
+- task: DotNetCoreInstaller@0
+  displayName: 'Install .Net Core 3.0 (preview)'
+  inputs:
+    version: '3.0.100-preview6-012264'
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
