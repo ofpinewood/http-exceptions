@@ -26,8 +26,6 @@ steps:
   displayName: GitVersion
   inputs:
     updateAssemblyInfo: true
-    next-version: 3.0
-    tag: beta1
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.0
 - task: DotNetCoreInstaller@0
