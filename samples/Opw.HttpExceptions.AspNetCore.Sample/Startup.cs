@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Opw.HttpExceptions.AspNetCore.Sample
 {
@@ -19,20 +20,20 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
             services.AddHttpExceptions(options =>
             {
                 // This is the same as the default behavior; only include exception details in a development environment.
-                options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+                options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IWebHostEnvironment>().EnvironmentName == Environments.Development;
                 // This is a simplified version of the default behavior; only include exception details for 4xx and 5xx responses.
                 options.IsExceptionResponse = context => (context.Response.StatusCode >= 400 && context.Response.StatusCode < 600);
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // UseHttpExceptions is the first middleware component added to the pipeline. Therefore,
             // the UseHttpExceptions Middleware catches any exceptions that occur in later calls.
@@ -47,7 +48,9 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
+            //TODO: app.UseMvc(); can be removes?
         }
     }
 }

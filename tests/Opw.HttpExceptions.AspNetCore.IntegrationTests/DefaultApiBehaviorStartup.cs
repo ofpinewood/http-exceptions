@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
             services.AddHttpExceptions();
         }
@@ -17,8 +17,10 @@ namespace Opw.HttpExceptions.AspNetCore
         public void Configure(IApplicationBuilder app)
         {
             app.UseHttpExceptions();
+            app.UseRouting();
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
+            //app.UseMvc();
         }
     }
 }

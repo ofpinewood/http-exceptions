@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddHttpExceptions(options => {
                 options.SuppressInvalidModelStateResponseFactoryOverride = true;
             });
@@ -18,7 +18,9 @@ namespace Opw.HttpExceptions.AspNetCore
         public void Configure(IApplicationBuilder app)
         {
             app.UseHttpExceptions();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
+            //app.UseMvc();
         }
     }
 }
