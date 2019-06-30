@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new BadRequestException();
 
             exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
         }
     }
 }

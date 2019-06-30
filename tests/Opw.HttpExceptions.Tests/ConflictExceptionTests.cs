@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new ConflictException();
 
             exception.StatusCode.Should().Be(HttpStatusCode.Conflict);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.Conflict);
         }
     }
 }

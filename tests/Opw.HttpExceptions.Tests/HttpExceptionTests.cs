@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new HttpException();
 
             exception.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.InternalServerError);
         }
 
         [Fact]
@@ -20,6 +21,7 @@ namespace Opw.HttpExceptions
             var exception = new HttpException(HttpStatusCode.BadRequest);
 
             exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
         }
     }
 }

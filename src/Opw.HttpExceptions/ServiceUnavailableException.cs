@@ -14,6 +14,13 @@ namespace Opw.HttpExceptions
         public override HttpStatusCode StatusCode { get; } = HttpStatusCode.ServiceUnavailable;
 
         /// <summary>
+        /// Gets or sets a link to the help file associated with this exception.
+        /// For HttpExeptions a link to status code information https://tools.ietf.org/html/rfc7231.
+        /// </summary>
+        /// <returns>The Uniform Resource Name (URN) or Uniform Resource Locator (URL).</returns>
+        public override string HelpLink { get; set; } = ResponseStatusCodeLink.ServiceUnavailable;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ServiceUnavailableException"></see> class with status code ServiceUnavailable.
         /// </summary>
         public ServiceUnavailableException() : base() { }
