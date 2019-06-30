@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new ForbiddenException();
 
             exception.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.Forbidden);
         }
     }
 }

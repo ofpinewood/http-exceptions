@@ -91,7 +91,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns either the request path, the exception help link or null.</returns>
         protected virtual string MapInstance(TException exception, HttpContext context)
         {
-            if (context.Request != null && context.Request.Path.HasValue)
+            if (context.Request?.Path.HasValue == true)
                 return context.Request.Path;
 
             var link = exception.HelpLink;

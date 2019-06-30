@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new ServiceUnavailableException();
 
             exception.StatusCode.Should().Be(HttpStatusCode.ServiceUnavailable);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.ServiceUnavailable);
         }
     }
 }

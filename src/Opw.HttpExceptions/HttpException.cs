@@ -8,10 +8,29 @@ namespace Opw.HttpExceptions
     /// </summary>
     public class HttpException : HttpExceptionBase
     {
+        private string _helpLink;
+
         /// <summary>
         /// HTTP status code.
         /// </summary>
         public override HttpStatusCode StatusCode { get; } = HttpStatusCode.InternalServerError;
+
+        /// <summary>
+        /// Gets or sets a link to the help file associated with this exception.
+        /// For HttpExeptions a link to status code information https://tools.ietf.org/html/rfc7231.
+        /// </summary>
+        /// <returns>The Uniform Resource Name (URN) or Uniform Resource Locator (URL).</returns>
+        public override string HelpLink
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(_helpLink)) return _helpLink;
+                if (StatusCode.TryGetLink(out var link)) return link;
+                return ResponseStatusCodeLink.InternalServerError;
+
+            }
+            set => _helpLink = value;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpException"></see> class with status code InternalServerError.
