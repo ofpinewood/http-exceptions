@@ -69,7 +69,7 @@ namespace Opw.HttpExceptions.AspNetCore
         private void ConfigureExceptionMappers(HttpExceptionsOptions options)
         {
             if (options.ExceptionMapperDescriptors.Count() == 0)
-                options.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
+                options.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
 
             options.ExceptionMappers.Clear();
             foreach (var exceptionMapperDescriptor in options.ExceptionMapperDescriptors.Select(i => i.Value))
@@ -85,7 +85,7 @@ namespace Opw.HttpExceptions.AspNetCore
         private void ConfigureHttpResponseMappers(HttpExceptionsOptions options)
         {
             if (options.HttpResponseMapperDescriptors.Count() == 0)
-                options.HttpResponseMapper<HttpResponseMapper>();
+                options.HttpResponseMapper<ProblemDetailsHttpResponseMapper>();
 
             options.HttpResponseMappers.Clear();
             foreach (var httpResponseMapperDescriptorItem in options.HttpResponseMapperDescriptors)

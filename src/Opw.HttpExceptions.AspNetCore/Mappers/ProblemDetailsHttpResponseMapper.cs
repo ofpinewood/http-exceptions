@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
     /// <summary>
     /// Default mapper for mapping HTTP response errors to ProblemDetails.
     /// </summary>
-    public class HttpResponseMapper : IHttpResponseMapper
+    public class ProblemDetailsHttpResponseMapper : IHttpResponseMapper
     {
         /// <summary>
         /// HttpExceptions options.
@@ -24,7 +24,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <summary>
         /// Initializes the HttpResponseMapper.
         /// </summary>
-        public HttpResponseMapper(IOptions<HttpExceptionsOptions> options)
+        public ProblemDetailsHttpResponseMapper(IOptions<HttpExceptionsOptions> options)
         {
             Options = options;
         }

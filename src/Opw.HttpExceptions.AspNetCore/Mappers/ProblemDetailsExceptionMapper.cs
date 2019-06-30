@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
     /// <summary>
     /// Default mapper for mapping Exceptions to ProblemDetails.
     /// </summary>
-    public class ExceptionMapper<TException> : IExceptionMapper where TException : Exception
+    public class ProblemDetailsExceptionMapper<TException> : IExceptionMapper where TException : Exception
     {
         /// <summary>
         /// HttpExceptions options.
@@ -19,7 +19,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <summary>
         /// Initializes the ExceptionMapper.
         /// </summary>
-        public ExceptionMapper(IOptions<HttpExceptionsOptions> options)
+        public ProblemDetailsExceptionMapper(IOptions<HttpExceptionsOptions> options)
         {
             Options = options;
         }

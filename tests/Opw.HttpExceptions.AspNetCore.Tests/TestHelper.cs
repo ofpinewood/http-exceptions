@@ -34,19 +34,19 @@ namespace Opw.HttpExceptions.AspNetCore
             return optionsMock;
         }
 
-        public static ExceptionMapper<TException> CreateExceptionMapper<TException>(bool includeExceptionDetails)
+        public static ProblemDetailsExceptionMapper<TException> CreateProblemDetailsExceptionMapper<TException>(bool includeExceptionDetails)
             where TException : Exception
         {
             var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
 
-            return new ExceptionMapper<TException>(optionsMock.Object);
+            return new ProblemDetailsExceptionMapper<TException>(optionsMock.Object);
         }
 
-        public static HttpResponseMapper CreateHttpResponseMapper(bool includeExceptionDetails)
+        public static ProblemDetailsHttpResponseMapper CreateProblemDetailsHttpResponseMapper(bool includeExceptionDetails)
         {
             var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
 
-            return new HttpResponseMapper(optionsMock.Object);
+            return new ProblemDetailsHttpResponseMapper(optionsMock.Object);
         }
     }
 }
