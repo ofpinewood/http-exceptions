@@ -1,9 +1,11 @@
-# Return exceptions as ASP.NET Core Problem Details
+# Return exceptions over HTTP
 [![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
 
-Extensions for returning exceptions as ASP.NET Core Problem Details. Problem Details are a machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807.
+Extensions for returning exceptions over HTTP e.g. as ASP.NET Core Problem Details.
+Problem Details are a machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807.
+But you are not limited to returning exception results as Problem Details, but you can create your own mappers for your own custom formats.
 
 ## Where can I get it?
 You can install [Opw.HttpExceptions.AspNetCore](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/) from the NuGet package manager console:
@@ -24,7 +26,9 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-Then you can add the HttpExceptions middleware using the application builder.  `UseHttpExceptions` should be the first middleware component added to the pipeline. That way the `UseHttpExceptions` Middleware catches any exceptions that occur in later calls. When using HttpExceptions you don't need to use `UseExceptionHandler` or `UseDeveloperExceptionPage`.
+Then you can add the HttpExceptions middleware using the application builder.  `UseHttpExceptions` should be the first middleware
+component added to the pipeline. That way the `UseHttpExceptions` Middleware catches any exceptions that occur in later calls. When
+using HttpExceptions you don't need to use `UseExceptionHandler` or `UseDeveloperExceptionPage`.
 
 ``` csharp
 public void Configure(IApplicationBuilder app)
@@ -60,7 +64,8 @@ services.AddHttpExceptions(options =>
 ```
 
 ### Custom ExceptionMappers
-Set the ExceptionMapper collection that will be used during mapping. You can override and/or add ExceptionMappers for specific exception types. The ExceptionMappers are called in order so make sure you add them in the right order.
+Set the ExceptionMapper collection that will be used during mapping. You can override and/or add ExceptionMappers for specific
+exception types. The ExceptionMappers are called in order so make sure you add them in the right order.
 
 By default there is one ExceptionMapper configured, that ExceptionMapper catches all exceptions. 
 
