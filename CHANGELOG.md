@@ -7,4 +7,3 @@ No bugs were fixed in this release.
 
 ## Improvements/Features
 * [#17](https://github.com/ofpinewood/http-exceptions/issues/17) Use rfc7231 docs as info for status codes 
-* [#19](https://github.com/ofpinewood/http-exceptions/issues/19) Exceptions logging
