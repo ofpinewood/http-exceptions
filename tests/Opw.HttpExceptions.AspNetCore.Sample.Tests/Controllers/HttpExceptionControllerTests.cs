@@ -5,9 +5,8 @@ using System.Net;
 using System.Linq;
 using System;
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
 using Opw.HttpExceptions.AspNetCore.Sample.Models;
+using Opw.HttpExceptions.AspNetCore.Sample.CustomErrors;
 
 namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
 {
@@ -29,7 +28,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             {
                 var response = await _client.GetAsync($"test/{statusCode}");
 
-                var problemDetails = response.ShouldBeProblemDetails(statusCode, TestHelper.ProblemDetailsMediaTypeFormatters);
+                var problemDetails = response.ShouldBeProblemDetails(statusCode);
                 problemDetails.Extensions.Should().HaveCount(0);
             }
         }
@@ -37,14 +36,14 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         [Fact]
         public async Task Throw_Should_ReturnProblemDetails_WithExceptionDetails()
         {
-            _factory.Server.Host.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = EnvironmentName.Development;
+            TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Development");
             _client = _factory.CreateClient();
 
             foreach (var statusCode in Enum.GetValues(typeof(HttpStatusCode)).Cast<HttpStatusCode>().Where(c => (int)c >= 400 && (int)c < 600))
             {
                 var response = await _client.GetAsync($"test/{statusCode}");
 
-                var problemDetails = response.ShouldBeProblemDetails(statusCode, TestHelper.ProblemDetailsMediaTypeFormatters);
+                var problemDetails = response.ShouldBeProblemDetails(statusCode);
                 problemDetails.Extensions.Should().HaveCount(1);
 
                 var exceptionDetails = problemDetails.ShouldHaveExceptionDetails();
@@ -54,7 +53,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             }
 
             // reset the EnvironmentName back to production
-            _factory.Server.Host.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = EnvironmentName.Production;
+            TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Production");
         }
 
         [Fact]
@@ -62,7 +61,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             var response = await _client.GetAsync("test/applicationException");
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError, TestHelper.ProblemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.InternalServerError);
             problemDetails.Title.Should().Be("Application");
             problemDetails.Type.Should().Be("error:application");
             problemDetails.Extensions.Should().HaveCount(0);
@@ -72,7 +71,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public async Task PostProduct_Should_ReturnOk()
         {
             var product = new Product { Id = "1" };
-            var response = await _client.PostAsJsonAsync("test/product", product);
+            var response = await _client.PostAsync("test/product", product.ToJsonContent());
 
             response.IsSuccessStatusCode.Should().BeTrue();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -82,9 +81,9 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         public async Task PostProduct_Should_ReturnProblemDetails()
         {
             var product = new Product();
-            var response = await _client.PostAsJsonAsync("test/product", product);
+            var response = await _client.PostAsync("test/product", product.ToJsonContent());
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest, TestHelper.ProblemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest);
             problemDetails.Extensions.Should().HaveCount(0);
         }
 
@@ -93,8 +92,25 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             var response = await _client.GetAsync("test/authorized");
 
-            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Unauthorized, TestHelper.ProblemDetailsMediaTypeFormatters);
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Unauthorized);
             problemDetails.Extensions.Should().HaveCount(0);
+        }
+
+        [Fact]
+        public async Task Throw_Should_ReturnCustomError()
+        {
+            var response = await _client.GetAsync("test/customError");
+
+            response.StatusCode.Should().Be(418);
+            response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+json");
+
+            var customError = response.Content.ReadAsAsync<CustomError>().Result;
+
+            customError.Should().NotBeNull();
+            customError.Status.Should().Be(418);
+            customError.Type.Should().NotBeNull();
+            customError.Message.Should().NotBeNull();
+            customError.Code.Should().Be(42);
         }
     }
 }

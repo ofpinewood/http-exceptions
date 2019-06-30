@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFrameworks>netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
         <IsPackable>false</IsPackable>
         <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
     </PropertyGroup>
@@ -12,7 +12,6 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="FluentAssertions" Version="5.7.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
         <PackageReference Include="Moq" Version="4.12.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
@@ -20,6 +19,10 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     </ItemGroup>
 
     <ItemGroup>

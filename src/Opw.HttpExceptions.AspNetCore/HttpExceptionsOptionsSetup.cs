@@ -1,10 +1,13 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+#if NETCOREAPP3_0
+using Microsoft.Extensions.Hosting;
+#endif
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -41,7 +44,12 @@ namespace Opw.HttpExceptions.AspNetCore
 
         private static bool IncludeExceptionDetails(HttpContext context)
         {
+#if NETSTANDARD2_0
             return context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+#endif
+#if NETCOREAPP3_0
+            return context.RequestServices.GetRequiredService<IWebHostEnvironment>().EnvironmentName == Environments.Development;
+#endif
         }
 
         private static bool IsExceptionResponse(HttpContext context)
@@ -61,7 +69,7 @@ namespace Opw.HttpExceptions.AspNetCore
         private void ConfigureExceptionMappers(HttpExceptionsOptions options)
         {
             if (options.ExceptionMapperDescriptors.Count() == 0)
-                options.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
+                options.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
 
             options.ExceptionMappers.Clear();
             foreach (var exceptionMapperDescriptor in options.ExceptionMapperDescriptors.Select(i => i.Value))
@@ -77,7 +85,7 @@ namespace Opw.HttpExceptions.AspNetCore
         private void ConfigureHttpResponseMappers(HttpExceptionsOptions options)
         {
             if (options.HttpResponseMapperDescriptors.Count() == 0)
-                options.HttpResponseMapper<HttpResponseMapper>();
+                options.HttpResponseMapper<ProblemDetailsHttpResponseMapper>();
 
             options.HttpResponseMappers.Clear();
             foreach (var httpResponseMapperDescriptorItem in options.HttpResponseMapperDescriptors)

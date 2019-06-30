@@ -29,7 +29,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public void TryMap_Should_ReturnTrue_WhenMappingConfiguredException()
         {
             var options = new HttpExceptionsOptions();
-            options.ExceptionMappers.Add(new ExceptionMapper<HttpException>(_httpExceptionsOptionsMock.Object));
+            options.ExceptionMappers.Add(new ProblemDetailsExceptionMapper<HttpException>(_httpExceptionsOptionsMock.Object));
 
             var result = options.TryMap(new HttpException(), new DefaultHttpContext(), out _);
 
@@ -40,7 +40,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public void TryMap_Should_ReturnFalse_WhenMappingNotConfiguredException()
         {
             var options = new HttpExceptionsOptions();
-            options.ExceptionMappers.Add(new ExceptionMapper<HttpException>(_httpExceptionsOptionsMock.Object));
+            options.ExceptionMappers.Add(new ProblemDetailsExceptionMapper<HttpException>(_httpExceptionsOptionsMock.Object));
 
             var result = options.TryMap(new ArgumentException(), new DefaultHttpContext(), out _);
 
@@ -51,7 +51,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public void TryMap_Should_ReturnTrue_WhenMappingConfiguredHttpResponse()
         {
             var options = new HttpExceptionsOptions();
-            options.HttpResponseMappers.Add(new HttpResponseMapper(_httpExceptionsOptionsMock.Object) { Status = 500 });
+            options.HttpResponseMappers.Add(new ProblemDetailsHttpResponseMapper(_httpExceptionsOptionsMock.Object) { Status = 500 });
 
             var result = options.TryMap(_internalServerErrorHttpContext.Response, out _);
 
@@ -62,7 +62,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public void TryMap_Should_ReturnFalse_WhenMappingNotConfiguredHttpResponse()
         {
             var options = new HttpExceptionsOptions();
-            options.HttpResponseMappers.Add(new HttpResponseMapper(_httpExceptionsOptionsMock.Object) { Status = 148 });
+            options.HttpResponseMappers.Add(new ProblemDetailsHttpResponseMapper(_httpExceptionsOptionsMock.Object) { Status = 148 });
 
             var result = options.TryMap(_internalServerErrorHttpContext.Response, out _);
 
@@ -78,8 +78,8 @@ namespace Opw.HttpExceptions.AspNetCore
             var services = new ServiceCollection();
             services.AddHttpExceptions(o =>
             {
-                o.ExceptionMapper<HttpException, ExceptionMapper<HttpException>>();
-                o.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
+                o.ExceptionMapper<HttpException, ProblemDetailsExceptionMapper<HttpException>>();
+                o.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
             });
 
             var serviceProvider = services.BuildServiceProvider();
@@ -95,9 +95,9 @@ namespace Opw.HttpExceptions.AspNetCore
             var services = new ServiceCollection();
             services.AddHttpExceptions(o =>
             {
-                o.ExceptionMapper<HttpException, ExceptionMapper<HttpException>>();
-                o.ExceptionMapper<ArgumentException, ExceptionMapper<ArgumentException>>();
-                o.ExceptionMapper<Exception, TestExceptionMapper>();
+                o.ExceptionMapper<HttpException, ProblemDetailsExceptionMapper<HttpException>>();
+                o.ExceptionMapper<ArgumentException, ProblemDetailsExceptionMapper<ArgumentException>>();
+                o.ExceptionMapper<Exception, TestProblemDetailsExceptionMapper>();
             });
 
             var serviceProvider = services.BuildServiceProvider();
@@ -107,9 +107,9 @@ namespace Opw.HttpExceptions.AspNetCore
 
             var exceptionMappers = options.Value.ExceptionMappers.ToArray();
             exceptionMappers.Should().HaveCount(3);
-            exceptionMappers[0].Should().BeOfType<ExceptionMapper<HttpException>>();
-            exceptionMappers[1].Should().BeOfType<ExceptionMapper<ArgumentException>>();
-            exceptionMappers[2].Should().BeOfType<TestExceptionMapper>();
+            exceptionMappers[0].Should().BeOfType<ProblemDetailsExceptionMapper<HttpException>>();
+            exceptionMappers[1].Should().BeOfType<ProblemDetailsExceptionMapper<ArgumentException>>();
+            exceptionMappers[2].Should().BeOfType<TestProblemDetailsExceptionMapper>();
         }
 
         [Fact]
@@ -118,8 +118,8 @@ namespace Opw.HttpExceptions.AspNetCore
             var services = new ServiceCollection();
             services.AddHttpExceptions(o =>
             {
-                o.HttpResponseMapper<TestHttpResponseMapper>(500);
-                o.HttpResponseMapper<HttpResponseMapper>();
+                o.HttpResponseMapper<TestProblemDetailsHttpResponseMapper>(500);
+                o.HttpResponseMapper<ProblemDetailsHttpResponseMapper>();
             });
 
             var serviceProvider = services.BuildServiceProvider();
@@ -135,8 +135,8 @@ namespace Opw.HttpExceptions.AspNetCore
             var services = new ServiceCollection();
             services.AddHttpExceptions(o =>
             {
-                o.HttpResponseMapper<TestHttpResponseMapper>(418);
-                o.HttpResponseMapper<HttpResponseMapper>();
+                o.HttpResponseMapper<TestProblemDetailsHttpResponseMapper>(418);
+                o.HttpResponseMapper<ProblemDetailsHttpResponseMapper>();
             });
 
             var serviceProvider = services.BuildServiceProvider();
@@ -144,8 +144,8 @@ namespace Opw.HttpExceptions.AspNetCore
 
             var httpResponseMappers = options.Value.HttpResponseMappers.ToArray();
             httpResponseMappers.Should().HaveCount(2);
-            httpResponseMappers[0].Should().BeOfType<TestHttpResponseMapper>().Which.Status.Should().Be(418);
-            httpResponseMappers[1].Should().BeOfType<HttpResponseMapper>().Which.Status.Should().Be(int.MinValue);
+            httpResponseMappers[0].Should().BeOfType<TestProblemDetailsHttpResponseMapper>().Which.Status.Should().Be(418);
+            httpResponseMappers[1].Should().BeOfType<ProblemDetailsHttpResponseMapper>().Which.Status.Should().Be(int.MinValue);
         }
 
         [Fact]
@@ -154,9 +154,9 @@ namespace Opw.HttpExceptions.AspNetCore
             var services = new ServiceCollection();
             services.AddHttpExceptions(o =>
             {
-                o.HttpResponseMapper<TestHttpResponseMapper>(500);
-                o.HttpResponseMapper<HttpResponseMapper>(418);
-                o.HttpResponseMapper<TestHttpResponseMapper>();
+                o.HttpResponseMapper<TestProblemDetailsHttpResponseMapper>(500);
+                o.HttpResponseMapper<ProblemDetailsHttpResponseMapper>(418);
+                o.HttpResponseMapper<TestProblemDetailsHttpResponseMapper>();
             });
 
             var serviceProvider = services.BuildServiceProvider();
@@ -166,9 +166,9 @@ namespace Opw.HttpExceptions.AspNetCore
 
             var httpResponseMappers = options.Value.HttpResponseMappers.ToArray();
             httpResponseMappers.Should().HaveCount(3);
-            httpResponseMappers[0].Should().BeOfType<TestHttpResponseMapper>();
-            httpResponseMappers[1].Should().BeOfType<HttpResponseMapper>();
-            httpResponseMappers[2].Should().BeOfType<TestHttpResponseMapper>();
+            httpResponseMappers[0].Should().BeOfType<TestProblemDetailsHttpResponseMapper>();
+            httpResponseMappers[1].Should().BeOfType<ProblemDetailsHttpResponseMapper>();
+            httpResponseMappers[2].Should().BeOfType<TestProblemDetailsHttpResponseMapper>();
         }
 
         [Fact]

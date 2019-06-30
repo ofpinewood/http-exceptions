@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -23,7 +24,7 @@ namespace Opw.HttpExceptions.AspNetCore
             var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(true);
             _actionResultExecutorMock = new Mock<IActionResultExecutor<ObjectResult>>();
             var loggerMock = new Mock<ILogger<HttpExceptionsMiddleware>>();
-            _middleware = new HttpExceptionsMiddleware(_nextMock.Object, optionsMock.Object, _actionResultExecutorMock.Object, loggerMock.Object);
+            _middleware = new HttpExceptionsMiddleware(_nextMock.Object, optionsMock.Object, loggerMock.Object);
         }
 
         [Fact]
@@ -35,7 +36,14 @@ namespace Opw.HttpExceptions.AspNetCore
                 .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
                 .Returns(Task.CompletedTask);
 
-            await _middleware.Invoke(new DefaultHttpContext());
+            var services = new ServiceCollection();
+            services.AddTransient((_) => _actionResultExecutorMock.Object);
+            var context = new DefaultHttpContext
+            {
+                RequestServices = services.BuildServiceProvider()
+            };
+
+            await _middleware.Invoke(context);
 
             result.Should().NotBeNull();
             result.StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);
@@ -46,8 +54,8 @@ namespace Opw.HttpExceptions.AspNetCore
         public async Task Invoke_Should_ReturnProblemDetailsResult_WhenUnauthorizedRequest()
         {
             _nextMock.Setup(n => n.Invoke(It.IsAny<HttpContext>()))
-                .Returns((HttpContext context) => {
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                .Returns((HttpContext ctx) => {
+                    ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     return Task.CompletedTask;
                 });
 
@@ -56,7 +64,14 @@ namespace Opw.HttpExceptions.AspNetCore
                 .Callback<ActionContext, ObjectResult>((actionContext, actionResult) => result = (ProblemDetailsResult)actionResult)
                 .Returns(Task.CompletedTask);
 
-            await _middleware.Invoke(new DefaultHttpContext());
+            var services = new ServiceCollection();
+            services.AddTransient((_) => _actionResultExecutorMock.Object);
+            var context = new DefaultHttpContext
+            {
+                RequestServices = services.BuildServiceProvider()
+            };
+
+            await _middleware.Invoke(context);
 
             result.Should().NotBeNull();
             result.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);

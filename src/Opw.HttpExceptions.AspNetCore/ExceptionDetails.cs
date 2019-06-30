@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -36,8 +35,7 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <summary>
         /// Constructor used when Json deserializing.
         /// </summary>
-        [JsonConstructor]
-        private ExceptionDetails() { }
+        public ExceptionDetails() { }
 
         /// <summary>
         /// Initializes the ExceptionDetails.

@@ -4,29 +4,21 @@ using Moq;
 using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
 using System.Collections.Generic;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
     public static class TestHelper
     {
-        public static IEnumerable<MediaTypeFormatter> ProblemDetailsMediaTypeFormatters { get; }
-
-        static TestHelper()
+        public static void SetHostEnvironmentName(IWebHost webHost, string environmentName)
         {
-            var jsonMediaTypeFormatter = new JsonMediaTypeFormatter();
-            jsonMediaTypeFormatter.SupportedMediaTypes.Clear();
-            jsonMediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/problem+json"));
-
-            var xmlMediaTypeFormatter = new XmlMediaTypeFormatter();
-            xmlMediaTypeFormatter.SupportedMediaTypes.Clear();
-            xmlMediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/problem+xml"));
-
-            var mediaTypeFormatters = new List<MediaTypeFormatter>();
-            mediaTypeFormatters.Add(jsonMediaTypeFormatter);
-            mediaTypeFormatters.Add(xmlMediaTypeFormatter);
-            ProblemDetailsMediaTypeFormatters = mediaTypeFormatters;
+#if NETCOREAPP2_2
+            webHost.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = environmentName;
+#endif
+#if NETCOREAPP3_0
+            webHost.Services.GetRequiredService<IWebHostEnvironment>().EnvironmentName = environmentName;
+#endif
         }
 
         public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
@@ -42,19 +34,19 @@ namespace Opw.HttpExceptions.AspNetCore
             return optionsMock;
         }
 
-        public static ExceptionMapper<TException> CreateExceptionMapper<TException>(bool includeExceptionDetails)
+        public static ProblemDetailsExceptionMapper<TException> CreateProblemDetailsExceptionMapper<TException>(bool includeExceptionDetails)
             where TException : Exception
         {
             var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
 
-            return new ExceptionMapper<TException>(optionsMock.Object);
+            return new ProblemDetailsExceptionMapper<TException>(optionsMock.Object);
         }
 
-        public static HttpResponseMapper CreateHttpResponseMapper(bool includeExceptionDetails)
+        public static ProblemDetailsHttpResponseMapper CreateProblemDetailsHttpResponseMapper(bool includeExceptionDetails)
         {
             var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
 
-            return new HttpResponseMapper(optionsMock.Object);
+            return new ProblemDetailsHttpResponseMapper(optionsMock.Object);
         }
     }
 }

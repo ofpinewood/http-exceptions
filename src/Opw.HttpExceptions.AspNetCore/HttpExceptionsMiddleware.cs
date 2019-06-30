@@ -18,7 +18,6 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         private readonly RequestDelegate _next;
         private readonly IOptions<HttpExceptionsOptions> _options;
-        private readonly IActionResultExecutor<ObjectResult> _executor;
         private readonly ILogger<HttpExceptionsMiddleware> _logger;
 
         private static readonly ActionDescriptor _emptyActionDescriptor = new ActionDescriptor();
@@ -30,12 +29,10 @@ namespace Opw.HttpExceptions.AspNetCore
         public HttpExceptionsMiddleware(
             RequestDelegate next,
             IOptions<HttpExceptionsOptions> options,
-            IActionResultExecutor<ObjectResult> executor,
             ILogger<HttpExceptionsMiddleware> logger)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _executor = executor ?? throw new ArgumentNullException(nameof(executor));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -57,8 +54,11 @@ namespace Opw.HttpExceptions.AspNetCore
                     return;
                 }
 
-                if (TryCreateProblemDetailsResult(context, null, out var result))
-                    await ExecuteProblemDetailsResultAsync(context, result);
+                if (TryCreateActionResult(context, null, out var result))
+                {
+                    await ExecuteActionResultAsync(context, result);
+                    return;
+                }
 
                 _logger.LogError("The HttpExceptions middleware could not handle the exception.");
             }
@@ -72,9 +72,9 @@ namespace Opw.HttpExceptions.AspNetCore
 
                 try
                 {
-                    if (TryCreateProblemDetailsResult(context, ex, out var result))
+                    if (TryCreateActionResult(context, ex, out var actionResult))
                     {
-                        await ExecuteProblemDetailsResultAsync(context, result);
+                        await ExecuteActionResultAsync(context, actionResult);
                         return;
                     }
                 }
@@ -88,38 +88,31 @@ namespace Opw.HttpExceptions.AspNetCore
             }
         }
 
-        private bool TryCreateProblemDetailsResult(HttpContext context, Exception ex, out ProblemDetailsResult result)
+        private bool TryCreateActionResult(HttpContext context, Exception ex, out IStatusCodeActionResult actionResult)
         {
-            ProblemDetails problemDetails;
-            if (ex != null && _options.Value.TryMap(ex, context, out problemDetails))
-            {
-                result = new ProblemDetailsResult(problemDetails);
+            if (ex != null && _options.Value.TryMap(ex, context, out actionResult))
                 return true;
-            }
 
-            if (_options.Value.TryMap(context.Response, out problemDetails))
-            {
-                result = new ProblemDetailsResult(problemDetails);
+            if (_options.Value.TryMap(context.Response, out actionResult))
                 return true;
-            }
 
-            result = default;
+            actionResult = default;
             return false;
         }
 
-        private Task ExecuteProblemDetailsResultAsync(HttpContext context, ProblemDetailsResult result)
+        private Task ExecuteActionResultAsync(HttpContext context, IStatusCodeActionResult actionResult)
         {
             context.Response.Clear();
             // Make sure problem responses are never cached.
             context.Response.Headers.Append(HeaderNames.CacheControl, "no-cache, no-store, must-revalidate");
             context.Response.Headers.Append(HeaderNames.Pragma, "no-cache");
             context.Response.Headers.Append(HeaderNames.Expires, "0");
-            context.Response.StatusCode = result.StatusCode.Value;
+            context.Response.StatusCode = actionResult.StatusCode.Value;
 
             var routeData = context.GetRouteData() ?? _emptyRouteData;
             var actionContext = new ActionContext(context, routeData, _emptyActionDescriptor);
 
-            return _executor.ExecuteAsync(actionContext, result);
+            return actionResult.ExecuteResultAsync(actionContext);
         }
     }
 }

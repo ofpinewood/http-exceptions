@@ -22,10 +22,16 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: gittools.gitversion.gitversion-task.GitVersion@3
+- task: gittools.gitversion.gitversion-task.GitVersion@4
   displayName: GitVersion
   inputs:
     updateAssemblyInfo: true
+
+# https://dotnet.microsoft.com/download/dotnet-core/3.0
+- task: DotNetCoreInstaller@0
+  displayName: 'Install .Net Core 3.0 (preview)'
+  inputs:
+    version: '3.0.100-preview6-012264'
 
 - task: DotNetCoreCLI@2
   displayName: Build
@@ -40,7 +46,7 @@ steps:
     projects: |
       **/tests/*.Tests/*.csproj
       **/tests/*.IntegrationTests/*.csproj
-    arguments: '--configuration $(buildConfiguration) --no-build --filter Category!=IntegrationTest /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*"'
+    arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*%2c[*.*Tests]*"'
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
@@ -49,7 +55,8 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
-    versioningScheme: byBuildNumber
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
@@ -57,7 +64,8 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
-    versioningScheme: byBuildNumber
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
 - task: NuGetCommand@2
   displayName: NuGet Push
@@ -66,7 +74,8 @@ steps:
     command: push
     nuGetFeedType: external
     publishFeedCredentials: NuGet
-    versioningScheme: byBuildNumber
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
