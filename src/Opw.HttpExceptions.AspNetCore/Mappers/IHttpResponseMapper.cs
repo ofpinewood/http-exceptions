@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Opw.HttpExceptions.AspNetCore.Mappers
 {
@@ -20,17 +20,17 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         bool CanMap(int status);
 
         /// <summary>
-        /// Maps the HTTP response error to ProblemDetails.
+        /// Maps the HTTP response error.
         /// </summary>
         /// <param name="response">The HTTP response.</param>
-        /// <param name="problemDetails">A ProblemDetails representation of the HTTP response error.</param>
-        bool TryMap(HttpResponse response, out ProblemDetails problemDetails);
+        /// <param name="actionResult">A representation of the HTTP response error as a IActionResult.</param>
+        bool TryMap(HttpResponse response, out IStatusCodeActionResult actionResult);
 
         /// <summary>
-        /// Creates and returns a ProblemDetails representation of the HTTP response error.
+        /// Creates and returns a representation of the HTTP response error as a IActionResult.
         /// </summary>
         /// <param name="response">The HTTP response.</param>
-        /// <returns>A ProblemDetails representation of the HTTP response error.</returns>
-        ProblemDetails Map(HttpResponse response);
+        /// <returns>A representation of the HTTP response error as a IActionResult.</returns>
+        IStatusCodeActionResult Map(HttpResponse response);
     }
 }

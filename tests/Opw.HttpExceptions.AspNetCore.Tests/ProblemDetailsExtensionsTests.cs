@@ -12,9 +12,12 @@ namespace Opw.HttpExceptions.AspNetCore
         public void TryGetExceptionDetails_Should_ReturnExceptionDetails()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
-            var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
+            var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeTrue();
             exceptionDetails.Should().NotBeNull();
@@ -26,9 +29,12 @@ namespace Opw.HttpExceptions.AspNetCore
         public void TryGetExceptionDetails_Should_ReturnFalse()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(false);
-            var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
+            var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeFalse();
             exceptionDetails.Should().BeNull();

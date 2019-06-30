@@ -20,12 +20,15 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         [Fact]
         public void Map_Should_ReturnProblemDetails()
         {
-            var problemDetails = _mapper.Map(new ApplicationException(), new DefaultHttpContext());
+            var actionResult = _mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            problemDetails.Instance.Should().BeNull();
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
+            problemDetailsResult.Value.Instance.Should().BeNull();
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeFalse();
             exceptionDetails.Should().BeNull();
@@ -45,12 +48,15 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         public void Map_Should_ReturnProblemDetails_WithHelpLink()
         {
             var helpLink = "https://docs.microsoft.com/en-us/dotnet/api/system.exception.helplink?view=netcore-2.2";
-            var problemDetails = _mapper.Map(new ApplicationException { HelpLink = helpLink }, new DefaultHttpContext());
+            var actionResult = _mapper.Map(new ApplicationException { HelpLink = helpLink }, new DefaultHttpContext());
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            problemDetails.Instance.Should().Be(helpLink);
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
+            problemDetailsResult.Value.Instance.Should().Be(helpLink);
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeFalse();
             exceptionDetails.Should().BeNull();
@@ -60,12 +66,15 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         public void Map_Should_ReturnProblemDetails_WithExceptionDetails()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
-            var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
+            var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            problemDetails.Instance.Should().BeNull();
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
+            problemDetailsResult.Value.Instance.Should().BeNull();
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeTrue();
             exceptionDetails.Should().NotBeNull();

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net;
@@ -34,21 +35,21 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         /// <summary>
-        /// Maps the exception to ProblemDetails.
+        /// Maps the exception to a ProblemDetailsResult.
         /// </summary>
         /// <param name="exception">The exception to map.</param>
         /// <param name="context">The current HTTP context.</param>
-        /// <param name="problemDetails">A ProblemDetails representation of the exception.</param>
-        public virtual bool TryMap(Exception exception, HttpContext context, out ProblemDetails problemDetails)
+        /// <param name="actionResult">A representation of the exception as a ProblemDetailsResult.</param>
+        public virtual bool TryMap(Exception exception, HttpContext context, out IStatusCodeActionResult actionResult)
         {
-            problemDetails = default;
+            actionResult = default;
 
             if (!CanMap(exception.GetType()))
                 return false;
 
             try
             {
-                problemDetails = Map(exception, context);
+                actionResult = Map(exception, context);
                 return true;
             }
             catch
@@ -58,12 +59,12 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         /// <summary>
-        /// Creates and returns a ProblemDetails representation of the exception.
+        /// Creates and returns a representation of the exception as a ProblemDetailsResult.
         /// </summary>
         /// <param name="exception">The exception to map.</param>
         /// <param name="context">The HTTP context.</param>
-        /// <returns>A ProblemDetails representation of the exception.</returns>
-        public virtual ProblemDetails Map(Exception exception, HttpContext context)
+        /// <returns>A representation of the exception as a ProblemDetailsResult.</returns>
+        public virtual IStatusCodeActionResult Map(Exception exception, HttpContext context)
         {
             if (!(exception is TException ex))
                 throw new ArgumentOutOfRangeException(nameof(exception), exception, $"Exception is not of type {typeof(TException).Name}.");
@@ -80,7 +81,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             if (Options.Value.IncludeExceptionDetails(context))
                 problemDetails.Extensions.Add(nameof(ExceptionDetails).ToCamelCase(), new ExceptionDetails(exception));
 
-            return problemDetails;
+            return new ProblemDetailsResult(problemDetails);
         }
 
         /// <summary>

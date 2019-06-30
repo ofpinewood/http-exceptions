@@ -12,8 +12,10 @@ namespace Opw.HttpExceptions.AspNetCore
         [Fact]
         public void Constructor_Should_ConstructProblemDetailsResult()
         {
-            var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
-            var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
+            var problemDetails = new ProblemDetails
+            {
+                Status = (int)HttpStatusCode.InternalServerError
+            };
 
             var problemDetailsResult = new ProblemDetailsResult(problemDetails);
 
