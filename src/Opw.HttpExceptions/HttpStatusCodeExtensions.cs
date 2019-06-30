@@ -17,7 +17,6 @@ namespace Opw.HttpExceptions
 
             link = null;
             return false;
-            
         }
     }
 }
