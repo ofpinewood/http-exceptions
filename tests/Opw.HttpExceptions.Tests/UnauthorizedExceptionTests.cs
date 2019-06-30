@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new UnauthorizedException();
 
             exception.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.Unauthorized);
         }
     }
 }

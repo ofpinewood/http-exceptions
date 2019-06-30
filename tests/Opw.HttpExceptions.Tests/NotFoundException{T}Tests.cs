@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new NotFoundException<Product>();
 
             exception.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.NotFound);
         }
 
         private class Product

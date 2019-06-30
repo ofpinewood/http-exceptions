@@ -12,6 +12,7 @@ namespace Opw.HttpExceptions
             var exception = new UnsupportedMediaTypeException();
 
             exception.StatusCode.Should().Be(HttpStatusCode.UnsupportedMediaType);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.UnsupportedMediaType);
         }
     }
 }

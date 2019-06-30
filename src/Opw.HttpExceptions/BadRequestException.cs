@@ -14,6 +14,13 @@ namespace Opw.HttpExceptions
         public override HttpStatusCode StatusCode { get; } = HttpStatusCode.BadRequest;
 
         /// <summary>
+        /// Gets or sets a link to the help file associated with this exception.
+        /// For HttpExeptions a link to status code information https://tools.ietf.org/html/rfc7231.
+        /// </summary>
+        /// <returns>The Uniform Resource Name (URN) or Uniform Resource Locator (URL).</returns>
+        public override string HelpLink { get; set; } = ResponseStatusCodeLink.BadRequest;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BadRequestException"></see> class with status code BadRequest.
         /// </summary>
         public BadRequestException() : base() { }

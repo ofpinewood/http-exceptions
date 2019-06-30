@@ -13,6 +13,7 @@ namespace Opw.HttpExceptions
             var exception = new InvalidModelException("memberName", "error1", "error2");
 
             exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
             exception.Errors.Should().HaveCount(1);
         }
 
@@ -26,6 +27,7 @@ namespace Opw.HttpExceptions
             var exception = new InvalidModelException(errors);
 
             exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
             exception.Errors.Should().HaveCount(2);
         }
     }
