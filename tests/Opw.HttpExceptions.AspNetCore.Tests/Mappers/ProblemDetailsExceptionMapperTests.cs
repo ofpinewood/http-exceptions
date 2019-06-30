@@ -7,25 +7,28 @@ using Xunit;
 
 namespace Opw.HttpExceptions.AspNetCore.Mappers
 {
-    public class ExceptionMapperTests
+    public class ProblemDetailsExceptionMapperTests
     {
-        private readonly ExposeProtectedExceptionMapper _mapper;
+        private readonly ExposeProtectedProblemDetailsExceptionMapper _mapper;
 
-        public ExceptionMapperTests()
+        public ProblemDetailsExceptionMapperTests()
         {
             var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false);
-            _mapper = new ExposeProtectedExceptionMapper(optionsMock.Object);
+            _mapper = new ExposeProtectedProblemDetailsExceptionMapper(optionsMock.Object);
         }
 
         [Fact]
         public void Map_Should_ReturnProblemDetails()
         {
-            var problemDetails = _mapper.Map(new ApplicationException(), new DefaultHttpContext());
+            var actionResult = _mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            problemDetails.Instance.Should().BeNull();
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
+            problemDetailsResult.Value.Instance.Should().BeNull();
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeFalse();
             exceptionDetails.Should().BeNull();
@@ -34,7 +37,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         [Fact]
         public void Map_Should_ReturnThrowArgumentOutOfRangeException_ForInvalidExceptionType()
         {
-            var mapper = new ExceptionMapper<ApplicationException>(TestHelper.CreateHttpExceptionsOptionsMock(false).Object);
+            var mapper = new ProblemDetailsExceptionMapper<ApplicationException>(TestHelper.CreateHttpExceptionsOptionsMock(false).Object);
 
             Action action = () => mapper.Map(new NotSupportedException(), new DefaultHttpContext());
 
@@ -45,12 +48,15 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         public void Map_Should_ReturnProblemDetails_WithHelpLink()
         {
             var helpLink = "https://docs.microsoft.com/en-us/dotnet/api/system.exception.helplink?view=netcore-2.2";
-            var problemDetails = _mapper.Map(new ApplicationException { HelpLink = helpLink }, new DefaultHttpContext());
+            var actionResult = _mapper.Map(new ApplicationException { HelpLink = helpLink }, new DefaultHttpContext());
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            problemDetails.Instance.Should().Be(helpLink);
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
+            problemDetailsResult.Value.Instance.Should().Be(helpLink);
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeFalse();
             exceptionDetails.Should().BeNull();
@@ -59,13 +65,16 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         [Fact]
         public void Map_Should_ReturnProblemDetails_WithExceptionDetails()
         {
-            var mapper = TestHelper.CreateExceptionMapper<Exception>(true);
-            var problemDetails = mapper.Map(new ApplicationException(), new DefaultHttpContext());
+            var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
+            var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.InternalServerError);
-            problemDetails.Instance.Should().BeNull();
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
+            problemDetailsResult.Value.Instance.Should().BeNull();
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeTrue();
             exceptionDetails.Should().NotBeNull();
@@ -139,9 +148,9 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             result.Should().Be("error:divide-by-zero");
         }
 
-        private class ExposeProtectedExceptionMapper : ExceptionMapper<Exception>
+        private class ExposeProtectedProblemDetailsExceptionMapper : ProblemDetailsExceptionMapper<Exception>
         {
-            public ExposeProtectedExceptionMapper(IOptions<HttpExceptionsOptions> options) : base(options) { }
+            public ExposeProtectedProblemDetailsExceptionMapper(IOptions<HttpExceptionsOptions> options) : base(options) { }
 
             public new string MapDetail(Exception exception, HttpContext context)
             {

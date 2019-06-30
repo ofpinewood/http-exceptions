@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net;
@@ -9,7 +10,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
     /// <summary>
     /// Default mapper for mapping HTTP response errors to ProblemDetails.
     /// </summary>
-    public class HttpResponseMapper : IHttpResponseMapper
+    public class ProblemDetailsHttpResponseMapper : IHttpResponseMapper
     {
         /// <summary>
         /// HttpExceptions options.
@@ -24,7 +25,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <summary>
         /// Initializes the HttpResponseMapper.
         /// </summary>
-        public HttpResponseMapper(IOptions<HttpExceptionsOptions> options)
+        public ProblemDetailsHttpResponseMapper(IOptions<HttpExceptionsOptions> options)
         {
             Options = options;
         }
@@ -39,20 +40,20 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         /// <summary>
-        /// Maps the HTTP response error to ProblemDetails.
+        /// Maps the HTTP response error to a ProblemDetailsResult.
         /// </summary>
         /// <param name="response">The HTTP response.</param>
-        /// <param name="problemDetails">A ProblemDetails representation of the HTTP response error.</param>
-        public bool TryMap(HttpResponse response, out ProblemDetails problemDetails)
+        /// <param name="actionResult">A representation of the HTTP response error as a ProblemDetailsResult.</param>
+        public bool TryMap(HttpResponse response, out IStatusCodeActionResult actionResult)
         {
-            problemDetails = default;
+            actionResult = default;
 
             if (!CanMap(response.StatusCode))
                 return false;
 
             try
             {
-                problemDetails = Map(response);
+                actionResult = Map(response);
                 return true;
             }
             catch
@@ -62,11 +63,11 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         /// <summary>
-        /// Creates and returns a ProblemDetails representation of the HTTP response error.
+        /// Creates and returns a representation of the HTTP response error as a ProblemDetailsResult.
         /// </summary>
         /// <param name="response">The HTTP response.</param>
-        /// <returns>A ProblemDetails representation of the response error.</returns>
-        public ProblemDetails Map(HttpResponse response)
+        /// <returns>A representation of the response error as a ProblemDetailsResult.</returns>
+        public IStatusCodeActionResult Map(HttpResponse response)
         {
             if (!CanMap(response.StatusCode))
                 throw new ArgumentOutOfRangeException(nameof(response), response, $"HttpResponse status is not {Status}.");
@@ -80,7 +81,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
                 Instance = MapInstance(response)
             };
 
-            return problemDetails;
+            return new ProblemDetailsResult(problemDetails);
         }
 
         /// <summary>

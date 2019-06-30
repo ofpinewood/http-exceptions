@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System;
 
 namespace Opw.HttpExceptions.AspNetCore.Mappers
@@ -16,19 +16,19 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         bool CanMap(Type type);
 
         /// <summary>
-        /// Maps the exception to ProblemDetails.
+        /// Maps the exception.
         /// </summary>
         /// <param name="exception">The exception to map.</param>
         /// <param name="context">The HTTP context.</param>
-        /// <param name="problemDetails">A ProblemDetails representation of the exception.</param>
-        bool TryMap(Exception exception, HttpContext context, out ProblemDetails problemDetails);
+        /// <param name="actionResult">A representation of the exception as a IActionResult.</param>
+        bool TryMap(Exception exception, HttpContext context, out IStatusCodeActionResult actionResult);
 
         /// <summary>
-        /// Creates and returns a ProblemDetails representation of the exception.
+        /// Creates and returns a representation of the exception as a IActionResult.
         /// </summary>
         /// <param name="exception">The exception to map.</param>
         /// <param name="context">The HTTP context.</param>
-        /// <returns>A ProblemDetails representation of the exception.</returns>
-        ProblemDetails Map(Exception exception, HttpContext context);
+        /// <returns>A representation of the exception as a IActionResult.</returns>
+        IStatusCodeActionResult Map(Exception exception, HttpContext context);
     }
 }

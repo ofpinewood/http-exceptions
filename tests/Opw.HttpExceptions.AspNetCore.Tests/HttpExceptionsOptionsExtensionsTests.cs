@@ -13,8 +13,8 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             var options = new HttpExceptionsOptions();
 
-            options.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
-            options.ExceptionMapper<HttpException, ExceptionMapper<HttpException>>();
+            options.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
+            options.ExceptionMapper<HttpException, ProblemDetailsExceptionMapper<HttpException>>();
 
             options.ExceptionMapperDescriptors.Should().HaveCount(2);
         }
@@ -24,11 +24,11 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             var options = new HttpExceptionsOptions();
 
-            options.ExceptionMapper<Exception, ExceptionMapper<Exception>>();
-            options.ExceptionMapper<Exception, TestExceptionMapper>();
+            options.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
+            options.ExceptionMapper<Exception, TestProblemDetailsExceptionMapper>();
 
             options.ExceptionMapperDescriptors.Should().HaveCount(1);
-            options.ExceptionMapperDescriptors.First().Value.Type.Should().Be<TestExceptionMapper>();
+            options.ExceptionMapperDescriptors.First().Value.Type.Should().Be<TestProblemDetailsExceptionMapper>();
         }
 
         [Fact]
@@ -36,8 +36,8 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             var options = new HttpExceptionsOptions();
 
-            options.HttpResponseMapper<TestHttpResponseMapper>(500);
-            options.HttpResponseMapper<HttpResponseMapper>();
+            options.HttpResponseMapper<TestProblemDetailsHttpResponseMapper>(500);
+            options.HttpResponseMapper<ProblemDetailsHttpResponseMapper>();
 
             options.HttpResponseMapperDescriptors.Should().HaveCount(2);
         }
@@ -47,11 +47,11 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             var options = new HttpExceptionsOptions();
 
-            options.HttpResponseMapper<HttpResponseMapper>(500);
-            options.HttpResponseMapper<TestHttpResponseMapper>(500);
+            options.HttpResponseMapper<ProblemDetailsHttpResponseMapper>(500);
+            options.HttpResponseMapper<TestProblemDetailsHttpResponseMapper>(500);
 
             options.HttpResponseMapperDescriptors.Should().HaveCount(1);
-            options.HttpResponseMapperDescriptors.First().Value.Type.Should().Be<TestHttpResponseMapper>();
+            options.HttpResponseMapperDescriptors.First().Value.Type.Should().Be<TestProblemDetailsHttpResponseMapper>();
         }
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
 using System.Collections.Generic;
@@ -56,27 +56,27 @@ namespace Opw.HttpExceptions.AspNetCore
         /// </summary>
         public HttpExceptionsOptions() { }
 
-        internal bool TryMap(Exception exception, HttpContext context, out ProblemDetails problemDetails)
+        internal bool TryMap(Exception exception, HttpContext context, out IStatusCodeActionResult actionResult)
         {
             foreach (var mapper in ExceptionMappers)
             {
-                if (mapper.TryMap(exception, context, out problemDetails))
+                if (mapper.TryMap(exception, context, out actionResult))
                     return true;
             }
 
-            problemDetails = default;
+            actionResult = default;
             return false;
         }
 
-        internal bool TryMap(HttpResponse response, out ProblemDetails problemDetails)
+        internal bool TryMap(HttpResponse response, out IStatusCodeActionResult actionResult)
         {
             foreach (var mapper in HttpResponseMappers)
             {
-                if (mapper.TryMap(response, out problemDetails))
+                if (mapper.TryMap(response, out actionResult))
                     return true;
             }
 
-            problemDetails = default;
+            actionResult = default;
             return false;
         }
     }

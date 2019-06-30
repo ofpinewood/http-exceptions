@@ -7,15 +7,15 @@ using Xunit;
 
 namespace Opw.HttpExceptions.AspNetCore.Mappers
 {
-    public class HttpResponseMapperTests
+    public class ProblemDetailsHttpResponseMapperTests
     {
-        private readonly ExposeProtectedHttpResponseMapper _mapper;
+        private readonly ExposeProtectedProblemDetailsHttpResponseMapper _mapper;
         private readonly HttpContext _unauthorizedHttpContext;
 
-        public HttpResponseMapperTests()
+        public ProblemDetailsHttpResponseMapperTests()
         {
             var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false);
-            _mapper = new ExposeProtectedHttpResponseMapper(optionsMock.Object);
+            _mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(optionsMock.Object);
 
             _unauthorizedHttpContext = new DefaultHttpContext();
             _unauthorizedHttpContext.Request.Path = "/api/test/unauthorized";
@@ -25,12 +25,15 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         [Fact]
         public void Map_Should_ReturnProblemDetails()
         {
-            var problemDetails = _mapper.Map(_unauthorizedHttpContext.Response);
+            var actionResult = _mapper.Map(_unauthorizedHttpContext.Response);
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.Unauthorized);
-            problemDetails.Instance.Should().Be("/api/test/unauthorized");
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
+            problemDetailsResult.Value.Instance.Should().Be("/api/test/unauthorized");
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeFalse();
             exceptionDetails.Should().BeNull();
@@ -49,12 +52,15 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         [Fact]
         public void Map_Should_ReturnProblemDetails_WithoutExceptionDetails()
         {
-            var mapper = TestHelper.CreateHttpResponseMapper(true);
-            var problemDetails = mapper.Map(_unauthorizedHttpContext.Response);
+            var mapper = TestHelper.CreateProblemDetailsHttpResponseMapper(true);
+            var actionResult = mapper.Map(_unauthorizedHttpContext.Response);
 
-            problemDetails.ShouldNotBeNull(HttpStatusCode.Unauthorized);
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetails.TryGetExceptionDetails(out var exceptionDetails);
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
 
             result.Should().BeFalse();
             exceptionDetails.Should().BeNull();
@@ -127,9 +133,9 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             result.Should().Be("error:unauthorized");
         }
 
-        private class ExposeProtectedHttpResponseMapper : HttpResponseMapper
+        private class ExposeProtectedProblemDetailsHttpResponseMapper : ProblemDetailsHttpResponseMapper
         {
-            public ExposeProtectedHttpResponseMapper(IOptions<HttpExceptionsOptions> options) : base(options) { }
+            public ExposeProtectedProblemDetailsHttpResponseMapper(IOptions<HttpExceptionsOptions> options) : base(options) { }
 
             public new string MapDetail(HttpResponse response)
             {
