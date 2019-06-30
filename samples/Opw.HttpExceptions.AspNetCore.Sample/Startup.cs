@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Opw.HttpExceptions.AspNetCore.Mappers;
+using Opw.HttpExceptions.AspNetCore.Sample.CustomErrors;
+using System;
 #if NETCOREAPP3_0
 using Microsoft.Extensions.Hosting;
 #endif
@@ -42,6 +45,11 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
 #endif
                 // This is a simplified version of the default behavior; only include exception details for 4xx and 5xx responses.
                 options.IsExceptionResponse = context => (context.Response.StatusCode >= 400 && context.Response.StatusCode < 600);
+
+                // custom exception mapper does not map to Problem Details
+                options.ExceptionMapper<FormatException, CustomExceptionMapper>();
+                // default exception mapper for mapping to Problem Details
+                options.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
             });
         }
 

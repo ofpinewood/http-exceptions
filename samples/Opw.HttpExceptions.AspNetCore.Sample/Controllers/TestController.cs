@@ -37,5 +37,11 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             return Ok("Authorized");
         }
+
+        [HttpGet("customError")]
+        public ActionResult<Product> ReturnCustomError()
+        {
+            throw new FormatException("Custom Error!");
+        }
     }
 }
