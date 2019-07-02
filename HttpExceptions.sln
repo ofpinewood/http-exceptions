@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Sol
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
-		test-netcoreapp2_2.ps1 = test-netcoreapp2_2.ps1
-		test-netcoreapp3_0.ps1 = test-netcoreapp3_0.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 HttpExceptions", "50 HttpExceptions", "{405C144D-41FE-4BDE-B9B2-F8364036C4AB}"
@@ -33,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.Sample.Tests", "tests\Opw.HttpExceptions.AspNetCore.Sample.Tests\Opw.HttpExceptions.AspNetCore.Sample.Tests.csproj", "{1681FE09-0F3E-4251-A90F-E3336412B4B5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Docs", "05 Docs", "{28E5D808-7B5D-4A1D-9F18-1626154DF1F9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{28E5D808-7B5D-4A1D-9F18-1626154DF1F9}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Opw.HttpExceptions.AspNetCore.md = docs\Opw.HttpExceptions.AspNetCore.md
 		docs\Opw.HttpExceptions.AspNetCore.Sample.md = docs\Opw.HttpExceptions.AspNetCore.Sample.md
@@ -42,6 +40,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Docs", "05 Docs", "{28E5
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.HttpExceptions.AspNetCore.IntegrationTests", "tests\Opw.HttpExceptions.AspNetCore.IntegrationTests\Opw.HttpExceptions.AspNetCore.IntegrationTests.csproj", "{0E9E2272-D022-419E-BA33-B07111C46F75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Tests", "02 Tests", "{32D785A2-1383-4B5D-9186-A2F9E59239D7}"
+	ProjectSection(SolutionItems) = preProject
+		tests\test-netcoreapp2_2.ps1 = tests\test-netcoreapp2_2.ps1
+		tests\test-netcoreapp3_0.ps1 = tests\test-netcoreapp3_0.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

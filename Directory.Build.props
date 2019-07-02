@@ -2,7 +2,7 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
 
-        <Authors>Of Pine Wood, Peter van den Hout</Authors>
+        <Authors>Of Pine Wood</Authors>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/ofpinewood/http-exceptions</PackageProjectUrl>
