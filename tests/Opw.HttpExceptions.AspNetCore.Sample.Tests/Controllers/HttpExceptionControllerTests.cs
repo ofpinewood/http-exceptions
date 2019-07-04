@@ -46,10 +46,10 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
                 var problemDetails = response.ShouldBeProblemDetails(statusCode);
                 problemDetails.Extensions.Should().HaveCount(1);
 
-                var exceptionDetails = problemDetails.ShouldHaveExceptionDetails();
-                exceptionDetails.Name.Should().Be(nameof(HttpException));
-                exceptionDetails.InnerException.Should().NotBeNull();
-                exceptionDetails.InnerException.Name.Should().Be(nameof(ApplicationException));
+                var exception = problemDetails.ShouldHaveException<HttpException>();
+                exception.Should().BeOfType<HttpException>();
+                exception.InnerException.Should().NotBeNull();
+                exception.InnerException.Should().BeOfType<ApplicationException>();
             }
 
             // reset the EnvironmentName back to production

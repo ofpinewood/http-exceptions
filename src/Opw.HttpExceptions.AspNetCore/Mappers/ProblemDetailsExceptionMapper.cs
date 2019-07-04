@@ -79,7 +79,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             };
 
             if (Options.Value.IncludeExceptionDetails(context))
-                problemDetails.Extensions.Add(nameof(ExceptionDetails).ToCamelCase(), new ExceptionDetails(exception));
+                problemDetails.Extensions.Add(nameof(Exception).ToCamelCase(), exception);
 
             return new ProblemDetailsResult(problemDetails);
         }

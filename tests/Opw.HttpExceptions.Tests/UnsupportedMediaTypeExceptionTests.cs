@@ -14,5 +14,14 @@ namespace Opw.HttpExceptions
             exception.StatusCode.Should().Be(HttpStatusCode.UnsupportedMediaType);
             exception.HelpLink.Should().Be(ResponseStatusCodeLink.UnsupportedMediaType);
         }
+
+        [Fact]
+        public void Serialization_Should_SerializeAndDeserialize()
+        {
+            var exception = SerializationHelper.SerializeDeserialize(new UnsupportedMediaTypeException());
+
+            exception.StatusCode.Should().Be(HttpStatusCode.UnsupportedMediaType);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.UnsupportedMediaType);
+        }
     }
 }

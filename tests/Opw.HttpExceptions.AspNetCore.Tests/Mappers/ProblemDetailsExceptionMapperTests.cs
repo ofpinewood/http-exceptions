@@ -28,10 +28,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().BeNull();
 
-            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
+            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
 
             result.Should().BeFalse();
-            exceptionDetails.Should().BeNull();
+            exception.Should().BeNull();
         }
 
         [Fact]
@@ -56,10 +56,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().Be(helpLink);
 
-            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
+            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
 
             result.Should().BeFalse();
-            exceptionDetails.Should().BeNull();
+            exception.Should().BeNull();
         }
 
         [Fact]
@@ -74,10 +74,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().BeNull();
 
-            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
+            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
 
             result.Should().BeTrue();
-            exceptionDetails.Should().NotBeNull();
+            exception.Should().NotBeNull();
         }
 
         [Fact]

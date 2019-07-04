@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -18,39 +19,41 @@ namespace Opw.HttpExceptions.AspNetCore
             return problemDetails;
         }
 
-        public static ExceptionDetails ShouldHaveExceptionDetails(this ProblemDetails problemDetails)
+        public static TException ShouldHaveException<TException>(this ProblemDetails problemDetails)
+            where TException : Exception
         {
-            problemDetails.TryGetExceptionDetails(out var exceptionDetails).Should().BeTrue();
+            problemDetails.TryGetException<TException>(out var exception).Should().BeTrue();
 
-            exceptionDetails.Should().NotBeNull();
-            exceptionDetails.Name.Should().NotBeNull();
-            exceptionDetails.Source.Should().NotBeNull();
-            exceptionDetails.StackTrace.Should().NotBeNull();
+            exception.Should().NotBeNull();
+            exception.Source.Should().NotBeNull();
+            exception.StackTrace.Should().NotBeNull();
 
-            return exceptionDetails;
+            return exception;
         }
 
-        public static bool TryGetExceptionDetails(this ProblemDetails problemDetails, out ExceptionDetails exceptionDetails)
+        public static bool TryGetException<TException>(this ProblemDetails problemDetails, out TException exception)
+            where TException : Exception
         {
-            if (problemDetails.Extensions.TryGetValue(nameof(ExceptionDetails).ToCamelCase(), out var value))
-                return value.TryParseExceptionDetails(out exceptionDetails);
+            if (problemDetails.Extensions.TryGetValue(nameof(Exception).ToCamelCase(), out var value))
+                return value.TryParseException(out exception);
 
-            exceptionDetails = null;
+            exception = null;
             return false;
         }
 
-        internal static bool TryParseExceptionDetails(this object value, out ExceptionDetails exceptionDetails)
+        internal static bool TryParseException<TException>(this object value, out TException exception)
+            where TException : Exception
         {
-            exceptionDetails = null;
+            exception = null;
 
 #pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
-            if (value is ExceptionDetails)
-                exceptionDetails = (ExceptionDetails)value;
+            if (value is TException)
+                exception = (TException)value;
             if (value is JToken)
-                exceptionDetails = ((JToken)value).ToObject<ExceptionDetails>();
+                exception = ((JToken)value).ToObject<TException>();
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
-            return exceptionDetails != null;
+            return exception != null;
         }
     }
 }
