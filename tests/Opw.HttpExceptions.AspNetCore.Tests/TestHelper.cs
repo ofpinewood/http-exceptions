@@ -21,10 +21,10 @@ namespace Opw.HttpExceptions.AspNetCore
 #endif
         }
 
-        public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
+        public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionInfo)
         {
             var services = new ServiceCollection();
-            services.AddHttpExceptions(options => options.IncludeExceptionDetails = (_) => includeExceptionDetails);
+            services.AddHttpExceptions(options => options.IncludeExceptionInfo = (_) => includeExceptionInfo);
             
             var serviceProvider = services.BuildServiceProvider();
 
@@ -34,17 +34,17 @@ namespace Opw.HttpExceptions.AspNetCore
             return optionsMock;
         }
 
-        public static ProblemDetailsExceptionMapper<TException> CreateProblemDetailsExceptionMapper<TException>(bool includeExceptionDetails)
+        public static ProblemDetailsExceptionMapper<TException> CreateProblemDetailsExceptionMapper<TException>(bool includeExceptionInfo)
             where TException : Exception
         {
-            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
+            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionInfo);
 
             return new ProblemDetailsExceptionMapper<TException>(optionsMock.Object);
         }
 
-        public static ProblemDetailsHttpResponseMapper CreateProblemDetailsHttpResponseMapper(bool includeExceptionDetails)
+        public static ProblemDetailsHttpResponseMapper CreateProblemDetailsHttpResponseMapper(bool includeExceptionInfo)
         {
-            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
+            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionInfo);
 
             return new ProblemDetailsHttpResponseMapper(optionsMock.Object);
         }

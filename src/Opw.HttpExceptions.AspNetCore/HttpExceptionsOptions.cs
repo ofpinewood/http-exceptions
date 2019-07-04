@@ -20,9 +20,9 @@ namespace Opw.HttpExceptions.AspNetCore
         public bool SuppressInvalidModelStateResponseFactoryOverride { get; set; } = false;
 
         /// <summary>
-        /// Include exception details, default behavior is only to include exception details in a development environment.
+        /// Include exception info, default behavior is only to include exception info in a development environment.
         /// </summary>
-        public Func<HttpContext, bool> IncludeExceptionDetails { get; set; }
+        public Func<HttpContext, bool> IncludeExceptionInfo { get; set; }
 
         /// <summary>
         /// Is the response an exception and should it be handled by the HttpExceptions middleware.

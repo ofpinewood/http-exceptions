@@ -28,10 +28,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().BeNull();
 
-            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
+            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
 
             result.Should().BeFalse();
-            exception.Should().BeNull();
+            exceptionInfo.Should().BeNull();
         }
 
         [Fact]
@@ -56,14 +56,14 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().Be(helpLink);
 
-            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
+            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
 
             result.Should().BeFalse();
-            exception.Should().BeNull();
+            exceptionInfo.Should().BeNull();
         }
 
         [Fact]
-        public void Map_Should_ReturnProblemDetails_WithExceptionDetails()
+        public void Map_Should_ReturnProblemDetails_WithExceptionInfo()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
             var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
@@ -74,10 +74,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().BeNull();
 
-            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
+            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
 
             result.Should().BeTrue();
-            exception.Should().NotBeNull();
+            exceptionInfo.Should().NotBeNull();
         }
 
         [Fact]

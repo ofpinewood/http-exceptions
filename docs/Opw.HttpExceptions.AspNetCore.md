@@ -41,14 +41,14 @@ public void Configure(IApplicationBuilder app)
 ## Configuring options
 You can extend or override the default behavior through the configuration options, `HttpExceptionsOptions`.
 
-### Include exception details
-Whether or not to include the full exception details in the response. The default behavior is only to include exception details in a development environment.
+### Include exception info
+Whether or not to include the full exception info in the response. The default behavior is only to include exception info in a development environment.
 
 ``` csharp
 services.AddHttpExceptions(options =>
 {
-    // This is the same as the default behavior; only include exception details in a development environment.
-    options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+    // This is the same as the default behavior; only include exception info in a development environment.
+    options.IncludeExceptionInfo = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
 });
 ```
 
@@ -58,7 +58,7 @@ Is the response an exception and should it be handled by the HttpExceptions midd
 ``` csharp
 services.AddHttpExceptions(options =>
 {
-    // This is a simplified version of the default behavior; only include exception details for 4xx and 5xx responses.
+    // This is a simplified version of the default behavior; only include exception info for 4xx and 5xx responses.
     options.IsExceptionResponse = context => (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600);
 });
 ```

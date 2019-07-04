@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore
     public class ProblemDetailsExtensionsTests
     {
         [Fact]
-        public void TryGetExceptionDetails_Should_ReturnExceptionDetails()
+        public void TryGetExceptionInfo_Should_ReturnExceptionInfo()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
             var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
@@ -17,16 +17,16 @@ namespace Opw.HttpExceptions.AspNetCore
             actionResult.Should().BeOfType<ProblemDetailsResult>();
             var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
+            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
 
             result.Should().BeTrue();
-            exception.Should().NotBeNull();
-            exception.Should().BeOfType<ApplicationException>();
-            exception.Message.Should().NotBeNull();
+            exceptionInfo.Should().NotBeNull();
+            exceptionInfo.Type.Should().Be(nameof(ApplicationException));
+            exceptionInfo.Message.Should().NotBeNull();
         }
 
         [Fact]
-        public void TryGetExceptionDetails_Should_ReturnFalse()
+        public void TryGetExceptionInfo_Should_ReturnFalse()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(false);
             var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
@@ -34,32 +34,32 @@ namespace Opw.HttpExceptions.AspNetCore
             actionResult.Should().BeOfType<ProblemDetailsResult>();
             var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
+            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
 
             result.Should().BeFalse();
-            exception.Should().BeNull();
+            exceptionInfo.Should().BeNull();
         }
 
         [Fact]
-        public void TryParseExceptionDetails_Should_ReturnTrue_ForTypeOfExceptionDetails()
+        public void TryParseExceptionInfo_Should_ReturnTrue_ForTypeOfExceptionInfo()
         {
-            var exception = new ApplicationException("Error!", new ApplicationException());
+            var exception = new ExceptionInfo(new ApplicationException());
 
-            var result = exception.TryParseException<Exception>(out var parsedException);
+            var result = exception.TryParseExceptionInfo(out var parsedExceptionInfo);
 
             result.Should().BeTrue();
-            parsedException.Should().NotBeNull();
+            parsedExceptionInfo.Should().NotBeNull();
         }
 
         [Fact]
-        public void TryParseExceptionDetails_Should_ReturnTrue_ForTypeOfJToken()
+        public void TryParseExceptionInfo_Should_ReturnTrue_ForTypeOfJToken()
         {
-            var exception = JToken.FromObject(new ApplicationException("Error!", new ApplicationException()));
+            var exception = JToken.FromObject(new ExceptionInfo(new ApplicationException()));
 
-            var result = exception.TryParseException<Exception>(out var parsedException);
+            var result = exception.TryParseExceptionInfo(out var parsedExceptionInfo);
 
             result.Should().BeTrue();
-            parsedException.Should().NotBeNull();
+            parsedExceptionInfo.Should().NotBeNull();
         }
     }
 }

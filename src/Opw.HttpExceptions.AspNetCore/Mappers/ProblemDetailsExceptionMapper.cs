@@ -78,8 +78,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
                 Instance = MapInstance(ex, context)
             };
 
-            if (Options.Value.IncludeExceptionDetails(context))
-                problemDetails.Extensions.Add(nameof(Exception).ToCamelCase(), exception);
+            if (Options.Value.IncludeExceptionInfo(context))
+                problemDetails.Extensions.Add(nameof(ExceptionInfo).ToCamelCase(), new ExceptionInfo(exception));
 
             return new ProblemDetailsResult(problemDetails);
         }

@@ -19,41 +19,38 @@ namespace Opw.HttpExceptions.AspNetCore
             return problemDetails;
         }
 
-        public static TException ShouldHaveException<TException>(this ProblemDetails problemDetails)
-            where TException : Exception
+        public static ExceptionInfo ShouldHaveExceptionInfo(this ProblemDetails problemDetails)
         {
-            problemDetails.TryGetException<TException>(out var exception).Should().BeTrue();
+            problemDetails.TryGetExceptionInfo(out var exceptionInfo).Should().BeTrue();
 
-            exception.Should().NotBeNull();
-            exception.Source.Should().NotBeNull();
-            exception.StackTrace.Should().NotBeNull();
+            exceptionInfo.Should().NotBeNull();
+            exceptionInfo.Source.Should().NotBeNull();
+            exceptionInfo.StackTrace.Should().NotBeNull();
 
-            return exception;
+            return exceptionInfo;
         }
 
-        public static bool TryGetException<TException>(this ProblemDetails problemDetails, out TException exception)
-            where TException : Exception
+        public static bool TryGetExceptionInfo(this ProblemDetails problemDetails, out ExceptionInfo exceptionInfo)
         {
-            if (problemDetails.Extensions.TryGetValue(nameof(Exception).ToCamelCase(), out var value))
-                return value.TryParseException(out exception);
+            if (problemDetails.Extensions.TryGetValue(nameof(ExceptionInfo).ToCamelCase(), out var value))
+                return value.TryParseExceptionInfo(out exceptionInfo);
 
-            exception = null;
+            exceptionInfo = null;
             return false;
         }
 
-        internal static bool TryParseException<TException>(this object value, out TException exception)
-            where TException : Exception
+        public static bool TryParseExceptionInfo(this object value, out ExceptionInfo exceptionInfo)
         {
-            exception = null;
+            exceptionInfo = null;
 
 #pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
-            if (value is TException)
-                exception = (TException)value;
+            if (value is ExceptionInfo)
+                exceptionInfo = (ExceptionInfo)value;
             if (value is JToken)
-                exception = ((JToken)value).ToObject<TException>();
+                exceptionInfo = ((JToken)value).ToObject<ExceptionInfo>();
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
-            return exception != null;
+            return exceptionInfo != null;
         }
     }
 }

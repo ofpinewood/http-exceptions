@@ -33,10 +33,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
             problemDetailsResult.Value.Instance.Should().Be("/api/test/unauthorized");
 
-            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
+            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
 
             result.Should().BeFalse();
-            exception.Should().BeNull();
+            exceptionInfo.Should().BeNull();
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void Map_Should_ReturnProblemDetails_WithoutExceptionDetails()
+        public void Map_Should_ReturnProblemDetails_WithoutExceptionInfo()
         {
             var mapper = TestHelper.CreateProblemDetailsHttpResponseMapper(true);
             var actionResult = mapper.Map(_unauthorizedHttpContext.Response);
@@ -60,10 +60,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
 
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
 
-            var result = problemDetailsResult.Value.TryGetException<Exception>(out var exception);
+            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
 
             result.Should().BeFalse();
-            exception.Should().BeNull();
+            exceptionInfo.Should().BeNull();
         }
 
         [Fact]
