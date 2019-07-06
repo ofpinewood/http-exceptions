@@ -16,7 +16,7 @@ namespace Opw.HttpExceptions
             exception.Type.Should().Be("ApplicationException");
             exception.Message.Should().Be("ApplicationException");
             exception.InnerException.Type.Should().StartWith("ArgumentNullException");
-            exception.InnerException["ParamName"].Should().Be("param");
+            exception.InnerException.Data["ParamName"].Should().Be("param");
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace Opw.HttpExceptions
             exception.Type.Should().Be("ApplicationException");
             exception.Message.Should().Be("ApplicationException");
             exception.InnerException.Type.Should().StartWith("ArgumentNullException");
-            exception.InnerException["ParamName"].Should().Be("param");
+            exception.InnerException.Data["ParamName"].Should().Be("param");
         }
     }
 }
