@@ -36,14 +36,14 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
             services.AddHttpExceptions(options =>
             {
 #if NETCOREAPP2_2
-                // This is the same as the default behavior; only include exception info in a development environment.
-                options.IncludeExceptionInfo = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+                // This is the same as the default behavior; only include exception details in a development environment.
+                options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
 #endif
 #if NETCOREAPP3_0
-                // This is the same as the default behavior; only include exception info in a development environment.
-                options.IncludeExceptionInfo = context => context.RequestServices.GetRequiredService<IWebHostEnvironment>().EnvironmentName == Environments.Development;
+                // This is the same as the default behavior; only include exception details in a development environment.
+                options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IWebHostEnvironment>().EnvironmentName == Environments.Development;
 #endif
-                // This is a simplified version of the default behavior; only include exception info for 4xx and 5xx responses.
+                // This is a simplified version of the default behavior; only map exceptions for 4xx and 5xx responses.
                 options.IsExceptionResponse = context => (context.Response.StatusCode >= 400 && context.Response.StatusCode < 600);
 
                 // custom exception mapper does not map to Problem Details

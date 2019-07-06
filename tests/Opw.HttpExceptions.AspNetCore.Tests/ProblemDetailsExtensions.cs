@@ -1,7 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -19,38 +18,38 @@ namespace Opw.HttpExceptions.AspNetCore
             return problemDetails;
         }
 
-        public static ExceptionInfo ShouldHaveExceptionInfo(this ProblemDetails problemDetails)
+        public static SerializableException ShouldHaveExceptionDetails(this ProblemDetails problemDetails)
         {
-            problemDetails.TryGetExceptionInfo(out var exceptionInfo).Should().BeTrue();
+            problemDetails.TryGetExceptionDetails(out var exception).Should().BeTrue();
 
-            exceptionInfo.Should().NotBeNull();
-            exceptionInfo.Source.Should().NotBeNull();
-            exceptionInfo.StackTrace.Should().NotBeNull();
+            exception.Should().NotBeNull();
+            exception.Source.Should().NotBeNull();
+            exception.StackTrace.Should().NotBeNull();
 
-            return exceptionInfo;
+            return exception;
         }
 
-        public static bool TryGetExceptionInfo(this ProblemDetails problemDetails, out ExceptionInfo exceptionInfo)
+        public static bool TryGetExceptionDetails(this ProblemDetails problemDetails, out SerializableException exception)
         {
-            if (problemDetails.Extensions.TryGetValue(nameof(ExceptionInfo).ToCamelCase(), out var value))
-                return value.TryParseExceptionInfo(out exceptionInfo);
+            if (problemDetails.Extensions.TryGetValue(nameof(ProblemDetailsExtensionMembers.ExceptionDetails).ToCamelCase(), out var value))
+                return value.TryParseSerializableException(out exception);
 
-            exceptionInfo = null;
+            exception = null;
             return false;
         }
 
-        public static bool TryParseExceptionInfo(this object value, out ExceptionInfo exceptionInfo)
+        public static bool TryParseSerializableException(this object value, out SerializableException exception)
         {
-            exceptionInfo = null;
+            exception = null;
 
 #pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
-            if (value is ExceptionInfo)
-                exceptionInfo = (ExceptionInfo)value;
+            if (value is SerializableException)
+                exception = (SerializableException)value;
             if (value is JToken)
-                exceptionInfo = ((JToken)value).ToObject<ExceptionInfo>();
+                exception = ((JToken)value).ToObject<SerializableException>();
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
-            return exceptionInfo != null;
+            return exception != null;
         }
     }
 }

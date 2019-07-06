@@ -34,7 +34,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         }
 
         [Fact]
-        public async Task Throw_Should_ReturnProblemDetails_WithExceptionInfo()
+        public async Task Throw_Should_ReturnProblemDetails_WithExceptionDetails()
         {
             TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Development");
             _client = _factory.CreateClient();
@@ -46,13 +46,13 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
                 var problemDetails = response.ShouldBeProblemDetails(statusCode);
                 problemDetails.Extensions.Should().HaveCount(1);
 
-                var exceptionInfo = problemDetails.ShouldHaveExceptionInfo();
-                exceptionInfo.Type.Should().Be(nameof(HttpException));
-                exceptionInfo.InnerException.Should().NotBeNull();
+                var exception = problemDetails.ShouldHaveExceptionDetails();
+                exception.Type.Should().Be(nameof(HttpException));
+                exception.InnerException.Should().NotBeNull();
 
-                var result = exceptionInfo.InnerException.TryParseExceptionInfo(out var innerExceptionInfo);
+                var result = exception.InnerException.TryParseSerializableException(out var innerException);
                 result.Should().BeTrue();
-                innerExceptionInfo.Type.Should().Be(nameof(ApplicationException));
+                innerException.Type.Should().Be(nameof(ApplicationException));
             }
 
             // reset the EnvironmentName back to production

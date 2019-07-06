@@ -172,20 +172,20 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
-        public void Configure_Should_ConfigureIncludeExceptionInfoFunc()
+        public void Configure_Should_ConfigureIncludeExceptionDetailsFunc()
         {
             var services = new ServiceCollection();
-            services.AddHttpExceptions(o => o.IncludeExceptionInfo = (context) => context != null );
+            services.AddHttpExceptions(o => o.IncludeExceptionDetails = (context) => context != null );
 
             var serviceProvider = services.BuildServiceProvider();
             var options = serviceProvider.GetRequiredService<IOptions<HttpExceptionsOptions>>();
 
-            options.Value.IncludeExceptionInfo(new DefaultHttpContext()).Should().Be(true);
-            options.Value.IncludeExceptionInfo(null).Should().Be(false);
+            options.Value.IncludeExceptionDetails(new DefaultHttpContext()).Should().Be(true);
+            options.Value.IncludeExceptionDetails(null).Should().Be(false);
         }
 
         [Fact]
-        public void Configure_Should_ConfigureDefaultIncludeExceptionInfoFunc()
+        public void Configure_Should_ConfigureDefaultIncludeExceptionDetailsFunc()
         {
             var services = new ServiceCollection();
             services.AddHttpExceptions();
@@ -198,7 +198,7 @@ namespace Opw.HttpExceptions.AspNetCore
             serviceProviderMock.Setup(p => p.GetService(It.IsAny<Type>()));
             context.RequestServices = serviceProviderMock.Object;
 
-            Action action = () => options.Value.IncludeExceptionInfo(context);
+            Action action = () => options.Value.IncludeExceptionDetails(context);
 
             action.Should().Throw<InvalidOperationException>();
             serviceProviderMock.Verify(p => p.GetService(It.IsAny<Type>()), Times.Once());

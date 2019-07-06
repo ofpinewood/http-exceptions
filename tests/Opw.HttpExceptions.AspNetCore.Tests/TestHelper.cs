@@ -3,8 +3,6 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -21,10 +19,10 @@ namespace Opw.HttpExceptions.AspNetCore
 #endif
         }
 
-        public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionInfo)
+        public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
         {
             var services = new ServiceCollection();
-            services.AddHttpExceptions(options => options.IncludeExceptionInfo = (_) => includeExceptionInfo);
+            services.AddHttpExceptions(options => options.IncludeExceptionDetails = (_) => includeExceptionDetails);
             
             var serviceProvider = services.BuildServiceProvider();
 
@@ -34,17 +32,17 @@ namespace Opw.HttpExceptions.AspNetCore
             return optionsMock;
         }
 
-        public static ProblemDetailsExceptionMapper<TException> CreateProblemDetailsExceptionMapper<TException>(bool includeExceptionInfo)
+        public static ProblemDetailsExceptionMapper<TException> CreateProblemDetailsExceptionMapper<TException>(bool includeExceptionDetails)
             where TException : Exception
         {
-            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionInfo);
+            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
 
             return new ProblemDetailsExceptionMapper<TException>(optionsMock.Object);
         }
 
-        public static ProblemDetailsHttpResponseMapper CreateProblemDetailsHttpResponseMapper(bool includeExceptionInfo)
+        public static ProblemDetailsHttpResponseMapper CreateProblemDetailsHttpResponseMapper(bool includeExceptionDetails)
         {
-            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionInfo);
+            var optionsMock = CreateHttpExceptionsOptionsMock(includeExceptionDetails);
 
             return new ProblemDetailsHttpResponseMapper(optionsMock.Object);
         }

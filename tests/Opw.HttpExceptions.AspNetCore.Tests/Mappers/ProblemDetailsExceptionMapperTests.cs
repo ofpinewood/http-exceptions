@@ -28,10 +28,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().BeNull();
 
-            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
 
             result.Should().BeFalse();
-            exceptionInfo.Should().BeNull();
+            exception.Should().BeNull();
         }
 
         [Fact]
@@ -56,14 +56,14 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().Be(helpLink);
 
-            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
 
             result.Should().BeFalse();
-            exceptionInfo.Should().BeNull();
+            exception.Should().BeNull();
         }
 
         [Fact]
-        public void Map_Should_ReturnProblemDetails_WithExceptionInfo()
+        public void Map_Should_ReturnProblemDetails_WithExceptionDetails()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
             var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
@@ -74,10 +74,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.InternalServerError);
             problemDetailsResult.Value.Instance.Should().BeNull();
 
-            var result = problemDetailsResult.Value.TryGetExceptionInfo(out var exceptionInfo);
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
 
             result.Should().BeTrue();
-            exceptionInfo.Should().NotBeNull();
+            exception.Should().NotBeNull();
         }
 
         [Fact]

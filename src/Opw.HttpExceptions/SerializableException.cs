@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Opw.HttpExceptions
 {
     /// <summary>
-    /// A helper class for serializing exceptions.
+    /// Defines a serializable container for storing exception information.
     /// </summary>
-    public class ExceptionInfo : Dictionary<string, object>
+    [Serializable]
+    public class SerializableException : Dictionary<string, object>
     {
         /// <summary>
         /// The type name of the exception.
@@ -23,7 +25,7 @@ namespace Opw.HttpExceptions
         /// <summary>
         /// Gets the exception instance that caused the current exception.
         /// </summary>
-        public object InnerException => GetValue<object>(nameof(InnerException));
+        public SerializableException InnerException => GetValue<SerializableException>(nameof(InnerException));
 
         /// <summary>
         /// Gets or sets a link to the help file associated with this exception.
@@ -53,21 +55,21 @@ namespace Opw.HttpExceptions
         /// <summary>
         /// Constructor used when Json deserializing.
         /// </summary>
-        public ExceptionInfo() { }
+        public SerializableException() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionInfo"></see>.
+        /// Initializes a new instance of the <see cref="SerializableException"></see>.
         /// </summary>
         /// <param name="exception">The exception that needs serializing.</param>
-        public ExceptionInfo(Exception exception)
+        public SerializableException(Exception exception)
         {
             Add(nameof(Type), exception.GetType().Name);
 
             if (exception.InnerException != null)
-                Add(nameof(InnerException), new ExceptionInfo(exception.InnerException));
+                Add(nameof(InnerException), new SerializableException(exception.InnerException));
 
             var propertiesToExclude = new string[] {
-                Type,
+                nameof(Type),
                 nameof(InnerException),
                 nameof(exception.TargetSite)
             };
@@ -79,6 +81,15 @@ namespace Opw.HttpExceptions
                     Add(propertyInfo.Name, propertyInfo.GetValue(exception));
             }
         }
+
+        /// <summary>
+        /// Initializes a new instance of the exception class with serialized data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"></see> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext"></see> that contains contextual information about the source or destination.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="info">info</paramref> parameter is null.</exception>
+        /// <exception cref="SerializationException">The class name is null or <see cref="P:System.Exception.HResult"></see> is zero (0).</exception>
+        public SerializableException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         private T GetValue<T>(string key)
         {

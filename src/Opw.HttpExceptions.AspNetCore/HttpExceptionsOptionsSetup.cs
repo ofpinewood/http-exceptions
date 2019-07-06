@@ -32,8 +32,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <param name="options">The options instance to configure.</param>
         public void Configure(HttpExceptionsOptions options)
         {
-            if (options.IncludeExceptionInfo == null)
-                options.IncludeExceptionInfo = IncludeExceptionInfo;
+            if (options.IncludeExceptionDetails == null)
+                options.IncludeExceptionDetails = IncludeExceptionDetails;
 
             if (options.IsExceptionResponse == null)
                 options.IsExceptionResponse = IsExceptionResponse;
@@ -42,7 +42,7 @@ namespace Opw.HttpExceptions.AspNetCore
             ConfigureHttpResponseMappers(options);
         }
 
-        private static bool IncludeExceptionInfo(HttpContext context)
+        private static bool IncludeExceptionDetails(HttpContext context)
         {
 #if NETSTANDARD2_0
             return context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
