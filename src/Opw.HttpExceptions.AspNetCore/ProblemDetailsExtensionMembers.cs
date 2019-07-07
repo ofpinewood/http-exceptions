@@ -9,6 +9,11 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <summary>
         /// ExceptionDetails extension.
         /// </summary>
-        ExceptionDetails
+        ExceptionDetails,
+
+        /// <summary>
+        /// Validation errors extension.
+        /// </summary>
+        Errors
     }
 }

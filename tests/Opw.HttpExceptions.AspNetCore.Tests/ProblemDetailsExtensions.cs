@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -50,6 +51,29 @@ namespace Opw.HttpExceptions.AspNetCore
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
             return exception != null;
+        }
+
+        public static bool TryGetErrors(this ProblemDetails problemDetails, out IDictionary<string, object[]> errors)
+        {
+            if (problemDetails.Extensions.TryGetValue(nameof(ProblemDetailsExtensionMembers.Errors).ToCamelCase(), out var value))
+                return value.TryParseErrors(out errors);
+
+            errors = null;
+            return false;
+        }
+
+        public static bool TryParseErrors(this object value, out IDictionary<string, object[]> errors)
+        {
+            errors = null;
+
+#pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
+            if (value is IDictionary<string, object[]>)
+                errors = (IDictionary<string, object[]>)value;
+            if (value is JToken)
+                errors = ((JToken)value).ToObject<IDictionary<string, object[]>>();
+#pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
+
+            return errors != null;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Opw.HttpExceptions.AspNetCore
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest);
             problemDetails.Title.Should().Be("InvalidModel");
-            problemDetails.Extensions.Should().HaveCount(0);
+            problemDetails.Extensions.Should().HaveCount(1);
         }
 
         [Fact]

@@ -78,6 +78,9 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
                 Instance = MapInstance(ex, context)
             };
 
+            if (exception is IValidationErrorException validationErrorException)
+                problemDetails.Extensions.Add(nameof(ProblemDetailsExtensionMembers.Errors).ToCamelCase(), validationErrorException.GetErrors());
+
             if (Options.Value.IncludeExceptionDetails(context))
                 problemDetails.Extensions.Add(nameof(ProblemDetailsExtensionMembers.ExceptionDetails).ToCamelCase(), new SerializableException(exception));
 

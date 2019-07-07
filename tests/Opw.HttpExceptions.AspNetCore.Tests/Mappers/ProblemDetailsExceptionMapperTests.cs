@@ -2,6 +2,8 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Xunit;
 
@@ -78,6 +80,75 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
 
             result.Should().BeTrue();
             exception.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Map_Should_ReturnProblemDetails_WithValidationErrors_ForValidationErrorException()
+        {
+            var exception = new ValidationErrorException<string>("param", new[] { "error1", "error1" });
+
+            var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
+            var actionResult = mapper.Map(exception, new DefaultHttpContext());
+
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
+
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.BadRequest);
+            problemDetailsResult.Value.Instance.Should().Be(ResponseStatusCodeLink.BadRequest);
+
+            var result = problemDetailsResult.Value.TryGetErrors(out var errors);
+
+            result.Should().BeTrue();
+            errors.Should().NotBeNull();
+            errors.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void Map_Should_ReturnProblemDetails_WithValidationErrors2_ForValidationErrorException()
+        {
+            var errorsIn = new Dictionary<string, string[]>();
+            errorsIn.Add("memberName1", new[] { "error1", "error2" });
+            errorsIn.Add("memberName2", new[] { "error1", "error2" });
+            var exception = new ValidationErrorException<string>(errorsIn);
+
+            var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
+            var actionResult = mapper.Map(exception, new DefaultHttpContext());
+
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
+
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.BadRequest);
+            problemDetailsResult.Value.Instance.Should().Be(ResponseStatusCodeLink.BadRequest);
+
+            var result = problemDetailsResult.Value.TryGetErrors(out var errors);
+
+            result.Should().BeTrue();
+            errors.Should().NotBeNull();
+            errors.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void Map_Should_ReturnProblemDetails_WithValidationErrors2_ForValidationErrorException_WithComplexErrorObject()
+        {
+            var errorsIn = new Dictionary<string, ValidationResult[]>();
+            errorsIn.Add("memberName1", new[] { new ValidationResult("message", new[] { "memberName1" }) });
+            errorsIn.Add("memberName2", new[] { new ValidationResult("message", new[] { "memberName2" }) });
+            var exception = new ValidationErrorException<ValidationResult>(errorsIn);
+
+            var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
+            var actionResult = mapper.Map(exception, new DefaultHttpContext());
+
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
+
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.BadRequest);
+            problemDetailsResult.Value.Instance.Should().Be(ResponseStatusCodeLink.BadRequest);
+
+            var result = problemDetailsResult.Value.TryGetErrors(out var errors);
+
+            result.Should().BeTrue();
+            errors.Should().NotBeNull();
+            errors.Should().HaveCount(2);
         }
 
         [Fact]

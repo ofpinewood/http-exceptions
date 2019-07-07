@@ -91,7 +91,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             var response = await _client.PostAsync("test/product", product.ToJsonContent());
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.BadRequest);
-            problemDetails.Extensions.Should().HaveCount(0);
+            problemDetails.Extensions.Should().HaveCount(1);
         }
 
         [Fact]
