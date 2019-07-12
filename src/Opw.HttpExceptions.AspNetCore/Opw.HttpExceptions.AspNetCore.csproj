@@ -6,7 +6,7 @@
         <Description>Middleware and extensions for returning exceptions over HTTP, e.g. as ASP.NET Core Problem Details (RFC7807).</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.HttpExceptions.AspNetCore</PackageId>
-        <PackageTags>aspnetcore http exceptions RFC7807</PackageTags>
+        <PackageTags>aspnetcore http exceptions RFC7807 problemdetails problem details</PackageTags>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
