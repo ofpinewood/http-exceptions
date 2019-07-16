@@ -1,4 +1,6 @@
-# Return exceptions over HTTP
+# HttpExceptions <img src="http-exceptions-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
+
+## Return exceptions over HTTP
 [![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
@@ -9,7 +11,7 @@ But you are not limited to returning exception results as Problem Details, but y
 
 * [Opw.HttpExceptions.AspNetCore documentation](/docs/Opw.HttpExceptions.AspNetCore.md)
 
-# HttpExceptions
+## HttpExceptions
 [![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.svg)](https://www.nuget.org/packages/Opw.HttpExceptions/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
@@ -18,7 +20,7 @@ HTTP-specific exception classes that enable ASP.NET to generate exception inform
 
 * [Opw.HttpExceptions documentation](/docs/Opw.HttpExceptions.md)
 
-## Contributing
+### Contributing
 We accept fixes and features! Here are some resources to help you get started on how to contribute code or new content.
 
 * [Contributing](https://github.com/ofpinewood/http-exceptions/blob/master/CONTRIBUTING.md)
