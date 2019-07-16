@@ -6,7 +6,7 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/ofpinewood/http-exceptions</PackageProjectUrl>
-        <PackageIconUrl>https://github.com/ofpinewood/opw/blob/master/opw-logo-256x256-green.gif?raw=true</PackageIconUrl>
+        <PackageIconUrl>https://github.com/ofpinewood/http-exceptions/blob/master/http-exceptions-logo-256x256.gif?raw=true</PackageIconUrl>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/ofpinewood/http-exceptions</RepositoryUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
