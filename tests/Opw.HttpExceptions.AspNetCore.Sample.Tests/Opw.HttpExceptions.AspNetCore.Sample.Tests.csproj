@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
@@ -27,8 +27,8 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.0.0-preview6.19307.2" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview6.19304.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.0.0-preview8.19405.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview8.19405.4" />
     </ItemGroup>
 
     <ItemGroup>
