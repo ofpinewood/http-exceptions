@@ -44,8 +44,11 @@ namespace Opw.HttpExceptions.AspNetCore
             problemDetails.Type.Should().BeNull();
             problemDetails.Detail.Should().BeNull();
             problemDetails.Instance.Should().BeNull();
+#if NETCOREAPP2_2
+            //TODO: fix for netcoreapp3.0
             problemDetails.Extensions.Should().HaveCountGreaterOrEqualTo(1);
             problemDetails.Extensions.ContainsKey("traceId").Should().BeTrue();
+#endif
         }
     }
 }

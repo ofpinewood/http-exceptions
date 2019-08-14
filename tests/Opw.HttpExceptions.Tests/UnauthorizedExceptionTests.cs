@@ -14,5 +14,14 @@ namespace Opw.HttpExceptions
             exception.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             exception.HelpLink.Should().Be(ResponseStatusCodeLink.Unauthorized);
         }
+
+        [Fact]
+        public void Serialization_Should_SerializeAndDeserialize()
+        {
+            var exception = SerializationHelper.SerializeDeserialize(new UnauthorizedException());
+
+            exception.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.Unauthorized);
+        }
     }
 }

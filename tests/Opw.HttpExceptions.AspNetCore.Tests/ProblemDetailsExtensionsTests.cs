@@ -9,7 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore
     public class ProblemDetailsExtensionsTests
     {
         [Fact]
-        public void TryGetExceptionDetails_Should_ReturnExceptionDetails()
+        public void TryGetExceptionDetails_Should_ReturnSerializableException()
         {
             var mapper = TestHelper.CreateProblemDetailsExceptionMapper<Exception>(true);
             var actionResult = mapper.Map(new ApplicationException(), new DefaultHttpContext());
@@ -17,12 +17,12 @@ namespace Opw.HttpExceptions.AspNetCore
             actionResult.Should().BeOfType<ProblemDetailsResult>();
             var problemDetailsResult = (ProblemDetailsResult)actionResult;
 
-            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
 
             result.Should().BeTrue();
-            exceptionDetails.Should().NotBeNull();
-            exceptionDetails.Name.Should().Be(nameof(ApplicationException));
-            exceptionDetails.Message.Should().NotBeNull();
+            exception.Should().NotBeNull();
+            exception.Type.Should().Be(nameof(ApplicationException));
+            exception.Message.Should().NotBeNull();
         }
 
         [Fact]
@@ -41,25 +41,25 @@ namespace Opw.HttpExceptions.AspNetCore
         }
 
         [Fact]
-        public void TryParseExceptionDetails_Should_ReturnTrue_ForTypeOfExceptionDetails()
+        public void TryParseSerializableException_Should_ReturnTrue_ForTypeOfExceptionInfo()
         {
-            var exceptionDetails = new ExceptionDetails(new ApplicationException());
+            var exception = new SerializableException(new ApplicationException());
 
-            var result = exceptionDetails.TryParseExceptionDetails(out var parsedExceptionDetails);
+            var result = exception.TryParseSerializableException(out var parsedException);
 
             result.Should().BeTrue();
-            parsedExceptionDetails.Should().NotBeNull();
+            parsedException.Should().NotBeNull();
         }
 
         [Fact]
-        public void TryParseExceptionDetails_Should_ReturnTrue_ForTypeOfJToken()
+        public void TryParseSerializableException_Should_ReturnTrue_ForTypeOfJToken()
         {
-            var exceptionDetails = JToken.FromObject(new ExceptionDetails(new ApplicationException()));
+            var exception = JToken.FromObject(new SerializableException(new ApplicationException()));
 
-            var result = exceptionDetails.TryParseExceptionDetails(out var parsedExceptionDetails);
+            var result = exception.TryParseSerializableException(out var parsedException);
 
             result.Should().BeTrue();
-            parsedExceptionDetails.Should().NotBeNull();
+            parsedException.Should().NotBeNull();
         }
     }
 }

@@ -1,25 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
-        <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
-        <Description>ASP.NET Core Problem Details (RFC7807) extensions for using HttpExceptions.</Description>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PackageId>Opw.HttpExceptions.AspNetCore</PackageId>
-        <PackageTags>aspnetcore http exceptions RFC7807 problemdetails problem details</PackageTags>
-    </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
+    <Description>Middleware and extensions for returning exceptions over HTTP, e.g. as ASP.NET Core Problem Details (RFC7807).</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Opw.HttpExceptions.AspNetCore</PackageId>
+    <PackageTags>aspnetcore http exceptions RFC7807 problemdetails problem details</PackageTags>
+  </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
-        <!--Ignore warning NETSDK1080; Microsoft.AspNetCore.App package reference is needed otherwise the code will not compile. -->
-        <PackageReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Opw.HttpExceptions\Opw.HttpExceptions.csproj" />
-    </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <!--Ignore warning NETSDK1080; Microsoft.AspNetCore.App package reference is needed otherwise the code will not compile. -->
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opw.HttpExceptions\Opw.HttpExceptions.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -11,12 +11,6 @@ trigger:
     include:
     - master
     - refs/tags/*
-  paths:
-    include:
-    - src/*
-    - tests/*
-    - samples/*
-    - azure-pipelines.yml
 
 variables:
   buildConfiguration: 'Release'
@@ -24,8 +18,6 @@ variables:
 steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@4
   displayName: GitVersion
-  inputs:
-    updateAssemblyInfo: true
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.0
 - task: DotNetCoreInstaller@0
@@ -55,6 +47,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -64,6 +57,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 

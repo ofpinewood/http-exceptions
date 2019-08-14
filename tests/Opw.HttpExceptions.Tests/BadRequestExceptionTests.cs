@@ -14,5 +14,14 @@ namespace Opw.HttpExceptions
             exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
         }
+
+        [Fact]
+        public void Serialization_Should_SerializeAndDeserialize()
+        {
+            var exception = SerializationHelper.SerializeDeserialize(new BadRequestException());
+
+            exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
+        }
     }
 }

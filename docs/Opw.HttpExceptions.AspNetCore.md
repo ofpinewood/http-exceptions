@@ -3,7 +3,7 @@
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
 
-Extensions for returning exceptions over HTTP e.g. as ASP.NET Core Problem Details.
+Middleware and extensions for returning exceptions over HTTP, e.g. as ASP.NET Core Problem Details.
 Problem Details are a machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807.
 But you are not limited to returning exception results as Problem Details, but you can create your own mappers for your own custom formats.
 
@@ -48,7 +48,7 @@ Whether or not to include the full exception details in the response. The defaul
 services.AddHttpExceptions(options =>
 {
     // This is the same as the default behavior; only include exception details in a development environment.
-    options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+    options.IncludeExceptionDetails= context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
 });
 ```
 
@@ -58,7 +58,7 @@ Is the response an exception and should it be handled by the HttpExceptions midd
 ``` csharp
 services.AddHttpExceptions(options =>
 {
-    // This is a simplified version of the default behavior; only include exception details for 4xx and 5xx responses.
+    // This is a simplified version of the default behavior; only map exceptions for 4xx and 5xx responses.
     options.IsExceptionResponse = context => (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600);
 });
 ```

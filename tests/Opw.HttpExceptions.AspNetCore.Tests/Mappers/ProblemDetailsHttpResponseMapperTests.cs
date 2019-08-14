@@ -33,10 +33,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
             problemDetailsResult.Value.Instance.Should().Be("/api/test/unauthorized");
 
-            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
 
             result.Should().BeFalse();
-            exceptionDetails.Should().BeNull();
+            exception.Should().BeNull();
         }
 
         [Fact]
@@ -60,10 +60,10 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
 
             problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.Unauthorized);
 
-            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exceptionDetails);
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
 
             result.Should().BeFalse();
-            exceptionDetails.Should().BeNull();
+            exception.Should().BeNull();
         }
 
         [Fact]

@@ -15,6 +15,15 @@ namespace Opw.HttpExceptions
             exception.HelpLink.Should().Be(ResponseStatusCodeLink.NotFound);
         }
 
+        [Fact]
+        public void Serialization_Should_SerializeAndDeserialize()
+        {
+            var exception = SerializationHelper.SerializeDeserialize(new NotFoundException<Product>());
+
+            exception.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.NotFound);
+        }
+
         private class Product
         {
             public string Id { get; set; }
