@@ -3,8 +3,6 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Opw.HttpExceptions.AspNetCore

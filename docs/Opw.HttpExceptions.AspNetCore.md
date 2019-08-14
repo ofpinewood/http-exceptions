@@ -48,7 +48,7 @@ Whether or not to include the full exception details in the response. The defaul
 services.AddHttpExceptions(options =>
 {
     // This is the same as the default behavior; only include exception details in a development environment.
-    options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+    options.IncludeExceptionDetails= context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
 });
 ```
 
@@ -58,7 +58,7 @@ Is the response an exception and should it be handled by the HttpExceptions midd
 ``` csharp
 services.AddHttpExceptions(options =>
 {
-    // This is a simplified version of the default behavior; only include exception details for 4xx and 5xx responses.
+    // This is a simplified version of the default behavior; only map exceptions for 4xx and 5xx responses.
     options.IsExceptionResponse = context => (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600);
 });
 ```

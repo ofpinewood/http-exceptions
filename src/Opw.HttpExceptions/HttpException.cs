@@ -1,11 +1,13 @@
 using System;
 using System.Net;
+using System.Runtime.Serialization;
 
 namespace Opw.HttpExceptions
 {
     /// <summary>
     /// Represents HTTP errors that occur during application execution.
     /// </summary>
+    [Serializable]
     public class HttpException : HttpExceptionBase
     {
         private string _helpLink;
@@ -13,7 +15,7 @@ namespace Opw.HttpExceptions
         /// <summary>
         /// HTTP status code.
         /// </summary>
-        public override HttpStatusCode StatusCode { get; } = HttpStatusCode.InternalServerError;
+        public override HttpStatusCode StatusCode { get; protected set; } = HttpStatusCode.InternalServerError;
 
         /// <summary>
         /// Gets or sets a link to the help file associated with this exception.
@@ -74,5 +76,14 @@ namespace Opw.HttpExceptions
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference
         /// if no inner exception is specified.</param>
         public HttpException(HttpStatusCode statusCode, string message, Exception innerException) : base(message, innerException) => StatusCode = statusCode;
+
+        /// <summary>
+        /// Initializes a new instance of the exception class with serialized data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"></see> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext"></see> that contains contextual information about the source or destination.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="info">info</paramref> parameter is null.</exception>
+        /// <exception cref="SerializationException">The class name is null or <see cref="P:System.Exception.HResult"></see> is zero (0).</exception>
+        public HttpException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }
