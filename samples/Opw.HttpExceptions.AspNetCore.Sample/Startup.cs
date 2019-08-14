@@ -51,6 +51,9 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
                 options.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
             });
 
+            // serializers for returning "application/xml"
+            mvcBuilder.AddXmlSerializerFormatters().AddXmlDataContractSerializerFormatters();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
         }
 
