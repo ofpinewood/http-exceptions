@@ -25,15 +25,14 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IMvcBuilder mvcBuilder = null;
 #if NETCOREAPP2_2
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            mvcBuilder = services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 #endif
 #if NETCOREAPP3_0
-            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            mvcBuilder = services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 #endif
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-
-            services.AddHttpExceptions(options =>
+            mvcBuilder.AddHttpExceptions(options =>
             {
 #if NETCOREAPP2_2
                 // This is the same as the default behavior; only include exception details in a development environment.
@@ -51,6 +50,8 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
                 // default exception mapper for mapping to Problem Details
                 options.ExceptionMapper<Exception, ProblemDetailsExceptionMapper<Exception>>();
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
         }
 
 #if NETCOREAPP2_2
