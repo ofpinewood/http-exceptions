@@ -9,13 +9,14 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            IMvcBuilder mvcBuilder = null;
 #if NETCOREAPP2_2
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            mvcBuilder = services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 #endif
 #if NETCOREAPP3_0
-            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            mvcBuilder = services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 #endif
-            services.AddHttpExceptions(options => options.SuppressInvalidModelStateResponseFactoryOverride = true);
+            mvcBuilder.AddHttpExceptions(options => options.SuppressInvalidModelStateResponseFactoryOverride = true);
         }
 
         public void Configure(IApplicationBuilder app)

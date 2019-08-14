@@ -122,5 +122,15 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             customError.Message.Should().NotBeNull();
             customError.Code.Should().Be(42);
         }
+
+        [Fact]
+        public async Task Throw_Should_ReturnCustomErrorAsXml()
+        {
+            _client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/xml"));
+            var response = await _client.GetAsync("test/customError");
+
+            response.StatusCode.Should().Be(418);
+            response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+xml");
+        }
     }
 }
