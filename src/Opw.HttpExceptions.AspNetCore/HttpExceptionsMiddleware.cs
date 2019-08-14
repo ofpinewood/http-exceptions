@@ -64,6 +64,9 @@ namespace Opw.HttpExceptions.AspNetCore
             }
             catch (Exception ex)
             {
+                // TODO: make if we should be logging the request exceptions configurable?
+                _logger.LogError(ex, "An unhandled exception has occurred while executing the request.");
+
                 if (context.Response.HasStarted)
                 {
                     _logger.LogError(ex, "The response has already started, the HttpExceptions middleware will not be executed.");
