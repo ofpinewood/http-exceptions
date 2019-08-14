@@ -17,7 +17,7 @@ namespace Opw.HttpExceptions
         public IDictionary<string, T[]> Errors { get; } = new Dictionary<string, T[]>(StringComparer.Ordinal);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidModelException"></see> class with status code BadRequest.
+        /// Initializes a new instance of the <see cref="ValidationErrorException{T}"></see> class with status code BadRequest.
         /// </summary>
         /// <param name="errors">The error messages for the member.</param>
         /// <param name="memberName">The member name that indicate which field have an error.</param>
@@ -27,7 +27,7 @@ namespace Opw.HttpExceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidModelException"></see> class with status code BadRequest.
+        /// Initializes a new instance of the <see cref="ValidationErrorException{T}"></see> class with status code BadRequest.
         /// </summary>
         /// <param name = "errors" > The validation errors.</param>
         public ValidationErrorException(IDictionary<string, T[]> errors)
