@@ -13,7 +13,7 @@ But you are not limited to returning exception results as Problem Details, but y
 You can install [Opw.HttpExceptions.AspNetCore](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/) from the NuGet package manager console:
 
 ``` cmd
-PM> Install-Package Opw.HttpExceptions.AspNetCore
+C> dotnet add package Opw.HttpExceptions.AspNetCore
 ```
 
 ### Getting started
@@ -121,7 +121,7 @@ HTTP-specific exception classes that enable ASP.NET to generate exception inform
 You can install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExceptions/) from the NuGet package manager console:
 
 ```
-PM> Install-Package Opw.HttpExceptions
+C> dotnet add package Opw.HttpExceptions
 ```
 
 ### HttpExceptions
