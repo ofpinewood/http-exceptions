@@ -10,10 +10,10 @@ Problem Details are a machine-readable format for specifying errors in HTTP API 
 But you are not limited to returning exception results as Problem Details, but you can create your own mappers for your own custom formats.
 
 ### Where can I get it?
-You can install [Opw.HttpExceptions.AspNetCore](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/) from the NuGet package manager console:
+You can install [Opw.HttpExceptions.AspNetCore](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/) from the console.
 
 ``` cmd
-C> dotnet add package Opw.HttpExceptions.AspNetCore
+> dotnet add package Opw.HttpExceptions.AspNetCore
 ```
 
 ### Getting started
@@ -118,10 +118,10 @@ See the `samples/Opw.HttpExceptions.AspNetCore.Sample` project for a sample impl
 HTTP-specific exception classes that enable ASP.NET to generate exception information. These classes can be used by themselves or as base classes for your own HttpExceptions.
 
 ### Where can I get it?
-You can install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExceptions/) from the NuGet package manager console:
+You can install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExceptions/) from the console.
 
-```
-C> dotnet add package Opw.HttpExceptions
+``` cmd
+> dotnet add package Opw.HttpExceptions
 ```
 
 ### HttpExceptions
