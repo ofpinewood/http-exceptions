@@ -38,7 +38,6 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             // TODO: Not working for netcore30, because of "The collection type 'Opw.HttpExceptions.SerializableException' is not supported. System.Text.Json".
             // Wait for netcore30 issue "Types deriving from concrete collection types aren't supported by JsonSerializer" to be fixed. dotnet/corefx#38767
-#if NETCOREAPP2_2
             TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Development");
             _client = _factory.CreateClient();
 
@@ -60,7 +59,6 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
 
             // reset the EnvironmentName back to production
             TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Production");
-#endif
         }
 
         [Fact]

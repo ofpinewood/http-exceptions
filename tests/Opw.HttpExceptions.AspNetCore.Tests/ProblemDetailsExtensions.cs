@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net;
 
@@ -46,8 +45,18 @@ namespace Opw.HttpExceptions.AspNetCore
 #pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
             if (value is SerializableException)
                 exception = (SerializableException)value;
-            if (value is JToken)
-                exception = ((JToken)value).ToObject<SerializableException>();
+            if (value is Newtonsoft.Json.Linq.JToken)
+                exception = ((Newtonsoft.Json.Linq.JToken)value).ToObject<SerializableException>();
+#if NETCOREAPP3_0
+            if (value is System.Text.Json.JsonElement)
+            {
+                var str = ((System.Text.Json.JsonElement)value).GetRawText();
+                //exception = Newtonsoft.Json.Linq.JToken.Parse(str).ToObject<SerializableException>();
+                exception = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableException>(str, new Newtonsoft.Json.JsonSerializerSettings {
+                    NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
+                });
+            }
+#endif
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
             return exception != null;
@@ -69,8 +78,8 @@ namespace Opw.HttpExceptions.AspNetCore
 #pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
             if (value is IDictionary<string, object[]>)
                 errors = (IDictionary<string, object[]>)value;
-            if (value is JToken)
-                errors = ((JToken)value).ToObject<IDictionary<string, object[]>>();
+            if (value is Newtonsoft.Json.Linq.JToken)
+                errors = ((Newtonsoft.Json.Linq.JToken)value).ToObject<IDictionary<string, object[]>>();
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
             return errors != null;
