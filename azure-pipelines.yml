@@ -12,6 +12,14 @@ trigger:
     - master
     - refs/tags/*
 
+schedules:
+- cron: '0 0 * * *'
+  displayName: Daily Build
+  always: true
+  branches:
+    include:
+    - master
+
 variables:
   buildConfiguration: 'Release'
 
