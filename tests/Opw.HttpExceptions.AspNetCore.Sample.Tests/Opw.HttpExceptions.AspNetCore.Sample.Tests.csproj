@@ -23,12 +23,10 @@
     <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.0.0-preview8.19405.7" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview8.19405.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.0.0" />
     </ItemGroup>
 
     <ItemGroup>

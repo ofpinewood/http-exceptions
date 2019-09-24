@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 
@@ -13,7 +12,15 @@ namespace Opw.HttpExceptions.AspNetCore
             response.StatusCode.Should().Be(statusCode);
             response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+json");
 
+#if NETCOREAPP2_2
             var problemDetails = response.Content.ReadAsAsync<ProblemDetails>().Result;
+#endif
+#if NETCOREAPP3_0
+            var str = response.Content.ReadAsStringAsync().Result;
+            var converter = new ProblemDetailsJsonConverter();
+            var reader = new System.Text.Json.Utf8JsonReader(System.Text.Encoding.UTF8.GetBytes(str));
+            var problemDetails = converter.Read(ref reader, typeof(ProblemDetails), new JsonOptions().JsonSerializerOptions);
+#endif
 
             problemDetails.Should().NotBeNull();
             problemDetails.Status.Should().Be((int)statusCode);

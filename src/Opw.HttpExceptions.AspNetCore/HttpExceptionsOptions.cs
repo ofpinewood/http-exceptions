@@ -11,6 +11,7 @@ namespace Opw.HttpExceptions.AspNetCore
     /// </summary>
     public class HttpExceptionsOptions
     {
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets or sets a value that determines if controllers annotated with Microsoft.AspNetCore.Mvc.ApiControllerAttribute
 		/// respond using Microsoft.AspNetCore.Mvc.ValidationProblemDetails in Microsoft.AspNetCore.Mvc.ApiBehaviorOptions.InvalidModelStateResponseFactory
@@ -18,6 +19,7 @@ namespace Opw.HttpExceptions.AspNetCore
         /// The default is false; so the Opw.HttpExceptions.AspNetCore.Mappers.ExceptionMappers are used.
         /// </summary>
         public bool SuppressInvalidModelStateResponseFactoryOverride { get; set; } = false;
+#endif
 
         /// <summary>
         /// Include exception details, default behavior is only to include exception details in a development environment.

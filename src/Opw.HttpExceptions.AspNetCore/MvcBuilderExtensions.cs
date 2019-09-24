@@ -20,8 +20,14 @@ namespace Opw.HttpExceptions.AspNetCore
             builder.Services.AddHttpExceptions(configureOptions);
 
             var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+#if NETSTANDARD2_0
             if (!options.Value.SuppressInvalidModelStateResponseFactoryOverride)
                 builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
+#endif
+#if NETCOREAPP3_0
+            builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
+#endif
 
             return builder;
         }
@@ -36,8 +42,14 @@ namespace Opw.HttpExceptions.AspNetCore
             builder.Services.AddHttpExceptions(configureOptions);
 
             var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+#if NETSTANDARD2_0
             if (!options.Value.SuppressInvalidModelStateResponseFactoryOverride)
                 builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
+#endif
+#if NETCOREAPP3_0
+            builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
+#endif
 
             return builder;
         }
@@ -55,18 +67,12 @@ namespace Opw.HttpExceptions.AspNetCore
 
         private static void ConfigureApiBehaviorOptions(ApiBehaviorOptions options)
         {
+            options.SuppressMapClientErrors = true;
+            options.SuppressModelStateInvalidFilter = false;
 #if NETSTANDARD2_0
-            options.SuppressMapClientErrors = true;
-            options.SuppressModelStateInvalidFilter = false;
             options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
-            options.InvalidModelStateResponseFactory = (actionContext) => HandleInvalidModelStateResponse(actionContext);
 #endif
-
-#if NETCOREAPP3_0
-            options.SuppressMapClientErrors = true;
-            options.SuppressModelStateInvalidFilter = false;
             options.InvalidModelStateResponseFactory = (actionContext) => HandleInvalidModelStateResponse(actionContext);
-#endif
         }
 
         private static IActionResult HandleInvalidModelStateResponse(ActionContext actionContext)
