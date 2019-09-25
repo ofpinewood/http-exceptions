@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -43,12 +43,27 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             exception = null;
 
-#pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
-            if (value is SerializableException)
-                exception = (SerializableException)value;
-            if (value is JToken)
-                exception = ((JToken)value).ToObject<SerializableException>();
-#pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
+            if (value is SerializableException serializableException)
+                exception = serializableException;
+            if (value is Newtonsoft.Json.Linq.JToken jTokens)
+                exception = jTokens.ToObject<SerializableException>();
+#if NETCOREAPP3_0
+            if (value is System.Text.Json.JsonElement jsonElement)
+            {
+                var str = jsonElement.GetRawText();
+
+                var settings = new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
+                    {
+                        IgnoreSerializableAttribute = true,
+                        IgnoreSerializableInterface = true
+                    }
+                };
+
+                exception = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableException>(str, settings);
+            }
+#endif
 
             return exception != null;
         }
@@ -69,8 +84,8 @@ namespace Opw.HttpExceptions.AspNetCore
 #pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
             if (value is IDictionary<string, object[]>)
                 errors = (IDictionary<string, object[]>)value;
-            if (value is JToken)
-                errors = ((JToken)value).ToObject<IDictionary<string, object[]>>();
+            if (value is Newtonsoft.Json.Linq.JToken)
+                errors = ((Newtonsoft.Json.Linq.JToken)value).ToObject<IDictionary<string, object[]>>();
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
             return errors != null;
