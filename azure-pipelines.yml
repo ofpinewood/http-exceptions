@@ -27,6 +27,13 @@ steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@4
   displayName: GitVersion
 
+# TODO: remove when build image has dotnet-core 3.0
+# https://dotnet.microsoft.com/download/dotnet-core/3.0
+- task: DotNetCoreInstaller@0
+  displayName: 'Install .Net Core 3.0'
+  inputs:
+    version: '3.0.100'
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
