@@ -20,14 +20,7 @@ namespace Opw.HttpExceptions.AspNetCore
             builder.Services.AddHttpExceptions(configureOptions);
 
             var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<HttpExceptionsOptions>>();
-
-#if NETSTANDARD2_0
-            if (!options.Value.SuppressInvalidModelStateResponseFactoryOverride)
-                builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
-#endif
-#if NETCOREAPP3_0
             builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
-#endif
 
             return builder;
         }
@@ -42,14 +35,7 @@ namespace Opw.HttpExceptions.AspNetCore
             builder.Services.AddHttpExceptions(configureOptions);
 
             var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<HttpExceptionsOptions>>();
-
-#if NETSTANDARD2_0
-            if (!options.Value.SuppressInvalidModelStateResponseFactoryOverride)
-                builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
-#endif
-#if NETCOREAPP3_0
             builder.ConfigureApiBehaviorOptions(ConfigureApiBehaviorOptions);
-#endif
 
             return builder;
         }

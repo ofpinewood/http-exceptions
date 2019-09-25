@@ -52,6 +52,10 @@ public void Configure(IApplicationBuilder app)
 }
 ```
 
+#### InvalidModelStateResponseFactory API behavior
+HttpExceptions overrides the default `Microsoft.AspNetCore.Mvc.ApiBehaviorOptions.InvalidModelStateResponseFactory` and related settings and
+will use the configured ExceptionMappers.
+
 ### Configuring options
 You can extend or override the default behavior through the configuration options, `HttpExceptionsOptions`.
 
@@ -91,17 +95,6 @@ mvcBuilder.AddHttpExceptions(options =>
     options.ExceptionMapper<ArgumentException, ExceptionMapper<ArgumentException>>();
     // The last ExceptionMapper should be a catch all, for type Exception.
     options.ExceptionMapper<Exception, MyCustomExceptionMapper>();
-});
-```
-
-### InvalidModelStateResponseFactory API behavior
-By default the `Microsoft.AspNetCore.Mvc.ApiBehaviorOptions.InvalidModelStateResponseFactory` and related settings are overridden and
-the configured ExceptionMappers are used. This can be disabled by setting `HttpExceptionsOptions.SuppressInvalidModelStateResponseFactoryOverride`.
-
-``` csharp
-mvcBuilder.AddHttpExceptions(options =>
-{
-    options.SuppressInvalidModelStateResponseFactoryOverride = true;
 });
 ```
 

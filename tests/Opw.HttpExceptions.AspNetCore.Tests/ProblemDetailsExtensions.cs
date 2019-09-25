@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -42,22 +43,27 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             exception = null;
 
-#pragma warning disable RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
-            if (value is SerializableException)
-                exception = (SerializableException)value;
-            if (value is Newtonsoft.Json.Linq.JToken)
-                exception = ((Newtonsoft.Json.Linq.JToken)value).ToObject<SerializableException>();
+            if (value is SerializableException serializableException)
+                exception = serializableException;
+            if (value is Newtonsoft.Json.Linq.JToken jTokens)
+                exception = jTokens.ToObject<SerializableException>();
 #if NETCOREAPP3_0
-            if (value is System.Text.Json.JsonElement)
+            if (value is System.Text.Json.JsonElement jsonElement)
             {
-                var str = ((System.Text.Json.JsonElement)value).GetRawText();
-                //exception = Newtonsoft.Json.Linq.JToken.Parse(str).ToObject<SerializableException>();
-                exception = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableException>(str, new Newtonsoft.Json.JsonSerializerSettings {
-                    NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
-                });
+                var str = jsonElement.GetRawText();
+
+                var settings = new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
+                    {
+                        IgnoreSerializableAttribute = true,
+                        IgnoreSerializableInterface = true
+                    }
+                };
+
+                exception = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableException>(str, settings);
             }
 #endif
-#pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
 
             return exception != null;
         }
