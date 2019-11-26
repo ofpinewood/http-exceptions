@@ -1,4 +1,3 @@
-#if NETCOREAPP3_0
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Text.Json;
@@ -130,4 +129,3 @@ namespace Opw.HttpExceptions.AspNetCore
         }
     }
 }
-#endif

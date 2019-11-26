@@ -11,12 +11,7 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public static void SetHostEnvironmentName(IWebHost webHost, string environmentName)
         {
-#if NETCOREAPP2_2
-            webHost.Services.GetRequiredService<IHostingEnvironment>().EnvironmentName = environmentName;
-#endif
-#if NETCOREAPP3_0
             webHost.Services.GetRequiredService<IWebHostEnvironment>().EnvironmentName = environmentName;
-#endif
         }
 
         public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
