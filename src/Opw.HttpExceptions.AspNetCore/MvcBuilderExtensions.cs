@@ -55,9 +55,6 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             options.SuppressMapClientErrors = true;
             options.SuppressModelStateInvalidFilter = false;
-#if NETSTANDARD2_0
-            options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
-#endif
             options.InvalidModelStateResponseFactory = (actionContext) => HandleInvalidModelStateResponse(actionContext);
         }
 

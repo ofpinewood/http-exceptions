@@ -5,9 +5,7 @@ using Opw.HttpExceptions.AspNetCore.Mappers;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
-#if NETCOREAPP3_0
 using Microsoft.Extensions.Hosting;
-#endif
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -44,12 +42,7 @@ namespace Opw.HttpExceptions.AspNetCore
 
         private static bool IncludeExceptionDetails(HttpContext context)
         {
-#if NETSTANDARD2_0
-            return context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
-#endif
-#if NETCOREAPP3_0
             return context.RequestServices.GetRequiredService<IWebHostEnvironment>().EnvironmentName == Environments.Development;
-#endif
         }
 
         private static bool IsExceptionResponse(HttpContext context)

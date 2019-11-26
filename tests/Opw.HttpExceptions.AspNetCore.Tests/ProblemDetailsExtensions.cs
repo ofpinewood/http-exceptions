@@ -47,7 +47,6 @@ namespace Opw.HttpExceptions.AspNetCore
                 exception = serializableException;
             if (value is Newtonsoft.Json.Linq.JToken jTokens)
                 exception = jTokens.ToObject<SerializableException>();
-#if NETCOREAPP3_0
             if (value is System.Text.Json.JsonElement jsonElement)
             {
                 var str = jsonElement.GetRawText();
@@ -63,7 +62,6 @@ namespace Opw.HttpExceptions.AspNetCore
 
                 exception = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableException>(str, settings);
             }
-#endif
 
             return exception != null;
         }
