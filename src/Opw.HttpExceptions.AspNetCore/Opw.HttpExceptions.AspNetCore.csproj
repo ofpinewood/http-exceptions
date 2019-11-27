@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
@@ -9,9 +9,8 @@
     <PackageTags>aspnetcore http exceptions RFC7807 problemdetails problem details</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0' Or '$(TargetFramework)' == 'netcoreapp3.1'">
-    <!--Ignore warning NETSDK1080; Microsoft.AspNetCore.App package reference is needed otherwise the code will not compile. -->
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
