@@ -29,17 +29,6 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-And for ASP.NET Core 3.x.
-
-``` csharp
-public void ConfigureServices(IServiceCollection services)
-{
-    ...
-    services.AddControllers().AddHttpExceptions();
-    ...
-}
-```
-
 Then you can add the HttpExceptions middleware using the application builder.  `UseHttpExceptions` should be the first middleware
 component added to the pipeline. That way the `UseHttpExceptions` Middleware catches any exceptions that occur in later calls. When
 using HttpExceptions you don't need to use `UseExceptionHandler` or `UseDeveloperExceptionPage`.
