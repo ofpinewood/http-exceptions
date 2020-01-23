@@ -22,7 +22,7 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<HttpContext, bool> IsExceptionResponse { get; set; }
 
         /// <summary>
-        /// Should the exception be logged by the HttpExceptions middleware or not, default behavior is to log all exceptions (all status codes).
+        /// Should an exception be logged by the HttpExceptions middleware or not, default behavior is to log all exceptions (all status codes).
         /// </summary>
         public Func<Exception, bool> ShouldLogException { get; set; }
 

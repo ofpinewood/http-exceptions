@@ -9,8 +9,7 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            IMvcBuilder mvcBuilder = null;
-            mvcBuilder = services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            var mvcBuilder = services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             mvcBuilder.AddHttpExceptions();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();

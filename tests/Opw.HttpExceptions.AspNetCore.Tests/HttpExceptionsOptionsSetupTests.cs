@@ -11,65 +11,6 @@ using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
-    public class HttpExceptionsOptionsTests
-    {
-        private readonly Mock<IOptions<HttpExceptionsOptions>> _httpExceptionsOptionsMock;
-        private readonly DefaultHttpContext _internalServerErrorHttpContext;
-
-        public HttpExceptionsOptionsTests()
-        {
-            _httpExceptionsOptionsMock = TestHelper.CreateHttpExceptionsOptionsMock(true);
-
-            _internalServerErrorHttpContext = new DefaultHttpContext();
-            _internalServerErrorHttpContext.Request.Path = "/api/test/internal-server-error";
-            _internalServerErrorHttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        }
-
-        [Fact]
-        public void TryMap_Should_ReturnTrue_WhenMappingConfiguredException()
-        {
-            var options = new HttpExceptionsOptions();
-            options.ExceptionMappers.Add(new ProblemDetailsExceptionMapper<HttpException>(_httpExceptionsOptionsMock.Object));
-
-            var result = options.TryMap(new HttpException(), new DefaultHttpContext(), out _);
-
-            result.Should().BeTrue();
-        }
-
-        [Fact]
-        public void TryMap_Should_ReturnFalse_WhenMappingNotConfiguredException()
-        {
-            var options = new HttpExceptionsOptions();
-            options.ExceptionMappers.Add(new ProblemDetailsExceptionMapper<HttpException>(_httpExceptionsOptionsMock.Object));
-
-            var result = options.TryMap(new ArgumentException(), new DefaultHttpContext(), out _);
-
-            result.Should().BeFalse();
-        }
-
-        [Fact]
-        public void TryMap_Should_ReturnTrue_WhenMappingConfiguredHttpResponse()
-        {
-            var options = new HttpExceptionsOptions();
-            options.HttpResponseMappers.Add(new ProblemDetailsHttpResponseMapper(_httpExceptionsOptionsMock.Object) { Status = 500 });
-
-            var result = options.TryMap(_internalServerErrorHttpContext.Response, out _);
-
-            result.Should().BeTrue();
-        }
-
-        [Fact]
-        public void TryMap_Should_ReturnFalse_WhenMappingNotConfiguredHttpResponse()
-        {
-            var options = new HttpExceptionsOptions();
-            options.HttpResponseMappers.Add(new ProblemDetailsHttpResponseMapper(_httpExceptionsOptionsMock.Object) { Status = 148 });
-
-            var result = options.TryMap(_internalServerErrorHttpContext.Response, out _);
-
-            result.Should().BeFalse();
-        }
-    }
-
     public class HttpExceptionsOptionsSetupTests
     {
         [Fact]
@@ -169,6 +110,38 @@ namespace Opw.HttpExceptions.AspNetCore
             httpResponseMappers[0].Should().BeOfType<TestProblemDetailsHttpResponseMapper>();
             httpResponseMappers[1].Should().BeOfType<ProblemDetailsHttpResponseMapper>();
             httpResponseMappers[2].Should().BeOfType<TestProblemDetailsHttpResponseMapper>();
+        }
+
+        [Fact]
+        public void Configure_Should_NotConfigureShouldLogExceptionFunc_ThenAllExceptionsAreLogged()
+        {
+            var services = new ServiceCollection();
+            services.AddHttpExceptions();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+            options.Value.ShouldLogException(new BadRequestException()).Should().Be(true);
+            options.Value.ShouldLogException(new HttpException(HttpStatusCode.InternalServerError)).Should().Be(true);
+            options.Value.ShouldLogException(new ApplicationException()).Should().Be(true);
+        }
+
+        [Fact]
+        public void Configure_Should_ConfigureShouldLogExceptionFunc_WithCustomConstraints()
+        {
+            var services = new ServiceCollection();
+            services.AddHttpExceptions(o => o.ShouldLogException = (exception) => {
+                if ((exception is HttpExceptionBase httpException && (int)httpException.StatusCode >= 500) || !(exception is HttpExceptionBase))
+                    return true;
+                return false;
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetRequiredService<IOptions<HttpExceptionsOptions>>();
+
+            options.Value.ShouldLogException(new BadRequestException()).Should().Be(false);
+            options.Value.ShouldLogException(new HttpException(HttpStatusCode.InternalServerError)).Should().Be(true);
+            options.Value.ShouldLogException(new ApplicationException()).Should().Be(true);
         }
 
         [Fact]
