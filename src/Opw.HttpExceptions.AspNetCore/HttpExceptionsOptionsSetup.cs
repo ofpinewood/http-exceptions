@@ -36,6 +36,9 @@ namespace Opw.HttpExceptions.AspNetCore
             if (options.IsExceptionResponse == null)
                 options.IsExceptionResponse = IsExceptionResponse;
 
+            if (options.ShouldLogException == null)
+                options.ShouldLogException = ShouldLogException;
+
             ConfigureExceptionMappers(options);
             ConfigureHttpResponseMappers(options);
         }
@@ -57,6 +60,11 @@ namespace Opw.HttpExceptions.AspNetCore
                 return true;
 
             return false;
+        }
+
+        private static bool ShouldLogException(Exception ex)
+        {
+            return true;
         }
 
         private void ConfigureExceptionMappers(HttpExceptionsOptions options)

@@ -23,14 +23,19 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            IMvcBuilder mvcBuilder = null;
-            mvcBuilder = services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            var mvcBuilder = services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             mvcBuilder.AddHttpExceptions(options =>
             {
                 // This is the same as the default behavior; only include exception details in a development environment.
                 options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IWebHostEnvironment>().EnvironmentName == Environments.Development;
                 // This is a simplified version of the default behavior; only map exceptions for 4xx and 5xx responses.
                 options.IsExceptionResponse = context => (context.Response.StatusCode >= 400 && context.Response.StatusCode < 600);
+                // Only log the when it has a status code of 500 or higher, or when it not is a HttpException.
+                options.ShouldLogException = exception => {
+                    if ((exception is HttpExceptionBase httpException && (int)httpException.StatusCode >= 500) || !(exception is HttpExceptionBase))
+                        return true;
+                    return false;
+                };
 
                 // custom exception mapper does not map to Problem Details
                 options.ExceptionMapper<FormatException, CustomExceptionMapper>();
