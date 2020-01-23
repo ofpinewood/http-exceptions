@@ -50,26 +50,26 @@ namespace Opw.HttpExceptions.AspNetCore
 
                 if (context.Response.HasStarted)
                 {
-                    _logger.LogError("The response has already started, the HttpExceptions middleware will not be executed.");
+                    LogError(null, "The response has already started, the HttpExceptions middleware will not be executed.");
                     return;
                 }
 
                 if (TryCreateActionResult(context, null, out var result))
                 {
+                    // TODO: should we also log this error response?
                     await ExecuteActionResultAsync(context, result);
                     return;
                 }
 
-                _logger.LogError("The HttpExceptions middleware could not handle the exception.");
+                LogError(null, "The HttpExceptions middleware could not handle the exception.");
             }
             catch (Exception ex)
             {
-                // TODO: make if we should be logging the request exceptions configurable?
-                _logger.LogError(ex, "An unhandled exception has occurred while executing the request.");
+                LogError(ex, "An unhandled exception has occurred while executing the request.");
 
                 if (context.Response.HasStarted)
                 {
-                    _logger.LogError(ex, "The response has already started, the HttpExceptions middleware will not be executed.");
+                    LogError(ex, "The response has already started, the HttpExceptions middleware will not be executed.");
                     throw; // rethrow the exception if we can't handle it properly
                 }
 
@@ -83,10 +83,10 @@ namespace Opw.HttpExceptions.AspNetCore
                 }
                 catch (Exception ex2)
                 {
-                    _logger.LogError(ex2, "An exception was thrown attempting to execute the HttpExceptions middleware.");
+                    LogError(ex2, "An exception was thrown attempting to execute the HttpExceptions middleware.");
                 }
 
-                _logger.LogError(ex, "The HttpExceptions middleware could not handle the exception.");
+                LogError(ex, "The HttpExceptions middleware could not handle the exception.");
                 throw; // rethrow the exception if we can't handle it properly.
             }
         }
@@ -116,6 +116,17 @@ namespace Opw.HttpExceptions.AspNetCore
             var actionContext = new ActionContext(context, routeData, _emptyActionDescriptor);
 
             return actionResult.ExecuteResultAsync(actionContext);
+        }
+
+        private void LogError(Exception ex, string message)
+        {
+            if (!_options.Value.ShouldLogException(ex))
+                return;
+
+            if (ex != null)
+                _logger.LogError(ex, message);
+            else
+                _logger.LogError(message);
         }
     }
 }

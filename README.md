@@ -70,6 +70,21 @@ mvcBuilder.AddHttpExceptions(options =>
 });
 ```
 
+#### Should log exceptions (ILogger)
+Should an exception be logged by the HttpExceptions middleware or not, default behavior is to log all exceptions (all status codes).
+
+``` csharp
+mvcBuilder.AddHttpExceptions(options =>
+{
+    // Only log the when it has a status code of 500 or higher, or when it not is a HttpException.
+    options.ShouldLogException = exception => {
+        if ((exception is HttpExceptionBase httpException && (int)httpException.StatusCode >= 500) || !(exception is HttpExceptionBase))
+            return true;
+        return false;
+    };
+});
+```
+
 #### Custom ExceptionMappers
 Set the ExceptionMapper collection that will be used during mapping. You can override and/or add ExceptionMappers for specific
 exception types. The ExceptionMappers are called in order so make sure you add them in the right order.
