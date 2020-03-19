@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
     <Description>Middleware and extensions for returning exceptions over HTTP, e.g. as ASP.NET Core Problem Details (RFC7807).</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
