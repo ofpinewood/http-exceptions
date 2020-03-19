@@ -24,22 +24,23 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: gittools.gitversion.gitversion-task.GitVersion@4
+- task: UseGitVersion@5
   displayName: GitVersion
+  inputs:
+    versionSpec: '5.x'
 
-# TODO: remove when build image has dotnet-core 3.1
 # https://dotnet.microsoft.com/download/dotnet-core/3.1
 - task: UseDotNet@2
-  displayName: Install .Net Core 3.1
+  displayName: Install .Net Core 3.1.200 LTS
   inputs:
     packageType: 'sdk'
-    version: '3.1.100'
+    version: '3.1.200'
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.SemVer)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
@@ -59,7 +60,7 @@ steps:
     packagesToPack: '**/Opw.HttpExceptions.csproj'
     nobuild: true
     versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion_NuGetVersion'
+    versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
@@ -69,7 +70,7 @@ steps:
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
     nobuild: true
     versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion_NuGetVersion'
+    versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: NuGetCommand@2
   displayName: NuGet Push
@@ -79,7 +80,7 @@ steps:
     nuGetFeedType: external
     publishFeedCredentials: NuGet
     versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion_NuGetVersion'
+    versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
@@ -90,7 +91,7 @@ steps:
    action: create
    target: $(Build.SourceVersion)
    tagSource: auto
-   tag: '$(Build.BuildNumber)'
+   tag: '$(GitVersion.SemVer)'
 
 # Finalize
 - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
