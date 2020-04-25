@@ -86,8 +86,8 @@ mvcBuilder.AddHttpExceptions(options =>
 ```
 
 #### Use a help link for ProblemDetails type property
-When `UseHelpLinkAsProblemDetailsType` is set to true the mappers uses the Exception.HelpLink or the HTTP status code information link to map the ProblemDetails.Type property.
-And when you want to set a default link for your help pages, you can set `DefaultHelpLinkForProblemDetailsType`.
+When `UseHelpLinkAsProblemDetailsType` is set to true the mappers uses the `Exception.HelpLink` or the HTTP status code information link to map the `ProblemDetails.Type` property.
+And when you want to set a default link for your help pages, you can set `DefaultHelpLink`.
 
 ``` csharp
 mvcBuilder.AddHttpExceptions(options =>
