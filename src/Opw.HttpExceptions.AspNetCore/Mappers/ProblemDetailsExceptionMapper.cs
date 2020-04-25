@@ -157,8 +157,19 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the Exception.HelpLink or an URI with the Exception type name ("error:[Type:slug]").</returns>
         protected virtual string MapType(TException exception, HttpContext context)
         {
-            var url = exception.HelpLink ?? $"error:{MapTitle(exception, context).ToSlug()}";
-            return new Uri(url).ToString();
+            Uri link = null;
+            if (!string.IsNullOrWhiteSpace(exception.HelpLink))
+            {
+                try
+                {
+                    link = new Uri(exception.HelpLink);
+                }
+                catch { }
+            }
+
+            link ??= new Uri($"error:{MapTitle(exception, context).ToSlug()}");
+
+            return link.ToString();
         }
     }
 }
