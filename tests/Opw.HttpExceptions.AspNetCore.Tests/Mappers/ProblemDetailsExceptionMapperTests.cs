@@ -219,6 +219,25 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             result.Should().Be("error:divide-by-zero");
         }
 
+        [Fact]
+        public void MapType_Should_ReturnExceptionHelpLink()
+        {
+            var helpLink = "https://docs.microsoft.com/en-us/dotnet/api/system.exception.helplink?view=netcore-2.2";
+            var exception = new ApplicationException { HelpLink = helpLink };
+            var result = _mapper.MapType(exception, new DefaultHttpContext());
+
+            result.Should().Be(helpLink);
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnExceptionHelpLinkForHttpException()
+        {
+            var exception = new BadRequestException();
+            var result = _mapper.MapType(exception, new DefaultHttpContext());
+
+            result.Should().Be(exception.HelpLink);
+        }
+
         private class ExposeProtectedProblemDetailsExceptionMapper : ProblemDetailsExceptionMapper<Exception>
         {
             public ExposeProtectedProblemDetailsExceptionMapper(IOptions<HttpExceptionsOptions> options) : base(options) { }

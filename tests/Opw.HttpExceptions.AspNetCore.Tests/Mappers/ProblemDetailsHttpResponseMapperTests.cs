@@ -126,11 +126,23 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnFormattedHttpStatus()
+        public void MapType_Should_ReturnResponseStatusCodeLinkUnauthorized()
         {
             var result = _mapper.MapType(_unauthorizedHttpContext.Response);
 
-            result.Should().Be("error:unauthorized");
+            result.Should().Be(ResponseStatusCodeLink.Unauthorized);
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnFormattedHttpStatus()
+        {
+            var teapotHttpContext = new DefaultHttpContext();
+            teapotHttpContext.Request.Path = "/api/test/i-am-a-teapot";
+            teapotHttpContext.Response.StatusCode = 418;
+
+            var result = _mapper.MapType(teapotHttpContext.Response);
+
+            result.Should().Be("error:418");
         }
 
         private class ExposeProtectedProblemDetailsHttpResponseMapper : ProblemDetailsHttpResponseMapper

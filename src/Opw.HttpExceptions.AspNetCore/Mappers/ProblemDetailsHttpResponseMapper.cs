@@ -138,10 +138,19 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// Map the ProblemDetails.Type property using the HTTP response.
         /// </summary>
         /// <param name="response">The HTTP response.</param>
-        /// <returns>Returns the URI with the HTTP status name ("error:[status:slug]").</returns>
+        /// <returns>Returns a status code information link (https://tools.ietf.org/html/rfc7231) or the URI with the HTTP status name ("error:[status:slug]").</returns>
         protected virtual string MapType(HttpResponse response)
         {
-            return new Uri($"error:{MapTitle(response).ToSlug()}").ToString();
+            string url = null;
+            try
+            {
+                ((HttpStatusCode)response.StatusCode).TryGetLink(out url);
+            }
+            catch { }
+
+            url ??= $"error:{MapTitle(response).ToSlug()}";
+
+            return new Uri(url).ToString();
         }
     }
 }

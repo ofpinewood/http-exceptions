@@ -3,9 +3,17 @@ using System.Reflection;
 
 namespace Opw.HttpExceptions
 {
-    internal static class HttpStatusCodeExtensions
+    /// <summary>
+    /// Extension methods for HttpStatusCode.
+    /// </summary>
+    public static class HttpStatusCodeExtensions
     {
-        internal static bool TryGetLink(this HttpStatusCode statusCode, out string link)
+        /// <summary>
+        /// Try get a status code information link (https://tools.ietf.org/html/rfc7231).
+        /// </summary>
+        /// <param name="statusCode">HTTP status code.</param>
+        /// <param name="link">The status code information link.</param>
+        public static bool TryGetLink(this HttpStatusCode statusCode, out string link)
         {
             try
             {
