@@ -141,16 +141,22 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns a status code information link (https://tools.ietf.org/html/rfc7231) or the URI with the HTTP status name ("error:[status:slug]").</returns>
         protected virtual string MapType(HttpResponse response)
         {
-            string url = null;
-            try
+            Uri uri = null;
+            if (Options.Value.UseHelpLinkAsProblemDetailsType)
             {
-                ((HttpStatusCode)response.StatusCode).TryGetLink(out url);
+                try
+                {
+                    ((HttpStatusCode)response.StatusCode).TryGetLink(out var url);
+                    uri = new Uri(url);
+                }
+                catch { }
+
+                uri ??= Options.Value.DefaultHelpLink;
             }
-            catch { }
 
-            url ??= $"error:{MapTitle(response).ToSlug()}";
+            uri ??= new Uri($"error:{MapTitle(response).ToSlug()}");
 
-            return new Uri(url).ToString();
+            return uri.ToString();
         }
     }
 }

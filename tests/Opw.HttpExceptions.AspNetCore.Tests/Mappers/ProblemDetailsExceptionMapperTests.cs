@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -220,20 +221,78 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnExceptionHelpLink()
+        public void MapType_Should_ReturnExceptionHelpLink_WhenUseHelpLinkAsProblemDetailsTypeTrue()
         {
+            var options = new HttpExceptionsOptions
+            {
+                UseHelpLinkAsProblemDetailsType = true,
+                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+            };
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(optionsMock.Object);
             var helpLink = "https://docs.microsoft.com/en-us/dotnet/api/system.exception.helplink?view=netcore-2.2";
             var exception = new ApplicationException { HelpLink = helpLink };
-            var result = _mapper.MapType(exception, new DefaultHttpContext());
+
+            var result = mapper.MapType(exception, new DefaultHttpContext());
 
             result.Should().Be(helpLink);
         }
 
         [Fact]
-        public void MapType_Should_ReturnExceptionHelpLinkForHttpException()
+        public void MapType_Should_ReturnDefaultHelpLink_WhenUseHelpLinkAsProblemDetailsTypeTrue()
         {
+            var options = new HttpExceptionsOptions
+            {
+                UseHelpLinkAsProblemDetailsType = true,
+                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+            };
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(optionsMock.Object);
+            var exception = new ApplicationException();
+
+            var result = mapper.MapType(exception, new DefaultHttpContext());
+
+            result.Should().Be("http://www.example.com/help-page");
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnTypeAsErrorUri_WhenUseHelpLinkAsProblemDetailsTypeTrueAndDefaultHelpLinkForProblemDetailsTypeNull()
+        {
+            var options = new HttpExceptionsOptions
+            {
+                UseHelpLinkAsProblemDetailsType = true
+            };
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(optionsMock.Object);
+            var exception = new ApplicationException();
+
+            var result = mapper.MapType(exception, new DefaultHttpContext());
+
+            result.Should().Be("error:application");
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnExceptionHelpLinkForHttpException_WhenUseHelpLinkAsProblemDetailsTypeTrue()
+        {
+            var options = new HttpExceptionsOptions
+            {
+                UseHelpLinkAsProblemDetailsType = true,
+                DefaultHelpLink = new Uri("http://www.example.com/default")
+            };
+
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(optionsMock.Object);
             var exception = new BadRequestException();
-            var result = _mapper.MapType(exception, new DefaultHttpContext());
+
+            var result = mapper.MapType(exception, new DefaultHttpContext());
 
             result.Should().Be(exception.HelpLink);
         }
