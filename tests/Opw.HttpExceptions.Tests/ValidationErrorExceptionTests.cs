@@ -1,5 +1,7 @@
 using FluentAssertions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Xunit;
 
@@ -29,6 +31,15 @@ namespace Opw.HttpExceptions
             exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
             exception.Errors.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void Constructor_Should_ThrowArgumentNullException_WhenMemberNameNull()
+        {
+            Action action = () => new ValidationErrorException<string>(null, new string[0]);
+
+            var exception = action.Should().Throw<ArgumentNullException>().Subject.Single();
+            exception.ParamName.Should().Be("memberName");
         }
 
         [Fact]
