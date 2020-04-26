@@ -40,6 +40,19 @@ namespace Opw.HttpExceptions
 
         [Theory]
         [MemberData(nameof(HttpExceptionTypes))]
+        public void Constructor_Should_HaveStringParameters(Type httpExceptionType)
+        {
+            // the following types don't have this type of constructor
+            if (httpExceptionType == typeof(InvalidModelException)) return;
+
+            var httpException = Activator.CreateInstance(httpExceptionType, "message");
+
+            httpException.Should().NotBeNull();
+            httpException.Should().BeOfType(httpExceptionType);
+        }
+
+        [Theory]
+        [MemberData(nameof(HttpExceptionTypes))]
         public void Constructor_Should_HaveStringAndExceptionParameters(Type httpExceptionType)
         {
             // the following types don't have this type of constructor
