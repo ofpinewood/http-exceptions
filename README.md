@@ -92,8 +92,17 @@ And when you want to set a default link for your help pages, you can set `Defaul
 ``` csharp
 mvcBuilder.AddHttpExceptions(options =>
 {
-    options.UseHelpLinkAsProblemDetailsType = true;
-    options.DefaultHelpLink = new Uri("http://www.example.com/help-page");
+    HttpContextTypeMapping = context => {
+        if (context.Response.StatusCode.TryGetInformationLink(out var url))
+        {
+            try
+            {
+                return new Uri(url);
+            }
+            catch { }
+        }
+        return new Uri("http://www.example.com/help-page");
+    }
 });
 ```
 

@@ -127,12 +127,21 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnResponseStatusCodeLinkUnauthorized_WhenUseHelpLinkAsProblemDetailsTypeTrue()
+        public void MapType_Should_ReturnResponseStatusCodeLinkUnauthorized_UsingHttpContextTypeMapping()
         {
             var options = new HttpExceptionsOptions
             {
-                UseHelpLinkAsProblemDetailsType = true,
-                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+                HttpContextTypeMapping = context => {
+                    if (context.Response.StatusCode.TryGetInformationLink(out var url))
+                    {
+                        try
+                        {
+                            return new Uri(url);
+                        }
+                        catch { }
+                    }
+                    return new Uri("http://www.example.com/help-page");
+                }
             };
             var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
             optionsMock.Setup(o => o.Value).Returns(options);
@@ -145,12 +154,21 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnDefaultHelpLink_WhenUseHelpLinkAsProblemDetailsTypeTrue()
+        public void MapType_Should_ReturnDefaultHelpLink_UsingHttpContextTypeMapping()
         {
             var options = new HttpExceptionsOptions
             {
-                UseHelpLinkAsProblemDetailsType = true,
-                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+                HttpContextTypeMapping = context => {
+                    if (context.Response.StatusCode.TryGetInformationLink(out var url))
+                    {
+                        try
+                        {
+                            return new Uri(url);
+                        }
+                        catch { }
+                    }
+                    return new Uri("http://www.example.com/help-page");
+                }
             };
             var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
             optionsMock.Setup(o => o.Value).Returns(options);
@@ -166,11 +184,12 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnTypeAsErrorUri_WhenUseHelpLinkAsProblemDetailsTypeTrueAndDefaultHelpLinkForProblemDetailsTypeNull()
+        public void MapType_Should_ReturnTypeAsErrorUri_WhenNotUsingHttpContextTypeMapping()
         {
             var options = new HttpExceptionsOptions
             {
-                UseHelpLinkAsProblemDetailsType = true
+                // simulate the HttpExceptionsOptionsSetup
+                HttpContextTypeMapping = _ => null
             };
             var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
             optionsMock.Setup(o => o.Value).Returns(options);

@@ -39,6 +39,12 @@ namespace Opw.HttpExceptions.AspNetCore
             if (options.ShouldLogException == null)
                 options.ShouldLogException = ShouldLogException;
 
+            if (options.ExceptionTypeMapping == null)
+                options.ExceptionTypeMapping = _ => null;
+
+            if (options.HttpContextTypeMapping == null)
+                options.HttpContextTypeMapping = _ => null;
+
             ConfigureExceptionMappers(options);
             ConfigureHttpResponseMappers(options);
         }

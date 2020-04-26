@@ -221,12 +221,22 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnExceptionHelpLink_WhenUseHelpLinkAsProblemDetailsTypeTrue()
+        public void MapType_Should_ReturnExceptionHelpLink_UsingExceptionTypeMapping()
         {
             var options = new HttpExceptionsOptions
             {
-                UseHelpLinkAsProblemDetailsType = true,
-                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+                ExceptionTypeMapping = exception =>
+                {
+                    if (!string.IsNullOrWhiteSpace(exception.HelpLink))
+                    {
+                        try
+                        {
+                            return new Uri(exception.HelpLink);
+                        }
+                        catch { }
+                    }
+                    return new Uri("http://www.example.com/help-page");
+                }
             };
             var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
             optionsMock.Setup(o => o.Value).Returns(options);
@@ -241,12 +251,51 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnDefaultHelpLink_WhenUseHelpLinkAsProblemDetailsTypeTrue()
+        public void MapType_Should_ReturnBadRequestExceptionHelpLink_UsingExceptionTypeMapping()
         {
             var options = new HttpExceptionsOptions
             {
-                UseHelpLinkAsProblemDetailsType = true,
-                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+                ExceptionTypeMapping = exception =>
+                {
+                    if (!string.IsNullOrWhiteSpace(exception.HelpLink))
+                    {
+                        try
+                        {
+                            return new Uri(exception.HelpLink);
+                        }
+                        catch { }
+                    }
+                    return new Uri("http://www.example.com/help-page");
+                }
+            };
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(optionsMock.Object);
+            var exception = new BadRequestException();
+
+            var result = mapper.MapType(exception, new DefaultHttpContext());
+
+            result.Should().Be(ResponseStatusCodeLink.BadRequest);
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnDefaultHelpLink_UsingExceptionTypeMapping()
+        {
+            var options = new HttpExceptionsOptions
+            {
+                ExceptionTypeMapping = exception =>
+                {
+                    if (!string.IsNullOrWhiteSpace(exception.HelpLink))
+                    {
+                        try
+                        {
+                            return new Uri(exception.HelpLink);
+                        }
+                        catch { }
+                    }
+                    return new Uri("http://www.example.com/help-page");
+                }
             };
             var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
             optionsMock.Setup(o => o.Value).Returns(options);
@@ -260,11 +309,12 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapType_Should_ReturnTypeAsErrorUri_WhenUseHelpLinkAsProblemDetailsTypeTrueAndDefaultHelpLinkForProblemDetailsTypeNull()
+        public void MapType_Should_ReturnTypeAsErrorUri_WhenNotUsingExceptionTypeMapping()
         {
             var options = new HttpExceptionsOptions
             {
-                UseHelpLinkAsProblemDetailsType = true
+                // simulate the HttpExceptionsOptionsSetup
+                ExceptionTypeMapping = _ => null
             };
             var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
             optionsMock.Setup(o => o.Value).Returns(options);
@@ -275,26 +325,6 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             var result = mapper.MapType(exception, new DefaultHttpContext());
 
             result.Should().Be("error:application");
-        }
-
-        [Fact]
-        public void MapType_Should_ReturnExceptionHelpLinkForHttpException_WhenUseHelpLinkAsProblemDetailsTypeTrue()
-        {
-            var options = new HttpExceptionsOptions
-            {
-                UseHelpLinkAsProblemDetailsType = true,
-                DefaultHelpLink = new Uri("http://www.example.com/default")
-            };
-
-            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
-            optionsMock.Setup(o => o.Value).Returns(options);
-
-            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(optionsMock.Object);
-            var exception = new BadRequestException();
-
-            var result = mapper.MapType(exception, new DefaultHttpContext());
-
-            result.Should().Be(exception.HelpLink);
         }
 
         private class ExposeProtectedProblemDetailsExceptionMapper : ProblemDetailsExceptionMapper<Exception>

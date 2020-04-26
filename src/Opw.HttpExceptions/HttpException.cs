@@ -27,7 +27,7 @@ namespace Opw.HttpExceptions
             get
             {
                 if (!string.IsNullOrWhiteSpace(_helpLink)) return _helpLink;
-                if (StatusCode.TryGetLink(out var link)) return link;
+                if (StatusCode.TryGetInformationLink(out var link)) return link;
                 return ResponseStatusCodeLink.InternalServerError;
             }
             set => _helpLink = value;
