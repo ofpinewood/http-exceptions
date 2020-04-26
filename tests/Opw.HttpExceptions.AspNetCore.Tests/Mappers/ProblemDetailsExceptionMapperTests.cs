@@ -221,6 +221,15 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapType_Should_ReturnDefaultHelpLink_UsingDefaultExceptionTypeMapping_WhenExceptionHelpLinkIsNoValidUri()
+        {
+            var exception = new ApplicationException { HelpLink = "invalid-link" };
+            var result = _mapper.MapType(exception, new DefaultHttpContext());
+
+            result.Should().Be("http://www.example.com/help-page");
+        }
+
+        [Fact]
         public void MapType_Should_ReturnHttpStatusCodeInformationLink_UsingDefaultExceptionTypeMapping_ForHttpException()
         {
             var exception = new BadRequestException();
