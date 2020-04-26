@@ -13,7 +13,24 @@ namespace Opw.HttpExceptions
         /// </summary>
         /// <param name="statusCode">HTTP status code.</param>
         /// <param name="link">The status code information link.</param>
-        public static bool TryGetLink(this HttpStatusCode statusCode, out string link)
+        public static bool TryGetInformationLink(this int statusCode, out string link)
+        {
+            try
+            {
+                return ((HttpStatusCode)statusCode).TryGetInformationLink(out link);
+            }
+            catch { }
+
+            link = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Try get a status code information link (https://tools.ietf.org/html/rfc7231).
+        /// </summary>
+        /// <param name="statusCode">HTTP status code.</param>
+        /// <param name="link">The status code information link.</param>
+        public static bool TryGetInformationLink(this HttpStatusCode statusCode, out string link)
         {
             try
             {

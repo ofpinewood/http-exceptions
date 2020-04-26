@@ -7,18 +7,27 @@ namespace Opw.HttpExceptions
     public class HttpStatusCodeExtensionsTests
     {
         [Fact]
-        public void TryGetLink_Should_ReturnLink_ForInternalServerError()
+        public void TryGetInformationLink_Should_ReturnLink_ForInternalServerError()
         {
-            var result = HttpStatusCode.InternalServerError.TryGetLink(out var link);
+            var result = HttpStatusCode.InternalServerError.TryGetInformationLink(out var link);
 
             result.Should().BeTrue();
             link.Should().Be(ResponseStatusCodeLink.InternalServerError);
         }
 
         [Fact]
-        public void TryGetLink_Should_ReturnFalse_ForOK()
+        public void TryGetInformationLink_Should_ReturnLink_ForInternalServerErrorAsInt()
         {
-            var result = HttpStatusCode.OK.TryGetLink(out var link);
+            var result = ((int)HttpStatusCode.InternalServerError).TryGetInformationLink(out var link);
+
+            result.Should().BeTrue();
+            link.Should().Be(ResponseStatusCodeLink.InternalServerError);
+        }
+
+        [Fact]
+        public void TryGetInformationLink_Should_ReturnFalse_ForOK()
+        {
+            var result = HttpStatusCode.OK.TryGetInformationLink(out var link);
 
             result.Should().BeFalse();
         }

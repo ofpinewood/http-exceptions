@@ -14,10 +14,14 @@ namespace Opw.HttpExceptions.AspNetCore
             webHost.Services.GetRequiredService<IWebHostEnvironment>().EnvironmentName = environmentName;
         }
 
-        public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails)
+        public static Mock<IOptions<HttpExceptionsOptions>> CreateHttpExceptionsOptionsMock(bool includeExceptionDetails, Uri defaultHelpLink = null)
         {
             var services = new ServiceCollection();
-            services.AddHttpExceptions(options => options.IncludeExceptionDetails = (_) => includeExceptionDetails);
+            services.AddHttpExceptions(options =>
+            {
+                options.IncludeExceptionDetails = (_) => includeExceptionDetails;
+                options.DefaultHelpLink = defaultHelpLink;
+            });
             
             var serviceProvider = services.BuildServiceProvider();
 
