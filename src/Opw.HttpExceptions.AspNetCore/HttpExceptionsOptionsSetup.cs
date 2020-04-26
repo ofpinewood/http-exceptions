@@ -40,10 +40,10 @@ namespace Opw.HttpExceptions.AspNetCore
                 options.ShouldLogException = ShouldLogException;
 
             if (options.ExceptionTypeMapping == null)
-                options.ExceptionTypeMapping = _ => null;
+                options.ExceptionTypeMapping = ExceptionTypeMapping;
 
             if (options.HttpContextTypeMapping == null)
-                options.HttpContextTypeMapping = _ => null;
+                options.HttpContextTypeMapping = HttpContextTypeMapping;
 
             ConfigureExceptionMappers(options);
             ConfigureHttpResponseMappers(options);
@@ -71,6 +71,32 @@ namespace Opw.HttpExceptions.AspNetCore
         private static bool ShouldLogException(Exception ex)
         {
             return true;
+        }
+
+        private static Uri ExceptionTypeMapping(Exception ex)
+        {
+            if (!string.IsNullOrWhiteSpace(ex.HelpLink))
+            {
+                try
+                {
+                    return new Uri(ex.HelpLink);
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        private static Uri HttpContextTypeMapping(HttpContext context)
+        {
+            if (context.Response.StatusCode.TryGetInformationLink(out var url))
+            {
+                try
+                {
+                    return new Uri(url);
+                }
+                catch { }
+            }
+            return null;
         }
 
         private void ConfigureExceptionMappers(HttpExceptionsOptions options)

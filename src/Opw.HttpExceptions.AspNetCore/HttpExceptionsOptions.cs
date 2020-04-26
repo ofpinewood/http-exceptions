@@ -37,6 +37,12 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<HttpContext, Uri> HttpContextTypeMapping { get; set; }
 
         /// <summary>
+        /// A default help link that will be used to map the ProblemDetails.Type property, if the Exception.HelpLink
+        /// or the HTTP status code information link are empty.
+        /// </summary>
+        public Uri DefaultHelpLink { get; set; }
+
+        /// <summary>
         /// Register of the ExceptionMappers that will be used during mapping.
         /// </summary>
         public IDictionary<Type, ExceptionMapperDescriptor> ExceptionMapperDescriptors { get; set; } = new Dictionary<Type, ExceptionMapperDescriptor>();
