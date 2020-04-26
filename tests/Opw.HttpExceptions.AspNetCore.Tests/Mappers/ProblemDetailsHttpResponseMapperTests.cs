@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Moq;
 using System;
 using System.Net;
 using Xunit;
@@ -126,11 +127,74 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapType_Should_ReturnResponseStatusCodeLinkUnauthorized_WhenUseHelpLinkAsProblemDetailsTypeTrue()
+        {
+            var options = new HttpExceptionsOptions
+            {
+                UseHelpLinkAsProblemDetailsType = true,
+                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+            };
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(optionsMock.Object);
+
+            var result = mapper.MapType(_unauthorizedHttpContext.Response);
+
+            result.Should().Be(ResponseStatusCodeLink.Unauthorized);
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnDefaultHelpLink_WhenUseHelpLinkAsProblemDetailsTypeTrue()
+        {
+            var options = new HttpExceptionsOptions
+            {
+                UseHelpLinkAsProblemDetailsType = true,
+                DefaultHelpLink = new Uri("http://www.example.com/help-page")
+            };
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(optionsMock.Object);
+            var teapotHttpContext = new DefaultHttpContext();
+            teapotHttpContext.Request.Path = "/api/test/i-am-a-teapot";
+            teapotHttpContext.Response.StatusCode = 418;
+
+            var result = mapper.MapType(teapotHttpContext.Response);
+
+            result.Should().Be("http://www.example.com/help-page");
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnTypeAsErrorUri_WhenUseHelpLinkAsProblemDetailsTypeTrueAndDefaultHelpLinkForProblemDetailsTypeNull()
+        {
+            var options = new HttpExceptionsOptions
+            {
+                UseHelpLinkAsProblemDetailsType = true
+            };
+            var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(options);
+
+            var mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(optionsMock.Object);
+            var teapotHttpContext = new DefaultHttpContext();
+            teapotHttpContext.Request.Path = "/api/test/i-am-a-teapot";
+            teapotHttpContext.Response.StatusCode = 418;
+
+            var result = mapper.MapType(teapotHttpContext.Response);
+
+            result.Should().Be("error:418");
+        }
+
+        [Fact]
         public void MapType_Should_ReturnFormattedHttpStatus()
         {
-            var result = _mapper.MapType(_unauthorizedHttpContext.Response);
+            var teapotHttpContext = new DefaultHttpContext();
+            teapotHttpContext.Request.Path = "/api/test/i-am-a-teapot";
+            teapotHttpContext.Response.StatusCode = 418;
 
-            result.Should().Be("error:unauthorized");
+            var result = _mapper.MapType(teapotHttpContext.Response);
+
+            result.Should().Be("error:418");
         }
 
         private class ExposeProtectedProblemDetailsHttpResponseMapper : ProblemDetailsHttpResponseMapper

@@ -27,6 +27,17 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<Exception, bool> ShouldLogException { get; set; }
 
         /// <summary>
+        /// Use the Exception.HelpLink or the HTTP status code information link to map the ProblemDetails.Type property.
+        /// </summary>
+        public bool UseHelpLinkAsProblemDetailsType { get; set; }
+
+        /// <summary>
+        /// If set, UseHelpLinkAsProblemDetailsType is TRUE and Exception.HelpLink or the HTTP status code information
+        /// link are empty this link will be used to map the ProblemDetails.Type property.
+        /// </summary>
+        public Uri DefaultHelpLink { get; set; }
+
+        /// <summary>
         /// Register of the ExceptionMappers that will be used during mapping.
         /// </summary>
         public IDictionary<Type, ExceptionMapperDescriptor> ExceptionMapperDescriptors { get; set; } = new Dictionary<Type, ExceptionMapperDescriptor>();
