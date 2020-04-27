@@ -23,6 +23,8 @@ namespace Opw.HttpExceptions
         /// <param name="memberName">The member name that indicate which field have an error.</param>
         public ValidationErrorException(string memberName, params T[] errors)
         {
+            _ = memberName ?? throw new ArgumentNullException(nameof(memberName));
+
             Errors.Add(memberName, errors);
         }
 
@@ -32,8 +34,7 @@ namespace Opw.HttpExceptions
         /// <param name = "errors" > The validation errors.</param>
         public ValidationErrorException(IDictionary<string, T[]> errors)
         {
-            if (errors == null)
-                throw new ArgumentNullException(nameof(errors));
+            _ = errors ?? throw new ArgumentNullException(nameof(errors));
 
             Errors = new Dictionary<string, T[]>(errors, StringComparer.Ordinal);
         }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -28,6 +29,33 @@ namespace Opw.HttpExceptions.AspNetCore
             _actionResultExecutorMock = new Mock<IActionResultExecutor<ObjectResult>>();
             _loggerMock = new Mock<ILogger<HttpExceptionsMiddleware>>();
             _middleware = new HttpExceptionsMiddleware(_nextMock.Object, _optionsMock.Object, _loggerMock.Object);
+        }
+
+        [Fact]
+        public void Constructor_Should_ThrowArgumentNullException_WhenRequestDelegateNull()
+        {
+            Action action = () => new HttpExceptionsMiddleware(null, _optionsMock.Object, _loggerMock.Object);
+
+            var exception = action.Should().Throw<ArgumentNullException>().Subject.Single();
+            exception.ParamName.Should().Be("next");
+        }
+
+        [Fact]
+        public void Constructor_Should_ThrowArgumentNullException_WhenOptionsNull()
+        {
+            Action action = () => new HttpExceptionsMiddleware(_nextMock.Object, null, _loggerMock.Object);
+
+            var exception = action.Should().Throw<ArgumentNullException>().Subject.Single();
+            exception.ParamName.Should().Be("options");
+        }
+
+        [Fact]
+        public void Constructor_Should_ThrowArgumentNullException_WhenLoggerNull()
+        {
+            Action action = () => new HttpExceptionsMiddleware(_nextMock.Object, _optionsMock.Object, null);
+
+            var exception = action.Should().Throw<ArgumentNullException>().Subject.Single();
+            exception.ParamName.Should().Be("logger");
         }
 
         [Fact]

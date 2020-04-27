@@ -15,14 +15,7 @@ namespace Opw.HttpExceptions
         /// <param name="link">The status code information link.</param>
         public static bool TryGetInformationLink(this int statusCode, out string link)
         {
-            try
-            {
-                return ((HttpStatusCode)statusCode).TryGetInformationLink(out link);
-            }
-            catch { }
-
-            link = null;
-            return false;
+            return ((HttpStatusCode)statusCode).TryGetInformationLink(out link);
         }
 
         /// <summary>

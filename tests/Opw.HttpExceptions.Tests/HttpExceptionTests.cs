@@ -25,6 +25,16 @@ namespace Opw.HttpExceptions
         }
 
         [Fact]
+        public void Constructor_Should_CreateHttpException_WithStatusCodeBadRequestAndMessage()
+        {
+            var exception = new HttpException(HttpStatusCode.BadRequest, "message");
+
+            exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
+            exception.Message.Should().Be("message");
+        }
+
+        [Fact]
         public void Serialization_Should_SerializeAndDeserialize()
         {
             var exception = SerializationHelper.SerializeDeserialize(new HttpException(HttpStatusCode.BadRequest));

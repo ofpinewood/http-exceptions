@@ -30,6 +30,16 @@ namespace Opw.HttpExceptions
             var result = HttpStatusCode.OK.TryGetInformationLink(out var link);
 
             result.Should().BeFalse();
+            link.Should().BeNull();
+        }
+
+        [Fact]
+        public void TryGetInformationLink_Should_ReturnFalse_WhenNonDefaultStatusCode()
+        {
+            var result = 418.TryGetInformationLink(out var link);
+
+            result.Should().BeFalse();
+            link.Should().BeNull();
         }
     }
 }
