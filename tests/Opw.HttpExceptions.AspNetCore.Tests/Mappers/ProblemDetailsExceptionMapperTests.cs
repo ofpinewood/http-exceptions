@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
+using Opw.HttpExceptions.AspNetCore.Tests.TestData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -200,6 +201,30 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             var result = _mapper.MapStatus(exception, new DefaultHttpContext());
 
             result.Should().Be((int)HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public void Map_Should_ReturnProblemDetails_With_Attributed_Properties()
+        {
+            var actionResult = _mapper.Map(new MyBadRequestException("UnitTest") { Foo = "FooUnit", Bar = 123, FooBar = 42L }, new DefaultHttpContext());
+
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
+
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.BadRequest);
+            problemDetailsResult.Value.Instance.Should().NotBeNull();
+
+            problemDetailsResult.Value.Extensions.Should().ContainKey("foo");
+            problemDetailsResult.Value.Extensions.Should().ContainKey("bar");
+            problemDetailsResult.Value.Extensions.Should().NotContainKey("fooBar");
+            problemDetailsResult.Value.Extensions.Should().ContainValue("FooUnit");
+            problemDetailsResult.Value.Extensions.Should().ContainValue(123);
+            problemDetailsResult.Value.Extensions.Should().NotContainValue(42L);
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
+
+            result.Should().BeFalse();
+            exception.Should().BeNull();
         }
 
         [Fact]

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -85,7 +84,7 @@ namespace Opw.HttpExceptions
                 nameof(exception.TargetSite)
             };
 
-            foreach (var propertyInfo in exception.GetType().GetProperties())
+            foreach (var propertyInfo in exception.GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(Attributes.ProblemDetailsAttribute), true)?.Any() != true))
             {
                 if (propertiesToExclude.Any(p => p == propertyInfo.Name)) continue;
                 if (propertyInfo.CanRead)
