@@ -88,7 +88,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             if (Options.Value.IsProblemDetailsAttributeEnabled)
             {
                 foreach (var propertyInfo in exception.GetType().GetProperties()
-                    .Where(p => p.GetCustomAttributes(typeof(Attributes.ProblemDetailsAttribute), true)?.Any() == true))
+                    .Where(p => p.GetCustomAttributes(typeof(ProblemDetailsAttribute), true)?.Any() == true))
                 {
                     if (propertyInfo.CanRead)
                     {

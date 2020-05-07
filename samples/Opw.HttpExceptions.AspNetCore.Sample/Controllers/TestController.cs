@@ -19,10 +19,10 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             throw new HttpException(statusCode, message, innerException);
         }
 
-        [HttpGet("problemDetailsAttribute")]
-        public ActionResult<string> ThrowBadRequest()
+        [HttpGet("problemDetailsAttributeException")]
+        public ActionResult<string> ThrowProblemDetailsAttributeException()
         {
-            throw new MyBadRequestException($"MyBadRequestException has occurred") { Foo = "MyFoo", Bar = 42, FooBar = 123L };
+            throw new ProblemDetailsAttributeException("ProblemDetailsAttributeException has occurred.") { PropertyA = "AAA", PropertyB = 42, PropertyC = 123L };
         }
 
         [HttpGet("applicationException")]

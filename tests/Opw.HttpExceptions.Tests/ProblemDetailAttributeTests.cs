@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Opw.HttpExceptions.Attributes;
 using Xunit;
 
 namespace Opw.HttpExceptions
@@ -7,56 +6,52 @@ namespace Opw.HttpExceptions
     public class ProblemDetailAttributeTests
     {
         [Fact]
-        public void Attribute_Should_Exist()
+        public void Property_Should_HaveAttribute()
         {
-            var foo = new BaseClasse();
-            foo.GetType().GetProperty(nameof(BaseClasse.Foo))
+            new Person().GetType().GetProperty(nameof(Person.Id))
                 .GetCustomAttributes(false).Should()
                 .Contain(new ProblemDetailsAttribute());
         }
 
         [Fact]
-        public void DerivedClass_BaseProperty_Attribute_Should_Exist()
+        public void Customer_BaseProperty_Should_HaveAttribute()
         {
-            var foo = new DerivedClass();
-            foo.GetType().GetProperty(nameof(BaseClasse.Bar))
+            new Customer().GetType().GetProperty(nameof(Person.Name))
                 .GetCustomAttributes(false).Should()
                 .Contain(new ProblemDetailsAttribute());
         }
 
         [Fact]
-        public void DerivedClass_BaseProperty_override_Attribute_Should_Exist()
+        public void Customer_OverriddenBaseProperty_Should_HaveAttribute()
         {
-            var foo = new DerivedClass();
-            foo.GetType().GetProperty(nameof(DerivedClass.Foo))
+            new Customer().GetType().GetProperty(nameof(Customer.Id))
                 .GetCustomAttributes(false).Should()
                 .Contain(new ProblemDetailsAttribute());
         }
 
         [Fact]
-        public void DerivedClass_Property_Attribute_Should_Not_Exist()
+        public void Customer_Property_Should_NotHaveAttribute()
         {
-            var foo = new DerivedClass();
-            foo.GetType().GetProperty(nameof(DerivedClass.FooBar))
+            new Customer().GetType().GetProperty(nameof(Customer.Code))
                 .GetCustomAttributes(false).Should()
                 .NotContain(new ProblemDetailsAttribute());
         }
 
-        private class BaseClasse
+        private class Person
         {
             [ProblemDetails]
-            public virtual int Foo { get; set; }
+            public virtual int Id { get; set; }
 
             [ProblemDetails]
-            public string Bar { get; set; }
+            public string Name { get; set; }
         }
 
-        private class DerivedClass : BaseClasse
+        private class Customer : Person
         {
             [ProblemDetails]
-            public override int Foo { get; set; }
+            public override int Id { get; set; }
 
-            public string FooBar { get; set; }
+            public string Code { get; set; }
         }
     }
 }

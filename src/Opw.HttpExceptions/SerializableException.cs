@@ -84,7 +84,7 @@ namespace Opw.HttpExceptions
                 nameof(exception.TargetSite)
             };
 
-            foreach (var propertyInfo in exception.GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(Attributes.ProblemDetailsAttribute), true)?.Any() != true))
+            foreach (var propertyInfo in exception.GetType().GetProperties())//.Where(p => p.GetCustomAttributes(typeof(ProblemDetailsAttribute), true)?.Any() != true))
             {
                 if (propertiesToExclude.Any(p => p == propertyInfo.Name)) continue;
                 if (propertyInfo.CanRead)
