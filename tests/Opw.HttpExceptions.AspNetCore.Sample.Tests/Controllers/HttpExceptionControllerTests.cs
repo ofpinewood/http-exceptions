@@ -71,6 +71,20 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         }
 
         [Fact]
+        public async Task ThrowProblemDetailsAttributeException_Should_ReturnProblemDetails()
+        {
+            var response = await _client.GetAsync("test/problemDetailsAttributeException");
+
+            var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Ambiguous);
+            problemDetails.Title.Should().Be("ProblemDetailsAttribute");
+            problemDetails.Type.Should().Be("error:problem-details-attribute");
+            problemDetails.Extensions.Should().HaveCount(2);
+            problemDetails.Extensions[nameof(ProblemDetailsAttributeException.PropertyA).ToCamelCase()].ToString().Should().Be("AAA");
+            problemDetails.Extensions[nameof(ProblemDetailsAttributeException.PropertyB).ToCamelCase()].ToString().Should().Be("42");
+            problemDetails.Extensions.Should().NotContainKey(nameof(ProblemDetailsAttributeException.PropertyC).ToCamelCase());
+        }
+
+        [Fact]
         public async Task PostProduct_Should_ReturnOk()
         {
             var product = new Product { Id = "1" };
