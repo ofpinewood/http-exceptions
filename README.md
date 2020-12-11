@@ -152,7 +152,7 @@ mvcBuilder.AddHttpExceptions(options =>
 ### Sample project using HttpExceptions middleware
 See the `samples/Opw.HttpExceptions.AspNetCore.Sample` project for a sample implementation. This project contains examples on how to use the HttpExceptions middleware.
 
-**Please see the code** :nerd_face
+**Please see the code** :nerd_face:
 
 ## HttpExceptions
 [![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
