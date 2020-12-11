@@ -136,7 +136,7 @@ mvcBuilder.AddHttpExceptions(options =>
 Set the ExceptionMapper collection that will be used during mapping. You can override and/or add ExceptionMappers for specific
 exception types. The ExceptionMappers are called in order so make sure you add them in the right order.
 
-By default there is one ExceptionMapper configured, that ExceptionMapper catches all exceptions. 
+By default there is one ExceptionMapper configured, that ExceptionMapper catches all exceptions.
 
 ``` csharp
 mvcBuilder.AddHttpExceptions(options =>
@@ -147,6 +147,22 @@ mvcBuilder.AddHttpExceptions(options =>
     // The last ExceptionMapper should be a catch all, for type Exception.
     options.ExceptionMapper<Exception, MyCustomExceptionMapper>();
 });
+```
+
+### Serialization helper methods
+Serialize the HTTP content to ProblemDetails.
+``` csharp
+ProblemDetails problemDetails = response.Content.ReadAsProblemDetails();
+```
+
+Try to get the exception details from the ProblemDetails.
+``` csharp
+problemDetails.TryGetExceptionDetails(out SerializableException exception);
+```
+
+Try to get the errors dictionary from the ProblemDetails.
+``` csharp
+problemDetails.TryGetErrors(out IDictionary<string, object[]> errors);
 ```
 
 ### Sample project using HttpExceptions middleware

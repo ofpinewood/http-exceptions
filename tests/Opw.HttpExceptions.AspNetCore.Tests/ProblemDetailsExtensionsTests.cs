@@ -1,10 +1,9 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 using System;
 using Xunit;
 
-namespace Opw.HttpExceptions.AspNetCore
+namespace Opw.HttpExceptions.AspNetCore.Serialization
 {
     public class ProblemDetailsExtensionsTests
     {
@@ -44,17 +43,6 @@ namespace Opw.HttpExceptions.AspNetCore
         public void TryParseSerializableException_Should_ReturnTrue_ForTypeOfExceptionInfo()
         {
             var exception = new SerializableException(new ApplicationException());
-
-            var result = exception.TryParseSerializableException(out var parsedException);
-
-            result.Should().BeTrue();
-            parsedException.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void TryParseSerializableException_Should_ReturnTrue_ForTypeOfJToken()
-        {
-            var exception = JToken.FromObject(new SerializableException(new ApplicationException()));
 
             var result = exception.TryParseSerializableException(out var parsedException);
 

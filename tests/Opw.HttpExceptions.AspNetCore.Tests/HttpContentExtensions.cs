@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -10,13 +10,14 @@ namespace Opw.HttpExceptions.AspNetCore
         public static async Task<T> ReadAsAsync<T>(this HttpContent content)
         {
             var str = await content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(str);
+            // WARNING: Newtonsoft can only be used here because this is a test project
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(str);
         }
 
-        public static StringContent ToJsonContent(this object obj)
+        public static StringContent ToJsonContent(this object obj, string mediaType = "application/json")
         {
-            var str = JsonConvert.SerializeObject(obj);
-            return new StringContent(str, Encoding.UTF8, "application/json");
+            var str = JsonSerializer.Serialize(obj, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            return new StringContent(str, Encoding.UTF8, mediaType);
         }
     }
 }

@@ -1,10 +1,11 @@
+using Opw.HttpExceptions.AspNetCore.Serialization;
 using System.Globalization;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
-    //TODO: create a tools package for these extensions?
     internal static class StringExtensions
     {
         internal static string ToCamelCase(this string s)
@@ -48,6 +49,13 @@ namespace Opw.HttpExceptions.AspNetCore
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        internal static SerializableException ReadAsSerializableException(this string json)
+        {
+            var converter = new SerializableExceptionJsonConverter();
+            var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json));
+            return converter.Read(ref reader, typeof(SerializableException), new JsonSerializerOptions());
         }
     }
 }
