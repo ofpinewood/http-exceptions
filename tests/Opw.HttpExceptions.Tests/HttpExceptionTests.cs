@@ -1,5 +1,8 @@
 using FluentAssertions;
+using Moq;
+using System;
 using System.Net;
+using System.Runtime.Serialization;
 using Xunit;
 
 namespace Opw.HttpExceptions
@@ -41,6 +44,29 @@ namespace Opw.HttpExceptions
 
             exception.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             exception.HelpLink.Should().Be(ResponseStatusCodeLink.BadRequest);
+        }
+
+        [Fact]
+        public void GetObjectData_Should_SerializeAndDeserialize()
+        {
+            var exception = new HttpException(HttpStatusCode.BadRequest);
+            var serializationInfo = new SerializationInfo(typeof(HttpException), new Mock<IFormatterConverter>().Object);
+
+            exception.GetObjectData(serializationInfo, new StreamingContext());
+
+            var result = serializationInfo.GetValue("StatusCode", typeof(HttpStatusCode));
+            result.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public void GetObjectData_Should_ThrowArgumentNullException_WhenSerializationInfoNull()
+        {
+            var exception = new HttpException(HttpStatusCode.BadRequest);
+            var serializationInfo = new SerializationInfo(typeof(HttpException), new Mock<IFormatterConverter>().Object);
+
+            Action action = () => exception.GetObjectData(null, new StreamingContext());
+
+            action.Should().Throw<ArgumentNullException>();
         }
     }
 }
