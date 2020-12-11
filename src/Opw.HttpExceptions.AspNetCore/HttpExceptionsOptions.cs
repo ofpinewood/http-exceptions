@@ -27,42 +27,42 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<Exception, bool> ShouldLogException { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Type property using the exception.
+        /// Inject a function to map the ProblemDetails.Type property using the exception.
         /// </summary>
         public Func<Exception, Uri> ExceptionTypeMapping { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Type property using the HTTP context.
+        /// Inject a function to map the ProblemDetails.Type property using the HTTP context.
         /// </summary>
         public Func<HttpContext, Uri> HttpContextTypeMapping { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Instance property using the exception.
+        /// Inject a function to map the ProblemDetails.Instance property using the exception.
         /// </summary>
         public Func<Exception, string> ExceptionInstanceMapping { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Instance property using the HTTP context.
+        /// Inject a function to map the ProblemDetails.Instance property using the HTTP context.
         /// </summary>
         public Func<HttpContext, string> HttpContextInstanceMapping { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Title property using the exception.
+        /// Inject a function to map the ProblemDetails.Title property using the exception.
         /// </summary>
         public Func<Exception, string> ExceptionTitleMapping { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Title property using the HTTP context.
+        /// Inject a function to map the ProblemDetails.Title property using the HTTP context.
         /// </summary>
         public Func<HttpContext, string> HttpContextTitleMapping { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Status property using the exception.
+        /// Inject a function to map the ProblemDetails.Status property using the exception.
         /// </summary>
         public Func<Exception, int?> ExceptionStatusMapping { get; set; }
 
         /// <summary>
-        /// Override the mapping of the ProblemDetails.Status property using the HTTP context.
+        /// Inject a function to map the ProblemDetails.Status property using the HTTP context.
         /// </summary>
         public Func<HttpContext, int?> HttpContextStatusMapping { get; set; }
 
