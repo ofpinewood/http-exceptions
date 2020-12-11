@@ -88,7 +88,7 @@ mvcBuilder.AddHttpExceptions(options =>
 ####  ProblemDetails property mappings
 You can inject your own mappings for the `ProblemDetails` properties using functions on the `HttpExceptionsOptions`, or by creating your own `IExceptionMapper` and/or `IHttpResponseMapper`. If you inject your own function that will be tried first, and if no result is returned the defaults will be used.
 
-In the following example we will override the `ProblemDetails.Type` property. By default the `ProblemDetails.Type` property will be set by:
+In the following example we will create a custom function mapping the `ProblemDetails.Type` property. By default the `ProblemDetails.Type` property will be set by:
 
 1. Either the `Exception.HelpLink` or the HTTP status code information link.
 2. Or the `DefaultHelpLink` will be used.
