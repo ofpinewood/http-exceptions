@@ -220,6 +220,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapTitle_Should_ReturnTitle_UsingOptionsExceptionTitleMappingOverride()
+        {
+            var title = "ExceptionTitleMapping";
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.ExceptionTitleMapping = (Exception ex) =>
+            {
+                return title;
+            };
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(options);
+
+            var result = mapper.MapTitle(new ApplicationException(), new DefaultHttpContext());
+
+            result.Should().Be(title);
+        }
+
+        [Fact]
         public void MapTitle_Should_ReturnFormattedExceptionName()
         {
             var exception = new DivideByZeroException();

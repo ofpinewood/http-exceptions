@@ -121,7 +121,16 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the HTTP status name or the status code.</returns>
         protected virtual string MapTitle(HttpResponse response)
         {
-            var status = response.StatusCode.ToString();
+            string status = null;
+
+            if (Options.Value.HttpContextTitleMapping != null)
+            {
+                status = Options.Value.HttpContextTitleMapping(response.HttpContext);
+                if (!string.IsNullOrEmpty(status))
+                    return status;
+            }
+
+            status = response.StatusCode.ToString();
             try
             {
                 status = ((HttpStatusCode)response.StatusCode).ToString();

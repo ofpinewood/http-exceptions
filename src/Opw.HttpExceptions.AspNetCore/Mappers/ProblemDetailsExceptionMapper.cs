@@ -137,7 +137,16 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the Exception type name without the "Exception" suffix.</returns>
         protected virtual string MapTitle(TException exception, HttpContext context)
         {
-            var name = exception.GetType().Name;
+            string name = null;
+
+            if (Options.Value.ExceptionTitleMapping != null)
+            {
+                name = Options.Value.ExceptionTitleMapping(exception);
+                if (!string.IsNullOrEmpty(name))
+                    return name;
+            }
+
+            name = exception.GetType().Name;
             if (name.Contains("`")) name = name.Substring(0, name.IndexOf('`'));
             if (name.EndsWith("Exception", StringComparison.InvariantCultureIgnoreCase))
                 name = name.Substring(0, name.Length - "Exception".Length);
