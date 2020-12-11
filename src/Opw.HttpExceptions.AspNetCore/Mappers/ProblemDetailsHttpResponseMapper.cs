@@ -111,6 +111,13 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the status of the response.</returns>
         protected virtual int MapStatus(HttpResponse response)
         {
+            if (Options.Value.HttpContextStatusMapping != null)
+            {
+                int? status = Options.Value.HttpContextStatusMapping(response.HttpContext);
+                if (status.HasValue)
+                    return status.Value;
+            }
+
             return response.StatusCode;
         }
 

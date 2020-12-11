@@ -123,6 +123,13 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the HttpException status code or 500 (InternalServerError) for other exception types.</returns>
         protected virtual int MapStatus(TException exception, HttpContext context)
         {
+            if (Options.Value.ExceptionStatusMapping != null)
+            {
+                int? status = Options.Value.ExceptionStatusMapping(exception);
+                if (status.HasValue)
+                    return status.Value;
+            }
+
             if (exception is HttpExceptionBase httpException)
                 return (int)httpException.StatusCode;
 

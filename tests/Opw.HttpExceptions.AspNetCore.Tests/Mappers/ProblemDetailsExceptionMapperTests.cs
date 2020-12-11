@@ -202,6 +202,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapStatus_Should_ReturnStatus_UsingOptionsExceptionStatusMappingOverride()
+        {
+            int? status = 9999999;
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.ExceptionStatusMapping = (Exception ex) =>
+            {
+                return status;
+            };
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(options);
+
+            var result = mapper.MapStatus(new ApplicationException(), new DefaultHttpContext());
+
+            result.Should().Be(status);
+        }
+
+        [Fact]
         public void MapStatus_Should_ReturnInternalServerError()
         {
             var exception = new ApplicationException();
