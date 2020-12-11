@@ -152,6 +152,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapDetail_Should_ReturnDetail_UsingOptionsExceptionDetailMappingOverride()
+        {
+            var detail = "ExceptionDetailMapping";
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.ExceptionDetailMapping = (Exception ex) =>
+            {
+                return detail;
+            };
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(options);
+
+            var result = mapper.MapDetail(new ApplicationException(), new DefaultHttpContext());
+
+            result.Should().Be(detail);
+        }
+
+        [Fact]
         public void MapDetail_Should_ReturnExceptionMessage()
         {
             var message = "Test exception message.";
