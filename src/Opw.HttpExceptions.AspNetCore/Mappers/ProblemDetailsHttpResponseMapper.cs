@@ -154,6 +154,13 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the HTTP status name or the status code.</returns>
         protected virtual string MapDetail(HttpResponse response)
         {
+            if (Options.Value.HttpContextDetailMapping != null)
+            {
+                string detail = Options.Value.HttpContextDetailMapping(response.HttpContext);
+                if (!string.IsNullOrEmpty(detail))
+                    return detail;
+            }
+
             return MapTitle(response);
         }
 

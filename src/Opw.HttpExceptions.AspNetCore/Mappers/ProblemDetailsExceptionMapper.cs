@@ -169,6 +169,13 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the Exception message.</returns>
         protected virtual string MapDetail(TException exception, HttpContext context)
         {
+            if (Options.Value.ExceptionDetailMapping != null)
+            {
+                string detail = Options.Value.ExceptionDetailMapping(exception);
+                if (!string.IsNullOrEmpty(detail))
+                    return detail;
+            }
+
             return exception.Message;
         }
 
