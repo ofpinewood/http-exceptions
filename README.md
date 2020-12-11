@@ -55,8 +55,30 @@ Whether or not to include the full exception details in the response. The defaul
 mvcBuilder.AddHttpExceptions(options =>
 {
     // This is the same as the default behavior; only include exception details in a development environment.
-    options.IncludeExceptionDetails= context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+    options.IncludeExceptionDetails = context => context.RequestServices.GetRequiredService<IHostingEnvironment>().IsDevelopment();
 });
+```
+
+#### Include extra properties on custom exceptions in the exception details
+You can include extra public exception properties in exception details, by adding the `ProblemDetailsAttribute` to them.
+
+``` csharp
+mvcBuilder.AddHttpExceptions(options =>
+{
+    // The default is also true.
+    options.IsProblemDetailsAttributeEnabled true;
+});
+
+public class CustomHttpException : HttpException
+{
+    [ProblemDetails]
+    public string PropertyA { get; set; }
+
+    [ProblemDetails]
+    public int PropertyB { get; set; }
+
+    public long PropertyC { get; set; }
+}
 ```
 
 #### Is exception response

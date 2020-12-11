@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Opw.HttpExceptions.AspNetCore.Tests.TestData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -149,6 +150,28 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             result.Should().BeTrue();
             errors.Should().NotBeNull();
             errors.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void Map_Should_ReturnPropertiesAsProblemDetailsExtensions_ForExceptionWithProblemDetailsAttributeProperties()
+        {
+            var actionResult = _mapper.Map(new ProblemDetailsAttributeException("ProblemDetailsAttributeException has occurred.") { PropertyA = "AAA", PropertyB = 42, PropertyC = 123L }, new DefaultHttpContext());
+
+            actionResult.Should().BeOfType<ProblemDetailsResult>();
+            var problemDetailsResult = (ProblemDetailsResult)actionResult;
+
+            problemDetailsResult.Value.ShouldNotBeNull(HttpStatusCode.Ambiguous);
+            problemDetailsResult.Value.Instance.Should().NotBeNull();
+
+            problemDetailsResult.Value.Extensions.Should().HaveCount(2);
+            problemDetailsResult.Value.Extensions[nameof(ProblemDetailsAttributeException.PropertyA).ToCamelCase()].ToString().Should().Be("AAA");
+            problemDetailsResult.Value.Extensions[nameof(ProblemDetailsAttributeException.PropertyB).ToCamelCase()].ToString().Should().Be("42");
+            problemDetailsResult.Value.Extensions.Should().NotContainKey(nameof(ProblemDetailsAttributeException.PropertyC).ToCamelCase());
+
+            var result = problemDetailsResult.Value.TryGetExceptionDetails(out var exception);
+
+            result.Should().BeFalse();
+            exception.Should().BeNull();
         }
 
         [Fact]

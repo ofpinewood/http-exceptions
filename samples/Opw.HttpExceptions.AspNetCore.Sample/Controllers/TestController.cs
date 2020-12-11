@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Opw.HttpExceptions.AspNetCore.Sample.CustomErrors;
 using Opw.HttpExceptions.AspNetCore.Sample.Models;
 using System;
 using System.Net;
@@ -16,6 +17,12 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             var message = $"{statusCode}Error has occurred.";
             var innerException = new ApplicationException($"Inner exception for {statusCode}Error.");
             throw new HttpException(statusCode, message, innerException);
+        }
+
+        [HttpGet("problemDetailsAttributeException")]
+        public ActionResult<string> ThrowProblemDetailsAttributeException()
+        {
+            throw new ProblemDetailsAttributeException("ProblemDetailsAttributeException has occurred.") { PropertyA = "AAA", PropertyB = 42, PropertyC = 123L };
         }
 
         [HttpGet("applicationException")]

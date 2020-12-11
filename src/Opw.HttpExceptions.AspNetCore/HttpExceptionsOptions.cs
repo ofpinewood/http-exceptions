@@ -17,6 +17,12 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<HttpContext, bool> IncludeExceptionDetails { get; set; }
 
         /// <summary>
+        /// Include all public exception properties that are attributed with <see cref="ProblemDetailsAttribute"/> in exception details.
+        /// Default <c>true</c>
+        /// </summary>
+        public bool IsProblemDetailsAttributeEnabled { get; set; } = true;
+
+        /// <summary>
         /// Is the response an exception and should it be handled by the HttpExceptions middleware.
         /// </summary>
         public Func<HttpContext, bool> IsExceptionResponse { get; set; }

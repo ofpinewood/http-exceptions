@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore.Mappers
@@ -83,6 +84,18 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
 
             if (Options.Value.IncludeExceptionDetails(context))
                 problemDetails.Extensions.Add(nameof(ProblemDetailsExtensionMembers.ExceptionDetails).ToCamelCase(), new SerializableException(exception));
+
+            if (Options.Value.IsProblemDetailsAttributeEnabled)
+            {
+                foreach (var propertyInfo in exception.GetType().GetProperties()
+                    .Where(p => p.GetCustomAttributes(typeof(ProblemDetailsAttribute), true)?.Any() == true))
+                {
+                    if (propertyInfo.CanRead)
+                    {
+                        problemDetails.Extensions.Add(propertyInfo.Name.ToCamelCase(), propertyInfo.GetValue(exception));
+                    }
+                }
+            }
 
             return new ProblemDetailsResult(problemDetails);
         }
