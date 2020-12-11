@@ -66,7 +66,7 @@ You can include extra public exception properties in exception details, by addin
 mvcBuilder.AddHttpExceptions(options =>
 {
     // The default is also true.
-    options.IsProblemDetailsAttributeEnabled true;
+    options.IsProblemDetailsAttributeEnabled = true;
 });
 
 public class CustomHttpException : HttpException
