@@ -128,6 +128,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapStatus_Should_ReturnStatus_UsingOptionsHttpContextStatusMappingOverride()
+        {
+            int? status = 9999999;
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.HttpContextStatusMapping = (HttpContext context) =>
+            {
+                return status;
+            };
+            var mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(options);
+
+            var result = mapper.MapStatus(new DefaultHttpContext().Response);
+
+            result.Should().Be(status);
+        }
+
+        [Fact]
         public void MapStatus_Should_ReturnUnauthorized()
         {
             var result = _mapper.MapStatus(_unauthorizedHttpContext.Response);
