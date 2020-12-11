@@ -22,7 +22,7 @@ namespace Opw.HttpExceptions.AspNetCore
                 options.IncludeExceptionDetails = (_) => includeExceptionDetails;
                 options.DefaultHelpLink = defaultHelpLink;
             });
-            
+
             var serviceProvider = services.BuildServiceProvider();
 
             var optionsMock = new Mock<IOptions<HttpExceptionsOptions>>();

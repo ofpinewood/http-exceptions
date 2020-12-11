@@ -37,6 +37,16 @@ namespace Opw.HttpExceptions.AspNetCore
         public Func<HttpContext, Uri> HttpContextTypeMapping { get; set; }
 
         /// <summary>
+        /// Override the mapping of the ProblemDetails.Instance property using the exception.
+        /// </summary>
+        public Func<Exception, string> ExceptionInstanceMapping { get; set; }
+
+        /// <summary>
+        /// Override the mapping of the ProblemDetails.Instance property using the HTTP context.
+        /// </summary>
+        public Func<HttpContext, string> HttpContextInstanceMapping { get; set; }
+
+        /// <summary>
         /// A default help link that will be used to map the ProblemDetails.Type property, if the Exception.HelpLink
         /// or the HTTP status code information link are empty.
         /// </summary>

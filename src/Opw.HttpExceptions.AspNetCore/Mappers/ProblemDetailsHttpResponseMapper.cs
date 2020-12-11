@@ -91,6 +91,13 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the request path, or null.</returns>
         protected virtual string MapInstance(HttpResponse response)
         {
+            if (Options.Value.HttpContextInstanceMapping != null)
+            {
+                string instance = Options.Value.HttpContextInstanceMapping(response.HttpContext);
+                if (!string.IsNullOrEmpty(instance))
+                    return instance;
+            }
+
             if (response.HttpContext.Request?.Path.HasValue == true)
                 return response.HttpContext.Request.Path;
 
@@ -141,7 +148,20 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns a status code information link (https://tools.ietf.org/html/rfc7231) or the URI with the HTTP status name ("error:[status:slug]").</returns>
         protected virtual string MapType(HttpResponse response)
         {
-            Uri uri = Options.Value.HttpContextTypeMapping(response.HttpContext);
+            Uri uri = null;
+
+            if (Options.Value.HttpContextTypeMapping != null)
+                uri = Options.Value.HttpContextTypeMapping(response.HttpContext);
+
+            if (uri == null && response.StatusCode.TryGetInformationLink(out var url))
+            {
+                try
+                {
+                    uri = new Uri(url);
+                }
+                catch { }
+            }
+
             if (uri == null)
                 uri = Options.Value.DefaultHelpLink;
             if (uri == null)

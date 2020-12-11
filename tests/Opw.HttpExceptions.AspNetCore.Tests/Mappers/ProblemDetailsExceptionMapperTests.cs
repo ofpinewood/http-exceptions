@@ -162,6 +162,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapInstance_Should_ReturnUri_UsingOptionsExceptionInstanceMappingOverride()
+        {
+            var uri = "https://example.com/ExceptionInstanceMapping";
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.ExceptionInstanceMapping = (Exception ex) =>
+            {
+                return uri;
+            };
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(options);
+
+            var result = mapper.MapInstance(new ApplicationException(), new DefaultHttpContext());
+
+            result.Should().Be(uri);
+        }
+
+        [Fact]
         public void MapInstance_Should_ReturnExceptionHelpLink()
         {
             var helpLink = "https://docs.microsoft.com/en-us/dotnet/api/system.exception.helplink?view=netcore-2.2";
@@ -208,6 +226,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             var result = _mapper.MapTitle(exception, new DefaultHttpContext());
 
             result.Should().Be("DivideByZero");
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnUri_UsingOptionsExceptionTypeMappingOverride()
+        {
+            var uri = new Uri("https://example.com/ExceptionTypeMapping");
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.ExceptionTypeMapping = (Exception ex) =>
+            {
+                return uri;
+            };
+            var mapper = new ExposeProtectedProblemDetailsExceptionMapper(options);
+
+            var result = mapper.MapType(new ApplicationException(), new DefaultHttpContext());
+
+            result.Should().Be(uri.ToString());
         }
 
         [Fact]

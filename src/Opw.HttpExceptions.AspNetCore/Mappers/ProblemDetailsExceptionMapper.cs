@@ -95,6 +95,13 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns either the request path, the exception help link or null.</returns>
         protected virtual string MapInstance(TException exception, HttpContext context)
         {
+            if (Options.Value.ExceptionInstanceMapping != null)
+            {
+                string instance = Options.Value.ExceptionInstanceMapping(exception);
+                if (!string.IsNullOrEmpty(instance))
+                    return instance;
+            }
+
             if (context.Request?.Path.HasValue == true)
                 return context.Request.Path;
 
@@ -157,7 +164,20 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the Exception.HelpLink or an URI with the Exception type name ("error:[Type:slug]").</returns>
         protected virtual string MapType(TException exception, HttpContext context)
         {
-            Uri uri = Options.Value.ExceptionTypeMapping(exception);
+            Uri uri = null;
+
+            if (Options.Value.ExceptionTypeMapping != null)
+                uri = Options.Value.ExceptionTypeMapping(exception);
+
+            if (uri == null && !string.IsNullOrWhiteSpace(exception.HelpLink))
+            {
+                try
+                {
+                    uri = new Uri(exception.HelpLink);
+                }
+                catch { }
+            }
+
             if (uri == null)
                 uri = Options.Value.DefaultHelpLink;
             if (uri == null)
