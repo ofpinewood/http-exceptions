@@ -33,31 +33,31 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             }
         }
 
-        //[Fact]
-        //public async Task Throw_Should_ReturnProblemDetails_WithExceptionDetails()
-        //{
-        //    TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Development");
-        //    _client = _factory.CreateClient();
+        [Fact]
+        public async Task Throw_Should_ReturnProblemDetails_WithExceptionDetails()
+        {
+            TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Development");
+            _client = _factory.CreateClient();
 
-        //    foreach (var statusCode in Enum.GetValues(typeof(HttpStatusCode)).Cast<HttpStatusCode>().Where(c => (int)c >= 400 && (int)c < 600))
-        //    {
-        //        var response = await _client.GetAsync($"test/{statusCode}");
+            foreach (var statusCode in Enum.GetValues(typeof(HttpStatusCode)).Cast<HttpStatusCode>().Where(c => (int)c >= 400 && (int)c < 600))
+            {
+                var response = await _client.GetAsync($"test/{statusCode}");
 
-        //        var problemDetails = response.ShouldBeProblemDetails(statusCode);
-        //        problemDetails.Extensions.Should().HaveCount(1);
+                var problemDetails = response.ShouldBeProblemDetails(statusCode);
+                problemDetails.Extensions.Should().HaveCount(1);
 
-        //        var exception = problemDetails.ShouldHaveExceptionDetails();
-        //        exception.Type.Should().Be(nameof(HttpException));
-        //        exception.InnerException.Should().NotBeNull();
+                var exception = problemDetails.ShouldHaveExceptionDetails();
+                exception.Type.Should().Be(nameof(HttpException));
+                exception.InnerException.Should().NotBeNull();
 
-        //        var result = exception.InnerException.TryParseSerializableException(out var innerException);
-        //        result.Should().BeTrue();
-        //        innerException.Type.Should().Be(nameof(ApplicationException));
-        //    }
+                var result = exception.InnerException.TryParseSerializableException(out var innerException);
+                result.Should().BeTrue();
+                innerException.Type.Should().Be(nameof(ApplicationException));
+            }
 
-        //    // reset the EnvironmentName back to production
-        //    TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Production");
-        //}
+            // reset the EnvironmentName back to production
+            TestHelper.SetHostEnvironmentName(_factory.Server.Host, "Production");
+        }
 
         [Fact]
         public async Task ThrowApplicationException_Should_ReturnProblemDetails()

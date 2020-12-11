@@ -21,7 +21,8 @@ namespace Opw.HttpExceptions.AspNetCore
         {
             if (options.ExceptionMapperDescriptors.ContainsKey(typeof(TException)))
             {
-                options.ExceptionMapperDescriptors[typeof(TException)] = new ExceptionMapperDescriptor {
+                options.ExceptionMapperDescriptors[typeof(TException)] = new ExceptionMapperDescriptor
+                {
                     Type = typeof(TExceptionMapper),
                     Arguments = arguments
                 };
