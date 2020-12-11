@@ -113,22 +113,22 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             problemDetails.Extensions.Should().HaveCount(0);
         }
 
-        //[Fact]
-        //public async Task Throw_Should_ReturnCustomError()
-        //{
-        //    var response = await _client.GetAsync("test/customError");
+        [Fact]
+        public async Task Throw_Should_ReturnCustomError()
+        {
+            var response = await _client.GetAsync("test/customError");
 
-        //    response.StatusCode.Should().Be(418);
-        //    response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+json");
+            response.StatusCode.Should().Be(418);
+            response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+json");
 
-        //    var customError = response.Content.ReadAsAsync<CustomError>().Result;
+            var customError = response.Content.ReadAsAsync<CustomError>().Result;
 
-        //    customError.Should().NotBeNull();
-        //    customError.Status.Should().Be(418);
-        //    customError.Type.Should().NotBeNull();
-        //    customError.Message.Should().NotBeNull();
-        //    customError.Code.Should().Be(42);
-        //}
+            customError.Should().NotBeNull();
+            customError.Status.Should().Be(418);
+            customError.Type.Should().NotBeNull();
+            customError.Message.Should().NotBeNull();
+            customError.Code.Should().Be(42);
+        }
 
         [Fact]
         public async Task Throw_Should_ReturnCustomErrorAsXml()

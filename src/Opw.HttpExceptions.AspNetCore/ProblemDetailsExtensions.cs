@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Opw.HttpExceptions.AspNetCore.Serialization;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -39,8 +41,8 @@ namespace Opw.HttpExceptions.AspNetCore
 
             if (value is JsonElement jsonElement)
             {
-                var str = jsonElement.GetRawText();
-                exception = JsonSerializer.Deserialize<SerializableException>(str, new JsonSerializerOptions());
+                var json = jsonElement.GetRawText();
+                exception = json.ReadAsSerializableException();
             }
 
             return exception != null;
