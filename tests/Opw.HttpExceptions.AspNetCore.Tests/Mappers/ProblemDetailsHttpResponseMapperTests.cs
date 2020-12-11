@@ -1,7 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Moq;
 using System;
 using System.Net;
 using Xunit;
@@ -103,6 +102,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapInstance_Should_ReturnUri_UsingOptionsHttpContextInstanceMappingOverride()
+        {
+            var uri = "https://example.com/HttpContextInstanceMapping";
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.HttpContextInstanceMapping = (HttpContext context) =>
+            {
+                return uri;
+            };
+            var mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(options);
+
+            var result = mapper.MapInstance(new DefaultHttpContext().Response);
+
+            result.Should().Be(uri);
+        }
+
+        [Fact]
         public void MapInstance_Should_ReturnRequestPath()
         {
             var result = _mapper.MapInstance(_unauthorizedHttpContext.Response);
@@ -124,6 +141,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
             var result = _mapper.MapTitle(_unauthorizedHttpContext.Response);
 
             result.Should().Be("Unauthorized");
+        }
+
+        [Fact]
+        public void MapType_Should_ReturnUri_UsingOptionsHttpContextTypeMappingOverride()
+        {
+            var uri = new Uri("https://example.com/HttpContextTypeMapping");
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.HttpContextTypeMapping = (HttpContext context) =>
+            {
+                return uri;
+            };
+            var mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(options);
+
+            var result = mapper.MapType(new DefaultHttpContext().Response);
+
+            result.Should().Be(uri.ToString());
         }
 
         [Fact]

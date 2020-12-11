@@ -85,43 +85,28 @@ mvcBuilder.AddHttpExceptions(options =>
 });
 ```
 
-####  ProblemDetails type property
-By default the `ProblemDetails.Type` property will be set by:
+####  ProblemDetails property mappings
+You can override the mapping for the `ProblemDetails` properties using functions on the `HttpExceptionsOptions`, or by creating your own `IExceptionMapper` and/or `IHttpResponseMapper`.
+
+In the following example we'll override the `ProblemDetails.Type` property. By default the `ProblemDetails.Type` property will be set by:
 
 1. Either the `Exception.HelpLink` or the HTTP status code information link.
 2. Or the `DefaultHelpLink` will be used.
 3. Or an URI with the HTTP status name ("error:[status:slug]") will be used.
 
-You can override this behavior in the options, or by creating your own `IExceptionMapper` and/or `IHttpResponseMapper`.
+When the `ExceptionTypeMapping` or `HttpContextTypeMapping` are set the result of those functions will be used.
 
 ``` csharp
 mvcBuilder.AddHttpExceptions(options =>
 {
     ExceptionTypeMapping = exception => {
-        // This is the default behavior, you can implement your own logic here.
-        if (!string.IsNullOrWhiteSpace(ex.HelpLink))
-        {
-            try
-            {
-                return new Uri(ex.HelpLink);
-            }
-            catch { }
-        }
-        return null;
+        // This is a example, you can implement your own logic here.
+        return "My Exception Type Mapping";
     },
     HttpContextTypeMapping = context => {
-        // This is the default behavior, you can implement your own logic here.
-        if (context.Response.StatusCode.TryGetInformationLink(out var url))
-        {
-            try
-            {
-                return new Uri(url);
-            }
-            catch { }
-        }
-        return null;
-    },
-    DefaultHelpLink = new Uri("http://www.example.com/help-page")
+        // This is a example, you can implement your own logic here.
+        return "My  HttpContext Type Mapping";
+    }
 });
 ```
 
