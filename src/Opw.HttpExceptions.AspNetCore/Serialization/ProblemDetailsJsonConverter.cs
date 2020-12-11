@@ -3,7 +3,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Opw.HttpExceptions.AspNetCore
+namespace Opw.HttpExceptions.AspNetCore.Serialization
 {
     // https://github.com/aspnet/AspNetCore/blob/a99ab25700e6c8a58ca75ee59621b8b671431706/src/Mvc/Mvc.Core/src/Infrastructure/ProblemDetailsJsonConverter.cs
     internal class ProblemDetailsJsonConverter : JsonConverter<ProblemDetails>
