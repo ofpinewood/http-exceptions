@@ -136,6 +136,24 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
+        public void MapTitle_Should_ReturnUri_UsingOptionsHttpContextTitleMappingOverride()
+        {
+            var title = "HttpContextTitleMapping";
+
+            var optionsMock = TestHelper.CreateHttpExceptionsOptionsMock(false, new Uri("http://www.example.com/help-page"));
+            var options = optionsMock.Object;
+            options.Value.HttpContextTitleMapping = (HttpContext context) =>
+            {
+                return title;
+            };
+            var mapper = new ExposeProtectedProblemDetailsHttpResponseMapper(options);
+
+            var result = mapper.MapTitle(new DefaultHttpContext().Response);
+
+            result.Should().Be(title);
+        }
+
+        [Fact]
         public void MapTitle_Should_ReturnHttpStatus()
         {
             var result = _mapper.MapTitle(_unauthorizedHttpContext.Response);
