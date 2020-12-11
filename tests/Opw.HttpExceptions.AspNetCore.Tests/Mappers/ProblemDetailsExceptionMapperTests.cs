@@ -220,7 +220,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapTitle_Should_ReturTitle_UsingOptionsExceptionTitleMappingOverride()
+        public void MapTitle_Should_ReturnTitle_UsingOptionsExceptionTitleMappingOverride()
         {
             var title = "ExceptionTitleMapping";
 

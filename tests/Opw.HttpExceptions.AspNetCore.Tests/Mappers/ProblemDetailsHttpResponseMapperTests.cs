@@ -136,7 +136,7 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         }
 
         [Fact]
-        public void MapTitle_Should_ReturnUri_UsingOptionsHttpContextTitleMappingOverride()
+        public void MapTitle_Should_ReturnTitle_UsingOptionsHttpContextTitleMappingOverride()
         {
             var title = "HttpContextTitleMapping";
 
