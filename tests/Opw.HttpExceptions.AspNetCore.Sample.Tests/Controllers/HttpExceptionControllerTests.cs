@@ -77,7 +77,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
 
             var problemDetails = response.ShouldBeProblemDetails(HttpStatusCode.Ambiguous);
             problemDetails.Title.Should().Be("ProblemDetailsAttribute");
-            problemDetails.Type.Should().Be("error:problem-details-attribute");
+            problemDetails.Type.Should().Be(ResponseStatusCodeLink.InternalServerError);
             problemDetails.Extensions.Should().HaveCount(2);
             problemDetails.Extensions[nameof(ProblemDetailsAttributeException.PropertyA).ToCamelCase()].ToString().Should().Be("AAA");
             problemDetails.Extensions[nameof(ProblemDetailsAttributeException.PropertyB).ToCamelCase()].ToString().Should().Be("42");
