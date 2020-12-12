@@ -152,17 +152,19 @@ mvcBuilder.AddHttpExceptions(options =>
 ### Serialization helper methods
 Serialize the HTTP content to ProblemDetails.
 ``` csharp
-ProblemDetails problemDetails = response.Content.ReadAsProblemDetails();
+ProblemDetails problemDetails = ((HttpContent)response.Content).ReadAsProblemDetails();
 ```
 
 Try to get the exception details from the ProblemDetails.
 ``` csharp
-problemDetails.TryGetExceptionDetails(out SerializableException exception);
+SerializableException exception;
+((ProblemDetails)problemDetails).TryGetExceptionDetails(out exception);
 ```
 
 Try to get the errors dictionary from the ProblemDetails.
 ``` csharp
-problemDetails.TryGetErrors(out IDictionary<string, object[]> errors);
+var IDictionary<string, object[]> errors;
+((ProblemDetails)problemDetails).TryGetErrors(out errors);
 ```
 
 ### Sample project using HttpExceptions middleware
