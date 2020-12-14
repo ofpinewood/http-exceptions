@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -9,6 +10,8 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public static async Task<T> ReadAsAsync<T>(this HttpContent content)
         {
+            _ = content ?? throw new ArgumentNullException(nameof(content));
+
             var str = await content.ReadAsStringAsync();
             // WARNING: Newtonsoft can only be used here because this is a test project
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(str);

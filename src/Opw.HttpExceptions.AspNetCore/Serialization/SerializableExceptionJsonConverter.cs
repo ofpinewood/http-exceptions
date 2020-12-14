@@ -26,7 +26,7 @@ namespace Opw.HttpExceptions.AspNetCore.Serialization
 
             while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
             {
-                ReadValue(ref reader, serializableException, options);
+                ReadValue(ref reader, serializableException);
             }
 
             if (reader.TokenType != JsonTokenType.EndObject)
@@ -42,7 +42,7 @@ namespace Opw.HttpExceptions.AspNetCore.Serialization
             throw new NotImplementedException();
         }
 
-        internal static void ReadValue(ref Utf8JsonReader reader, SerializableException value, JsonSerializerOptions options)
+        internal static void ReadValue(ref Utf8JsonReader reader, SerializableException value)
         {
             if (TryReadStringProperty(ref reader, Type, out var propertyValue))
             {

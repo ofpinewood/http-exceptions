@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Opw.HttpExceptions.AspNetCore._Test;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ namespace Opw.HttpExceptions.AspNetCore
 
         public DefaultApiBehaviorTests(TestWebApplicationFactory<DefaultApiBehaviorStartup> factory)
         {
+            _ = factory ?? throw new ArgumentNullException(nameof(factory));
+
             _client = factory.CreateClient();
         }
 

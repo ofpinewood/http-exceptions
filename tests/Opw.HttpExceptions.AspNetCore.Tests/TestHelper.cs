@@ -11,6 +11,8 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public static void SetHostEnvironmentName(IWebHost webHost, string environmentName)
         {
+            _ = webHost ?? throw new ArgumentNullException(nameof(webHost));
+
             webHost.Services.GetRequiredService<IWebHostEnvironment>().EnvironmentName = environmentName;
         }
 

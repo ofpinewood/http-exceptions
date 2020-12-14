@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using System;
 
 namespace Opw.HttpExceptions.AspNetCore.Sample.CustomErrors
 {
@@ -13,6 +14,8 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.CustomErrors
 
         public CustomErrorResult(CustomError customError) : base(customError)
         {
+            _ = customError ?? throw new ArgumentNullException(nameof(customError));
+
             StatusCode = customError.Status;
             DeclaredType = customError.GetType();
 

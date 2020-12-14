@@ -29,12 +29,12 @@ steps:
   inputs:
     versionSpec: '5.x'
 
-# https://dotnet.microsoft.com/download/dotnet-core/3.1
+# https://dotnet.microsoft.com/download/dotnet/5.0
 - task: UseDotNet@2
-  displayName: Install .Net Core 3.1.200 LTS
+  displayName: Install .Net Core 5.0.101
   inputs:
     packageType: 'sdk'
-    version: '3.1.200'
+    version: '5.0.101'
 
 - task: DotNetCoreCLI@2
   displayName: Build

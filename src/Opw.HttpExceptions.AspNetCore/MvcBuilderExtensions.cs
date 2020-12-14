@@ -17,6 +17,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <param name="configureOptions">An action used to configure the provided options.</param>
         public static IMvcCoreBuilder AddHttpExceptions(this IMvcCoreBuilder builder, Action<HttpExceptionsOptions> configureOptions = null)
         {
+            _ = builder ?? throw new ArgumentNullException(nameof(builder));
+
             builder.Services.AddHttpExceptions(configureOptions);
 
             var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<HttpExceptionsOptions>>();
@@ -32,6 +34,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <param name="configureOptions">An action used to configure the provided options.</param>
         public static IMvcBuilder AddHttpExceptions(this IMvcBuilder builder, Action<HttpExceptionsOptions> configureOptions = null)
         {
+            _ = builder ?? throw new ArgumentNullException(nameof(builder));
+
             builder.Services.AddHttpExceptions(configureOptions);
 
             var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<HttpExceptionsOptions>>();

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Opw.HttpExceptions.AspNetCore.Serialization;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -19,6 +18,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <returns>true if the ProblemDetails contains an exception; otherwise, false.</returns>
         public static bool TryGetExceptionDetails(this ProblemDetails problemDetails, out SerializableException exception)
         {
+            _ = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
+
             if (problemDetails.Extensions.TryGetValue(nameof(ProblemDetailsExtensionMembers.ExceptionDetails).ToCamelCase(), out var value))
                 return value.TryParseSerializableException(out exception);
 
@@ -56,6 +57,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <returns>true if the ProblemDetails contains errors dictionary; otherwise, false.</returns>
         public static bool TryGetErrors(this ProblemDetails problemDetails, out IDictionary<string, object[]> errors)
         {
+            _ = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
+
             if (problemDetails.Extensions.TryGetValue(nameof(ProblemDetailsExtensionMembers.Errors).ToCamelCase(), out var value))
                 return value.TryParseErrors(out errors);
 

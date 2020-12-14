@@ -31,7 +31,8 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
                 // This is a simplified version of the default behavior; only map exceptions for 4xx and 5xx responses.
                 options.IsExceptionResponse = context => (context.Response.StatusCode >= 400 && context.Response.StatusCode < 600);
                 // Only log the when it has a status code of 500 or higher, or when it not is a HttpException.
-                options.ShouldLogException = exception => {
+                options.ShouldLogException = exception =>
+                {
                     if ((exception is HttpExceptionBase httpException && (int)httpException.StatusCode >= 500) || !(exception is HttpExceptionBase))
                         return true;
                     return false;

@@ -43,6 +43,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <param name="actionResult">A representation of the exception as a ProblemDetailsResult.</param>
         public virtual bool TryMap(Exception exception, HttpContext context, out IStatusCodeActionResult actionResult)
         {
+            _ = exception ?? throw new ArgumentNullException(nameof(exception));
+
             actionResult = default;
 
             if (!CanMap(exception.GetType()))
@@ -108,6 +110,9 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns either the request path, the exception help link or null.</returns>
         protected virtual string MapInstance(TException exception, HttpContext context)
         {
+            _ = exception ?? throw new ArgumentNullException(nameof(exception));
+            _ = context ?? throw new ArgumentNullException(nameof(context));
+
             if (Options.Value.ExceptionInstanceMapping != null)
             {
                 string instance = Options.Value.ExceptionInstanceMapping(exception);
@@ -157,6 +162,9 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the Exception type name without the "Exception" suffix.</returns>
         protected virtual string MapTitle(TException exception, HttpContext context)
         {
+            _ = exception ?? throw new ArgumentNullException(nameof(exception));
+            _ = context ?? throw new ArgumentNullException(nameof(context));
+
             string name = null;
 
             if (Options.Value.ExceptionTitleMapping != null)
@@ -182,6 +190,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the Exception message.</returns>
         protected virtual string MapDetail(TException exception, HttpContext context)
         {
+            _ = exception ?? throw new ArgumentNullException(nameof(exception));
+
             if (Options.Value.ExceptionDetailMapping != null)
             {
                 string detail = Options.Value.ExceptionDetailMapping(exception);
@@ -200,6 +210,9 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the Exception.HelpLink or an URI with the Exception type name ("error:[Type:slug]").</returns>
         protected virtual string MapType(TException exception, HttpContext context)
         {
+            _ = exception ?? throw new ArgumentNullException(nameof(exception));
+            _ = context ?? throw new ArgumentNullException(nameof(context));
+
             Uri uri = null;
 
             if (Options.Value.ExceptionTypeMapping != null)
