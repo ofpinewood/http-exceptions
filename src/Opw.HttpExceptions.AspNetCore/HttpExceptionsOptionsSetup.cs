@@ -30,6 +30,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <param name="options">The options instance to configure.</param>
         public void Configure(HttpExceptionsOptions options)
         {
+            _ = options ?? throw new ArgumentNullException(nameof(options));
+
             if (options.IncludeExceptionDetails == null)
                 options.IncludeExceptionDetails = IncludeExceptionDetails;
 

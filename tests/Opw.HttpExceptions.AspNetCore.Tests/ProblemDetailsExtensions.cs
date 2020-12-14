@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net;
 
 namespace Opw.HttpExceptions.AspNetCore
@@ -8,6 +9,8 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public static ProblemDetails ShouldNotBeNull(this ProblemDetails problemDetails, HttpStatusCode statusCode)
         {
+            _ = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
+
             problemDetails.Should().NotBeNull();
             problemDetails.Status.Should().Be((int)statusCode);
             problemDetails.Title.Should().NotBeNull();

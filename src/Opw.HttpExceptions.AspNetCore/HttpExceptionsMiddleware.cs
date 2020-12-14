@@ -41,6 +41,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// </summary>
         public async Task Invoke(HttpContext context)
         {
+            _ = context ?? throw new ArgumentNullException(nameof(context));
+
             try
             {
                 await _next(context);

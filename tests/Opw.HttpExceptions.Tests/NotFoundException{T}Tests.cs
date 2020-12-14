@@ -1,4 +1,5 @@
 using FluentAssertions;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Xunit;
 
@@ -24,6 +25,7 @@ namespace Opw.HttpExceptions
             exception.HelpLink.Should().Be(ResponseStatusCodeLink.NotFound);
         }
 
+        [SuppressMessage("Style", "CA1812:Avoid uninstantiated internal classes", Justification = "Used in the tests.")]
         private class Product
         {
             public string Id { get; set; }

@@ -46,6 +46,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <param name="actionResult">A representation of the HTTP response error as a ProblemDetailsResult.</param>
         public bool TryMap(HttpResponse response, out IStatusCodeActionResult actionResult)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             actionResult = default;
 
             if (!CanMap(response.StatusCode))
@@ -69,6 +71,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>A representation of the response error as a ProblemDetailsResult.</returns>
         public IStatusCodeActionResult Map(HttpResponse response)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             if (!CanMap(response.StatusCode))
                 throw new ArgumentOutOfRangeException(nameof(response), response, $"HttpResponse status is not {Status}.");
 
@@ -91,6 +95,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the request path, or null.</returns>
         protected virtual string MapInstance(HttpResponse response)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             if (Options.Value.HttpContextInstanceMapping != null)
             {
                 string instance = Options.Value.HttpContextInstanceMapping(response.HttpContext);
@@ -111,6 +117,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the status of the response.</returns>
         protected virtual int MapStatus(HttpResponse response)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             if (Options.Value.HttpContextStatusMapping != null)
             {
                 int? status = Options.Value.HttpContextStatusMapping(response.HttpContext);
@@ -128,6 +136,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the HTTP status name or the status code.</returns>
         protected virtual string MapTitle(HttpResponse response)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             string status = null;
 
             if (Options.Value.HttpContextTitleMapping != null)
@@ -154,6 +164,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns the HTTP status name or the status code.</returns>
         protected virtual string MapDetail(HttpResponse response)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             if (Options.Value.HttpContextDetailMapping != null)
             {
                 string detail = Options.Value.HttpContextDetailMapping(response.HttpContext);
@@ -171,6 +183,8 @@ namespace Opw.HttpExceptions.AspNetCore.Mappers
         /// <returns>Returns a status code information link (https://tools.ietf.org/html/rfc7231) or the URI with the HTTP status name ("error:[status:slug]").</returns>
         protected virtual string MapType(HttpResponse response)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             Uri uri = null;
 
             if (Options.Value.HttpContextTypeMapping != null)

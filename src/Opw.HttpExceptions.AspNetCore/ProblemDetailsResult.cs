@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using System;
 
 namespace Opw.HttpExceptions.AspNetCore
 {
@@ -23,6 +24,8 @@ namespace Opw.HttpExceptions.AspNetCore
         /// <param name="problemDetails">The ProblemDetails</param>
         public ProblemDetailsResult(ProblemDetails problemDetails) : base(problemDetails)
         {
+            _ = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
+
             StatusCode = problemDetails.Status;
             DeclaredType = problemDetails.GetType();
 

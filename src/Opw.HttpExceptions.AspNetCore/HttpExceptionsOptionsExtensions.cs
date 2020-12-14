@@ -19,6 +19,8 @@ namespace Opw.HttpExceptions.AspNetCore
             where TException : Exception
             where TExceptionMapper : IExceptionMapper
         {
+            _ = options ?? throw new ArgumentNullException(nameof(options));
+
             if (options.ExceptionMapperDescriptors.ContainsKey(typeof(TException)))
             {
                 options.ExceptionMapperDescriptors[typeof(TException)] = new ExceptionMapperDescriptor
@@ -46,6 +48,8 @@ namespace Opw.HttpExceptions.AspNetCore
         public static void HttpResponseMapper<THttpResponseMapper>(this HttpExceptionsOptions options, int status = int.MinValue, params object[] arguments)
             where THttpResponseMapper : IHttpResponseMapper
         {
+            _ = options ?? throw new ArgumentNullException(nameof(options));
+
             if (options.HttpResponseMapperDescriptors.ContainsKey(status))
             {
                 options.HttpResponseMapperDescriptors[status] = new HttpResponseMapperDescriptor

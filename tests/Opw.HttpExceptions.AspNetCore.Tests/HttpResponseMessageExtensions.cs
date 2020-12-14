@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net;
 using System.Net.Http;
 
@@ -9,6 +10,8 @@ namespace Opw.HttpExceptions.AspNetCore
     {
         public static ProblemDetails ShouldBeProblemDetails(this HttpResponseMessage response, HttpStatusCode statusCode)
         {
+            _ = response ?? throw new ArgumentNullException(nameof(response));
+
             response.StatusCode.Should().Be(statusCode);
             response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+json");
 
