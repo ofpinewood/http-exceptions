@@ -80,6 +80,11 @@ namespace Opw.HttpExceptions.AspNetCore
             if (value is IDictionary<string, object[]>)
                 errors = (IDictionary<string, object[]>)value;
 #pragma warning restore RCS1220 // Use pattern matching instead of combination of 'is' operator and cast operator.
+            if (value is JsonElement)
+            {
+                var json = ((JsonElement)value).GetRawText();
+                errors = JsonSerializer.Deserialize<IDictionary<string, object[]>>(json);
+            }
 
             return errors != null;
         }
