@@ -31,11 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Opw.HttpExceptions.AspNetCore\Opw.HttpExceptions.AspNetCore.csproj" />
     <ProjectReference Include="..\Opw.HttpExceptions.AspNetCore.Tests\Opw.HttpExceptions.AspNetCore.Tests.csproj" />
   </ItemGroup>
