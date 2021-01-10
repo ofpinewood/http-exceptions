@@ -214,6 +214,6 @@ We accept fixes and features! Here are some resources to help you get started on
 * [Code of conduct](https://github.com/ofpinewood/http-exceptions/blob/master/CODE_OF_CONDUCT.md)
 
 ---
-Copyright &copy; 2021, [Of Pine Wood](http://ofpinewood.com).  
-Created by [Peter van den Hout](http://ofpinewood.com).  
+Copyright &copy; 2021, [Of Pine Wood](http://ofpinewood.com).
+Created by [Peter van den Hout](http://ofpinewood.com).
 Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).
