@@ -1,9 +1,9 @@
 # HttpExceptions <img src="http-exceptions-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
 
 ## Return exceptions over HTTP
-[![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
+[![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=main)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=main)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
-[![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/main/LICENSE)
 
 Middleware and extensions for returning exceptions over HTTP, e.g. as ASP.NET Core Problem Details.
 Problem Details are a machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807.
@@ -173,9 +173,9 @@ See the `samples/Opw.HttpExceptions.AspNetCore.Sample` project for a sample impl
 **Please see the code** :nerd_face:
 
 ## HttpExceptions
-[![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=master)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=master)
+[![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=main)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=main)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.svg)](https://www.nuget.org/packages/Opw.HttpExceptions/)
-[![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/main/LICENSE)
 
 HTTP-specific exception classes that enable ASP.NET to generate exception information. These classes can be used by themselves or as base classes for your own HttpExceptions.
 
@@ -210,10 +210,10 @@ You can install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExce
 ## Contributing
 We accept fixes and features! Here are some resources to help you get started on how to contribute code or new content.
 
-* [Contributing](https://github.com/ofpinewood/http-exceptions/blob/master/CONTRIBUTING.md)
-* [Code of conduct](https://github.com/ofpinewood/http-exceptions/blob/master/CODE_OF_CONDUCT.md)
+* [Contributing](https://github.com/ofpinewood/http-exceptions/blob/main/CONTRIBUTING.md)
+* [Code of conduct](https://github.com/ofpinewood/http-exceptions/blob/main/CODE_OF_CONDUCT.md)
 
 ---
 Copyright &copy; 2021, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
-Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/master/LICENSE).
+Released under the terms of the [MIT license](https://github.com/ofpinewood/http-exceptions/blob/main/LICENSE).

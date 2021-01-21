@@ -10,7 +10,7 @@ or better still a PR that's accompanied with passing tests.
 
 If you have general questions or feedback about using HttpExceptions, PLEASE DON'T CREATE AN ISSUE AND POST TO STACKOVERFLOW INSTEAD.
 
-Please read the [GitHub flow](https://guides.github.com/introduction/flow/) documentation. **TL;DR** there's only one rule: anything in the master branch is always deployable.
+Please read the [GitHub flow](https://guides.github.com/introduction/flow/) documentation. **TL;DR** there's only one rule: anything in the `main` branch is always deployable.
 
 ## Bug Reports
 If you're reporting a bug, please include a clear description of the issue, the version of HttpExceptions you're using, and a set of clear repro steps.
