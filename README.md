@@ -173,7 +173,7 @@ See the `samples/Opw.HttpExceptions.AspNetCore.Sample` project for a sample impl
 **Please see the code** :nerd_face:
 
 ## HttpExceptions
-[![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=main)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=main)
+[![Build Status](https://dev.azure.com/ofpinewood/GitHub/_apis/build/status/ofpinewood.http-exceptions?branchName=main)](https://dev.azure.com/ofpinewood/GitHub/_build/latest?definitionId=13&branchName=main)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.svg)](https://www.nuget.org/packages/Opw.HttpExceptions/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/main/LICENSE)
 
