@@ -1,7 +1,7 @@
 # HttpExceptions <img src="http-exceptions-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
 
 ## Return exceptions over HTTP
-[![Build Status](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_apis/build/status/ofpinewood.http-exceptions?branchName=main)](https://ofpinewood.visualstudio.com/Of%20Pine%20Wood/_build/latest?definitionId=6&branchName=main)
+[![Build Status](https://dev.azure.com/ofpinewood/GitHub/_apis/build/status/ofpinewood.http-exceptions?branchName=main)](https://dev.azure.com/ofpinewood/GitHub/_build/latest?definitionId=13&branchName=main)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.HttpExceptions.AspNetCore.svg)](https://www.nuget.org/packages/Opw.HttpExceptions.AspNetCore/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/ofpinewood/http-exceptions/blob/main/LICENSE)
 
