@@ -98,7 +98,7 @@ Should an exception be logged by the HttpExceptions middleware or not, default b
 ``` csharp
 mvcBuilder.AddHttpExceptions(options =>
 {
-    // Only log the when it has a status code of 500 or higher, or when it not is a HttpException.
+    // Only log the when it has a status code of 500 or higher, or when it is not a HttpException.
     options.ShouldLogException = exception => {
         if ((exception is HttpExceptionBase httpException && (int)httpException.StatusCode >= 500) || !(exception is HttpExceptionBase))
             return true;
