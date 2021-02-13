@@ -88,7 +88,7 @@ Is the response an exception and should it be handled by the HttpExceptions midd
 mvcBuilder.AddHttpExceptions(options =>
 {
     // This is a simplified version of the default behavior; only map exceptions for 4xx and 5xx responses.
-    options.IsExceptionResponse = context => (context.Response.StatusCode < 400 && context.Response.StatusCode >= 600);
+    options.IsExceptionResponse = context => (context.Response.StatusCode >= 400 && context.Response.StatusCode < 600);
 });
 ```
 
@@ -98,7 +98,7 @@ Should an exception be logged by the HttpExceptions middleware or not, default b
 ``` csharp
 mvcBuilder.AddHttpExceptions(options =>
 {
-    // Only log the when it has a status code of 500 or higher, or when it not is a HttpException.
+    // Only log the when it has a status code of 500 or higher, or when it is not a HttpException.
     options.ShouldLogException = exception => {
         if ((exception is HttpExceptionBase httpException && (int)httpException.StatusCode >= 500) || !(exception is HttpExceptionBase))
             return true;
@@ -168,7 +168,7 @@ var IDictionary<string, object[]> errors;
 ```
 
 ### Sample project using HttpExceptions middleware
-See the `samples/Opw.HttpExceptions.AspNetCore.Sample` project for a sample implementation. This project contains examples on how to use the HttpExceptions middleware.
+See the [samples/Opw.HttpExceptions.AspNetCore.Sample](samples/Opw.HttpExceptions.AspNetCore.Sample) project for a sample implementation. This project contains examples on how to use the HttpExceptions middleware.
 
 **Please see the code** :nerd_face:
 
