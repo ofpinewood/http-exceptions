@@ -192,20 +192,32 @@ You can install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExce
 - 400 BadRequestException
 - 400 InvalidModelException
 - 400 ValidationErrorException\<T\>
-- 400 InvalidFileException
 - 401 UnauthorizedException
 - 403 ForbiddenException
 - 404 NotFoundException
 - 404 NotFoundException\<T\>
 - 409 ConflictException
-- 409 ProtectedException
 - 415 UnsupportedMediaTypeException
 
 #### 5xx
-- 500 InternalServerErrorException
-- 500 DbErrorException
-- 500 SerializationErrorException
+- 500 HttpException (default exception with status code 500)
 - 503 ServiceUnavailableException
+
+#### More exceptions
+The above exception are just a few of the most common exceptions, you can create your own HttpExceptions by inheriting from the `HttpExceptionBase` class. For instance to create a `NotAcceptableException` (406).
+
+``` csharp
+public class NotAcceptableException : HttpExceptionBase
+{
+    public override HttpStatusCode StatusCode { get; protected set; } = HttpStatusCode.NotAcceptable;
+
+    public override string HelpLink { get; set; } = ResponseStatusCodeLink.NotAcceptable;
+
+    public NotAcceptableException(string message) : base(message) { }
+}
+
+throw new new NotAcceptableException("Totally unacceptable!");
+```
 
 ## Contributing
 We accept fixes and features! Here are some resources to help you get started on how to contribute code or new content.
