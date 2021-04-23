@@ -23,7 +23,7 @@ schedules:
 
 variables:
   buildConfiguration: 'Release'
-  ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/tags/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/preview')) }}:
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
     release: true
 
 steps:
