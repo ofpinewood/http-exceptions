@@ -10,6 +10,7 @@ trigger:
   branches:
     include:
     - main
+    - preview
     - refs/tags/*
 
 schedules:
@@ -22,6 +23,8 @@ schedules:
 
 variables:
   buildConfiguration: 'Release'
+  ${{ if or(startsWith(variables['Build.SourceBranch'], 'refs/tags/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/preview')) }}:
+    release: true
 
 steps:
 - task: UseGitVersion@5
@@ -43,6 +46,13 @@ steps:
     packageType: 'sdk'
     version: '5.0.101'
 
+# https://dotnet.microsoft.com/download/dotnet/6.0
+- task: UseDotNet@2
+  displayName: Install .Net Core 6.0.100-preview
+  inputs:
+    packageType: 'sdk'
+    version: '6.0.100-preview.3.21202.5'
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -61,7 +71,7 @@ steps:
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
@@ -71,7 +81,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
@@ -81,7 +91,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: NuGet Push
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
     command: push
     nuGetFeedType: external
@@ -91,7 +101,7 @@ steps:
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
    gitHubConnection: 'github.com'
    repositoryName: $(Build.Repository.Name)
