@@ -12,6 +12,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <!-- TODO: remove Microsoft.Net.Compilers when net6.0 is out of preview -->
+    <PackageReference Include="Microsoft.Net.Compilers" Version="3.10.0-2.final">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0-release-20210422-02" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
