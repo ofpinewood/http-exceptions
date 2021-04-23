@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.IO;
 using System.Net.Http;
 
 namespace Opw.HttpExceptions.AspNetCore._Test
@@ -19,7 +20,7 @@ namespace Opw.HttpExceptions.AspNetCore._Test
 
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
-            return new WebHostBuilder()                
+            return new WebHostBuilder()
                 .UseConfiguration(Configuration)
                 .UseStartup<TStartup>();
         }
