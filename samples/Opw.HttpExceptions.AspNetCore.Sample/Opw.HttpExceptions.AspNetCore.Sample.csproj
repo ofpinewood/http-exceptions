@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <!-- TODO: remove Microsoft.Net.Compilers when net6.0 is out of preview -->
-    <PackageReference Include="Microsoft.Net.Compilers" Version="3.10.0-2.final">
+    <PackageReference Include="Microsoft.Net.Compilers" Version="3.10.0-3.final">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-preview.3.21201.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-preview.4.21253.5" />
   </ItemGroup>
 
   <ItemGroup>
