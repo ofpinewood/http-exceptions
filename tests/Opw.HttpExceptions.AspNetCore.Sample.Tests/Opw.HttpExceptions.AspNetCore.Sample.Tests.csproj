@@ -31,7 +31,7 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <!-- TODO: keep Microsoft.AspNetCore.Mvc.Testing one preview version behind to keep the test projects working in Visual Studio non-preview versions -->
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.3.21201.13" />
-    <!--<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.4.21253.5" />-->
+    <!--<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.5.21301.17" />-->
   </ItemGroup>
 
   <ItemGroup>
