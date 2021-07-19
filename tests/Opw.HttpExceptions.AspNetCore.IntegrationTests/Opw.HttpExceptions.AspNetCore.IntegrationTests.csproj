@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-preview.5.21301.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-preview.6.21355.2" />
     <!-- TODO: use the net5.0 Microsoft.AspNetCore.Mvc.Testing package because of error: "Could not find content root for project 'xxx' in test manifest file 'MvcTestingAppManifest.json'" -->
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.1" />
     <!--<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.5.21301.17" />-->
