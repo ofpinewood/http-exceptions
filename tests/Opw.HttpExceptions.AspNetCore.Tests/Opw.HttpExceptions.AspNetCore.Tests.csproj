@@ -13,7 +13,7 @@
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <!-- TODO: remove Microsoft.Net.Compilers when net6.0 is out of preview -->
-    <PackageReference Include="Microsoft.Net.Compilers" Version="3.11.0-1.final">
+    <PackageReference Include="Microsoft.Net.Compilers" Version="4.0.0-1.final">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
