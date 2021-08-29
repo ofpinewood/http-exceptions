@@ -1,44 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <IsPackable>false</IsPackable>
-    <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+        <RootNamespace>Opw.HttpExceptions.AspNetCore</RootNamespace>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="2.9.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="FluentAssertions" Version="5.10.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0-release-20210626-04" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="coverlet.msbuild" Version="2.9.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="FluentAssertions" Version="5.10.3" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.2" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.2" />
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.1" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.1" />
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-preview.7.21378.6" />
-    <!-- TODO: use the net5.0 Microsoft.AspNetCore.Mvc.Testing package because of error: "Could not find content root for project 'xxx' in test manifest file 'MvcTestingAppManifest.json'" -->
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.1" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-preview.7.21378.6" />
+        <!-- TODO: use the net5.0 Microsoft.AspNetCore.Mvc.Testing package because of error: "Could not find content root for project 'xxx' in test manifest file 'MvcTestingAppManifest.json'" -->
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.1" />
+        <!--<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.7.21378.6" />-->
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Opw.HttpExceptions.AspNetCore\Opw.HttpExceptions.AspNetCore.csproj" />
-    <ProjectReference Include="..\Opw.HttpExceptions.AspNetCore.Tests\Opw.HttpExceptions.AspNetCore.Tests.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Opw.HttpExceptions.AspNetCore\Opw.HttpExceptions.AspNetCore.csproj" />
+        <ProjectReference Include="..\Opw.HttpExceptions.AspNetCore.Tests\Opw.HttpExceptions.AspNetCore.Tests.csproj" />
+    </ItemGroup>
 
 </Project>
