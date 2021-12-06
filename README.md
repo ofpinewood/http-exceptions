@@ -193,6 +193,7 @@ You can install [Opw.HttpExceptions](https://www.nuget.org/packages/Opw.HttpExce
 - 400 InvalidModelException
 - 400 ValidationErrorException\<T\>
 - 401 UnauthorizedException
+- 402 PaymentRequiredException
 - 403 ForbiddenException
 - 404 NotFoundException
 - 404 NotFoundException\<T\>
