@@ -10,7 +10,6 @@ trigger:
   branches:
     include:
     - main
-    - preview
     - refs/tags/*
 
 schedules:
