@@ -23,7 +23,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvcBuilder = services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            var mvcBuilder = services.AddControllers();
             mvcBuilder.AddHttpExceptions(options =>
             {
                 // This is the same as the default behavior; only include exception details in a development environment.

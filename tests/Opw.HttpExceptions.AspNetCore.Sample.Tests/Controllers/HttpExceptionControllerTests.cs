@@ -118,7 +118,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
         {
             var response = await _client.GetAsync("test/customError");
 
-            response.StatusCode.Should().Be(418);
+            ((int)response.StatusCode).Should().Be(418);
             response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+json");
 
             var customError = response.Content.ReadAsAsync<CustomError>().Result;
@@ -136,7 +136,7 @@ namespace Opw.HttpExceptions.AspNetCore.Sample.Controllers
             _client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/xml"));
             var response = await _client.GetAsync("test/customError");
 
-            response.StatusCode.Should().Be(418);
+            ((int)response.StatusCode).Should().Be(418);
             response.Content.Headers.ContentType.MediaType.Should().Be("application/problem+xml");
         }
     }

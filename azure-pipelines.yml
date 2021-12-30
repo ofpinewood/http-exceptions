@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/vsts/pipelines/languages/dotnet-core
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'windows-latest'
 
 trigger:
   branches:
@@ -22,6 +22,8 @@ schedules:
 
 variables:
   buildConfiguration: 'Release'
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
+    release: true
 
 steps:
 - task: gitversion/setup@0
@@ -46,6 +48,13 @@ steps:
     packageType: 'sdk'
     version: '5.0.101'
 
+# https://dotnet.microsoft.com/download/dotnet/6.0
+- task: UseDotNet@2
+  displayName: Install .Net 6.0.101
+  inputs:
+    packageType: 'sdk'
+    version: '6.0.101'
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -64,7 +73,7 @@ steps:
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.csproj'
@@ -74,7 +83,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.HttpExceptions.AspNetCore
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
     command: pack
     packagesToPack: '**/Opw.HttpExceptions.AspNetCore.csproj'
@@ -84,7 +93,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: NuGet Push
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
     command: push
     nuGetFeedType: external
@@ -94,7 +103,7 @@ steps:
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), eq(variables['release'], true))
   inputs:
    gitHubConnection: 'github.com'
    repositoryName: $(Build.Repository.Name)
