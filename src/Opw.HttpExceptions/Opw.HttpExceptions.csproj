@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <Description>HTTP-specific exception classes that enable ASP.NET to generate exception information.</Description>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PackageId>Opw.HttpExceptions</PackageId>
-        <PackageTags>http exceptions</PackageTags>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>HTTP-specific exception classes that enable ASP.NET to generate exception information.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Opw.HttpExceptions</PackageId>
+    <PackageTags>http exceptions</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
 
 </Project>

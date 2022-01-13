@@ -7,6 +7,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.HttpExceptions.AspNetCore</PackageId>
     <PackageTags>aspnetcore http exceptions RFC7807 problemdetails problem details</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
